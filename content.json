@@ -1,0 +1,414 @@
+{
+  "site": {
+    "email": "hola@arenga.uy",
+    "city": "Montevideo · Uruguay",
+    "copyright": "Arenga © 2026",
+    "instagram": "#",
+    "linkedin": "#",
+    "x": "#"
+  },
+  "home": {
+    "heroTitle": "Somos Arenga.",
+    "heroText": "Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.",
+    "workTitle": "Selected work",
+    "workText": "Film, motion y diseño en equipo.",
+    "clientsTitle": "Marcas que confían",
+    "clientsText": "Elegí una marca y mirá lo que hicimos juntos.",
+    "teamTitle": "Quiénes somos",
+    "teamText": "Diez personas que crean, ejecutan y gestionan proyectos de principio a fin."
+  },
+  "about": {
+    "title": "Arenga es la fusión de Potrero y Coach",
+    "text": "Una productora creativa con las capacidades de idear y producir contenido relevante, con la posibilidad de amplificarlo con influencers."
+  },
+  "stats": [
+    {
+      "n": "10",
+      "label": "Personas entre liderazgo y equipo"
+    },
+    {
+      "n": "06",
+      "label": "Capacidades, de social media a software"
+    },
+    {
+      "n": "03",
+      "label": "Países: Uruguay, Chile y Paraguay"
+    },
+    {
+      "n": "+2000",
+      "label": "Assets digitales entregados"
+    }
+  ],
+  "leaders": [
+    {
+      "name": "Agustín Bruni",
+      "role": "Creative & Art Director",
+      "photo": "team/agustin-bruni.webp"
+    },
+    {
+      "name": "Guillermo Bruni",
+      "role": "Commercial Director",
+      "photo": "team/guillermo-bruni.webp"
+    },
+    {
+      "name": "Maximiliano Patri",
+      "role": "Creative & Content Director",
+      "photo": "team/maximiliano-patri.webp"
+    },
+    {
+      "name": "Marcos Furtado",
+      "role": "Commercial Director",
+      "photo": "team/marcos-furtado.webp"
+    }
+  ],
+  "team": [
+    {
+      "name": "Luana Bengoechea",
+      "role": "Social Media Manager",
+      "photo": "team/luana-bengoechea.webp"
+    },
+    {
+      "name": "Ignacio Bustamante",
+      "role": "Creative Designer / Filmmaker",
+      "photo": "team/ignacio-bustamante.webp"
+    },
+    {
+      "name": "Tomás Bruni",
+      "role": "UX UI / Motion Graphics",
+      "photo": "team/tomas-bruni.webp"
+    },
+    {
+      "name": "Agustín Figari",
+      "role": "Diseñador Web",
+      "photo": "team/agustin-figari.webp"
+    },
+    {
+      "name": "Juani Barreiro",
+      "role": "Film Production Lead",
+      "photo": "team/juani-barreiro.webp"
+    },
+    {
+      "name": "Salame y pan",
+      "role": "Filmmaker & Photographer",
+      "photo": ""
+    }
+  ],
+  "caps": [
+    {
+      "n": "01",
+      "title": "Social Media",
+      "copy": "Estrategia, planificación y ejecución de contenidos alineados a los objetivos del negocio. Construimos marcas relevantes, consistentes y activas en el día a día."
+    },
+    {
+      "n": "02",
+      "title": "Producción audiovisual",
+      "copy": "Creamos piezas audiovisuales de alto impacto, desde la idea hasta la postproducción. Contenido pensado para captar atención, contar historias y escalar en cualquier plataforma."
+    },
+    {
+      "n": "03",
+      "title": "Branding / Diseño",
+      "copy": "Desarrollamos identidades sólidas, sistemas visuales y piezas que construyen marca en el tiempo. Diseño estratégico con criterio estético y funcional."
+    },
+    {
+      "n": "04",
+      "title": "Influencers",
+      "copy": "Conectamos marcas con creadores relevantes, auténticos y alineados al mensaje. Gestionamos campañas de punta a punta, enfocadas en alcance real y credibilidad."
+    },
+    {
+      "n": "05",
+      "title": "Desarrollo de producto",
+      "copy": "Acompañamos la creación y evolución de productos desde la idea hasta su salida al mercado. Pensamiento estratégico, validación y ejecución enfocada en usuarios reales."
+    },
+    {
+      "n": "06",
+      "title": "Desarrollo de software",
+      "copy": "Diseñamos y desarrollamos soluciones digitales a medida. Tecnología pensada para escalar, optimizar procesos y potenciar el negocio."
+    }
+  ],
+  "steps": [
+    {
+      "n": "01",
+      "title": "Kick off",
+      "b1": "Entendemos el negocio, los objetivos y el contexto real de la marca.",
+      "b2": "Alineamos expectativas, definimos alcance y armamos el plan de acción.",
+      "b3": "Todo proyecto arranca con claridad y foco estratégico."
+    },
+    {
+      "n": "02",
+      "title": "Puesta a punto",
+      "b1": "Ordenamos procesos, equipos y herramientas.",
+      "b2": "Ajustamos la base para que el proyecto funcione de forma eficiente.",
+      "b3": "Dejamos todo listo para escalar sin fricción."
+    },
+    {
+      "n": "03",
+      "title": "Innovación",
+      "b1": "Detectamos oportunidades, proponemos mejoras y nuevas soluciones.",
+      "b2": "Incorporamos tecnología, nuevas miradas y optimización constante.",
+      "b3": "Evolucionamos el proyecto más allá de lo esperado."
+    },
+    {
+      "n": "04",
+      "title": "Creatividad",
+      "b1": "Transformamos la estrategia en ideas con impacto.",
+      "b2": "Diseñamos, producimos y comunicamos con criterio y personalidad.",
+      "b3": "Aplicamos la creatividad para conseguir resultados tangibles."
+    }
+  ],
+  "cases": [
+    {
+      "title": "Megal",
+      "kind": "Social Media · Producción",
+      "client": "Megal",
+      "stat": "+25% YoY",
+      "results": "+25% YoY · 2000 assets digitales",
+      "services": "Social Media, Paid Media, Producción, Diseño",
+      "metaLabel": "Período",
+      "metaValue": "2024–2025",
+      "intro": "Social media, paid media, producción y diseño para Megal. 2000 assets digitales entregados y un crecimiento del 25% año a año entre 2024 y 2025.",
+      "video": "https://vimeo.com/1133581150?fl=ip&fe=ec",
+      "cover": "work/megal-05.webp",
+      "hero": "work/megal-01.webp",
+      "stills": [
+        "work/megal-07.webp",
+        "work/megal-08.webp",
+        "work/megal-06.webp",
+        "work/megal-02.webp"
+      ],
+      "page": "Arenga%20Proyecto.dc.html"
+    },
+    {
+      "title": "RefMe Pro",
+      "kind": "Branding · Diseño web",
+      "client": "RefMe Pro",
+      "stat": "1500 árbitros",
+      "results": "10 federaciones · 1500 árbitros",
+      "services": "Branding, Social Media, Diseño web, Diseño",
+      "metaLabel": "Mercado",
+      "metaValue": "Uruguay",
+      "intro": "Branding, social media, diseño web y diseño para RefMe Pro, la plataforma para árbitros. Hoy la utilizan 10 federaciones y 1500 árbitros.",
+      "video": "https://vimeo.com/1133584628?fl=ip&fe=ec",
+      "cover": "work/refme-01.webp",
+      "hero": "work/refme-01.webp",
+      "stills": [
+        "work/refme-02.webp",
+        "",
+        "",
+        ""
+      ],
+      "page": "Arenga%20Proyecto%20RefMe.dc.html"
+    },
+    {
+      "title": "EigenCloud",
+      "kind": "UX/UI · Motion",
+      "client": "EigenCloud",
+      "stat": "+300 assets",
+      "results": "+300 assets digitales · +10 eventos",
+      "services": "UX/UI, Social Media, Motion Graphics, Merch/Swag",
+      "metaLabel": "Web",
+      "metaValue": "eigencloud.xyz",
+      "intro": "UX/UI, social media, motion graphics y merch para EigenCloud. Más de 300 assets digitales entregados y más de 10 eventos.",
+      "video": "",
+      "cover": "work/eigen-01.webp",
+      "hero": "work/eigen-01.webp",
+      "stills": [
+        "work/eigen-02.webp",
+        "work/eigen-03.webp",
+        "work/eigen-04.webp",
+        ""
+      ],
+      "page": "Arenga%20Proyecto%20Eigen.dc.html"
+    },
+    {
+      "title": "Club Nacional de Football",
+      "kind": "Producción y Creatividad",
+      "client": "Club Nacional de Football",
+      "stat": "Sold out",
+      "results": "Sold out de butacas en menos de un mes",
+      "services": "Producción y Creatividad",
+      "metaLabel": "Campaña",
+      "metaValue": "Butacas",
+      "intro": "Producción y creatividad para la campaña de butacas del Club Nacional de Football. Sold out en menos de un mes.",
+      "video": "https://vimeo.com/1133564690?fl=ip&fe=ec",
+      "cover": "work/nacional-01.webp",
+      "hero": "work/nacional-01.webp",
+      "stills": [
+        "work/nacional-02.webp",
+        "",
+        "",
+        ""
+      ],
+      "page": "Arenga%20Proyecto%20Nacional.dc.html"
+    },
+    {
+      "title": "Altoconcepto",
+      "kind": "Branding · Social Media",
+      "client": "Altoconcepto",
+      "stat": "3 países",
+      "results": "Lanzamiento de la marca · 3 países",
+      "services": "Branding, Social Media, Paid Media",
+      "metaLabel": "Países",
+      "metaValue": "UY · CL · PY",
+      "intro": "Branding, social media y paid media para el lanzamiento de Altoconcepto al mercado. Trabajamos la marca en tres países: Uruguay, Chile y Paraguay.",
+      "video": "https://vimeo.com/1139048900?fl=ip&fe=ec",
+      "cover": "",
+      "hero": "",
+      "stills": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "page": "Arenga%20Proyecto%20Altoconcepto.dc.html"
+    }
+  ],
+  "clients": [
+    {
+      "slug": "supergas-megal",
+      "name": "Megal",
+      "sector": "Energía",
+      "tag": "Caso",
+      "src": "logos/supergas-megal.svg"
+    },
+    {
+      "slug": "refme-pro",
+      "name": "RefMe Pro",
+      "sector": "Deporte · Tech",
+      "tag": "Caso",
+      "src": "logos/refme-pro.svg"
+    },
+    {
+      "slug": "club-nacional-de-football",
+      "name": "Club Nacional de Football",
+      "sector": "Deporte",
+      "tag": "Caso",
+      "src": "logos/club-nacional-de-football.svg"
+    },
+    {
+      "slug": "altoconcepto",
+      "name": "Altoconcepto",
+      "sector": "Retail",
+      "tag": "Caso",
+      "src": "logos/altoconcepto.svg"
+    },
+    {
+      "slug": "penarol",
+      "name": "Peñarol",
+      "sector": "Deporte",
+      "tag": "Cliente",
+      "src": "logos/penarol.svg"
+    },
+    {
+      "slug": "tottenham-hotspur",
+      "name": "Tottenham Hotspur",
+      "sector": "Deporte",
+      "tag": "Cliente",
+      "src": "logos/tottenham-hotspur.svg"
+    },
+    {
+      "slug": "napoli",
+      "name": "Napoli",
+      "sector": "Deporte",
+      "tag": "Cliente",
+      "src": "logos/napoli.svg"
+    },
+    {
+      "slug": "directv-go",
+      "name": "DirecTV Go",
+      "sector": "Entretenimiento",
+      "tag": "Cliente",
+      "src": "logos/directv-go.svg"
+    },
+    {
+      "slug": "modo",
+      "name": "MODO",
+      "sector": "Fintech",
+      "tag": "Cliente",
+      "src": "logos/modo.svg"
+    },
+    {
+      "slug": "digitas",
+      "name": "Digitas",
+      "sector": "Agencia",
+      "tag": "Cliente",
+      "src": "logos/digitas.svg"
+    },
+    {
+      "slug": "warren",
+      "name": "Warren",
+      "sector": "Retail",
+      "tag": "Cliente",
+      "src": "logos/warren.svg"
+    },
+    {
+      "slug": "promofarma",
+      "name": "Promofarma",
+      "sector": "Salud",
+      "tag": "Cliente",
+      "src": "logos/promofarma.svg"
+    },
+    {
+      "slug": "flexclub",
+      "name": "Flexclub",
+      "sector": "Fitness",
+      "tag": "Cliente",
+      "src": "logos/flexclub.svg"
+    },
+    {
+      "slug": "burger-time",
+      "name": "Burger Time",
+      "sector": "Gastronomía",
+      "tag": "Cliente",
+      "src": "logos/burger-time.svg"
+    },
+    {
+      "slug": "el-club-de-la-milanesa",
+      "name": "El Club de la Milanesa",
+      "sector": "Gastronomía",
+      "tag": "Cliente",
+      "src": "logos/el-club-de-la-milanesa.svg"
+    },
+    {
+      "slug": "faisan",
+      "name": "Faisán",
+      "sector": "Consumo",
+      "tag": "Cliente",
+      "src": "logos/faisan.svg"
+    },
+    {
+      "slug": "neural-trainer",
+      "name": "Neural Trainer",
+      "sector": "Deporte · Tech",
+      "tag": "Cliente",
+      "src": "logos/neural-trainer.svg"
+    },
+    {
+      "slug": "oscar-pisano",
+      "name": "Oscar Pisano",
+      "sector": "Retail",
+      "tag": "Cliente",
+      "src": "logos/oscar-pisano.svg"
+    },
+    {
+      "slug": "punto-penal",
+      "name": "Punto Penal",
+      "sector": "Deporte",
+      "tag": "Cliente",
+      "src": "logos/punto-penal.svg"
+    },
+    {
+      "slug": "schneck",
+      "name": "Schneck",
+      "sector": "Consumo",
+      "tag": "Cliente",
+      "src": "logos/schneck.svg"
+    },
+    {
+      "slug": "eigencloud",
+      "name": "EigenCloud",
+      "sector": "Tech",
+      "tag": "Caso",
+      "src": ""
+    }
+  ]
+}
