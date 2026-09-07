@@ -8,12 +8,12 @@
     "x": "#"
   },
   "home": {
-    "heroTitle": "Somos Arenga.",
+    "heroTitle": "Somos\nArenga.",
     "heroText": "Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.",
     "workTitle": "Selected work",
     "workText": "Film, motion y diseño en equipo.",
     "clientsTitle": "Marcas que confían",
-    "clientsText": "Elegí una marca y mirá lo que hicimos juntos.",
+    "clientsText": "Veintiuna marcas con las que trabajamos y seguimos trabajando.",
     "teamTitle": "Quiénes somos",
     "teamText": "Diez personas que crean, ejecutan y gestionan proyectos de principio a fin."
   },
@@ -88,7 +88,7 @@
       "photo": "team/juani-barreiro.webp"
     },
     {
-      "name": "Salame y pan",
+      "name": "Franco Patri",
       "role": "Filmmaker & Photographer",
       "photo": ""
     }
