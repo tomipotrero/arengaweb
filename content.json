@@ -8,7 +8,7 @@
     "x": "#"
   },
   "home": {
-    "heroTitle": "Somos Arenga.",
+    "heroTitle": "Somos\nArenga.",
     "heroText": "Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.",
     "workTitle": "Selected work",
     "workText": "Film, motion y diseño en equipo.",
@@ -88,7 +88,7 @@
       "photo": "team/juani-barreiro.webp"
     },
     {
-      "name": "Franquito Patri",
+      "name": "Franco Patri",
       "role": "Filmmaker & Photographer",
       "photo": ""
     }
@@ -251,10 +251,10 @@
       "metaValue": "UY · CL · PY",
       "intro": "Branding, social media y paid media para el lanzamiento de Altoconcepto al mercado. Trabajamos la marca en tres países: Uruguay, Chile y Paraguay.",
       "video": "https://vimeo.com/1139048900?fl=ip&fe=ec",
-      "cover": "",
-      "hero": "",
+      "cover": "work/altoconcepto-01.webp",
+      "hero": "work/altoconcepto-01.webp",
       "stills": [
-        "",
+        "work/altoconcepto-02.webp",
         "",
         "",
         ""
@@ -409,6 +409,18 @@
       "sector": "Tech",
       "tag": "Caso",
       "src": ""
+    }
+  ],
+  "brands": [
+    {
+      "name": "Potrero",
+      "url": "https://potrero.com.uy/",
+      "logo": "logos/potrero.svg"
+    },
+    {
+      "name": "Coach",
+      "url": "https://www.coach.uy/",
+      "logo": "logos/coach.webp"
     }
   ]
 }
