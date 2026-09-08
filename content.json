@@ -63,7 +63,7 @@
   ],
   "team": [
     {
-      "name": "Luana Bengoechea",
+      "name": "Flor Costa",
       "role": "Social Media Manager",
       "photo": "team/luana-bengoechea.webp"
     },
@@ -90,7 +90,7 @@
     {
       "name": "Franco Patri",
       "role": "Filmmaker & Photographer",
-      "photo": "team/francopatri.webp"
+      "photo": ""
     }
   ],
   "caps": [
@@ -167,13 +167,13 @@
       "metaValue": "2024–2025",
       "intro": "Social media, paid media, producción y diseño para Megal. 2000 assets digitales entregados y un crecimiento del 25% año a año entre 2024 y 2025.",
       "video": "https://vimeo.com/1133581150?fl=ip&fe=ec",
-      "cover": "work/megal-portada.webp",
+      "cover": "work/megal-05.webp",
       "hero": "work/megal-01.webp",
       "stills": [
         "work/megal-07.webp",
         "work/megal-08.webp",
         "work/megal-06.webp",
-        "work/megal-portada.webp"
+        "work/megal-02.webp"
       ],
       "page": "Arenga%20Proyecto.dc.html"
     },
@@ -191,10 +191,10 @@
       "cover": "work/refme-01.webp",
       "hero": "work/refme-01.webp",
       "stills": [
-        "work/refme-gng-neural-00-00-06-20-imagen-fija003.webp",
-        "work/para-portada-3.webp",
-        "work/para-portada-5.webp",
-        "work/para-portada-4.webp"
+        "work/refme-02.webp",
+        "work/refme-video-gng.webp",
+        "",
+        ""
       ],
       "page": "Arenga%20Proyecto%20RefMe.dc.html"
     },
@@ -215,7 +215,7 @@
         "work/eigen-02.webp",
         "work/eigen-03.webp",
         "work/eigen-04.webp",
-        "work/eigen-ultima.webp"
+        "work/eigen-05.webp"
       ],
       "page": "Arenga%20Proyecto%20Eigen.dc.html"
     },
@@ -233,10 +233,10 @@
       "cover": "work/nacional-escudo.webp",
       "hero": "work/nacional-escudo.webp",
       "stills": [
-        "work/bandera-nacional.webp",
-        "work/nacional-escudo.webp",
-        "work/gardel.webp",
-        "work/dsc05349.webp"
+        "work/nacional-02.webp",
+        "work/nacional-03.webp",
+        "",
+        ""
       ],
       "page": "Arenga%20Proyecto%20Nacional.dc.html"
     },
@@ -251,29 +251,26 @@
       "metaValue": "UY · CL · PY",
       "intro": "Branding, social media y paid media para el lanzamiento de Altoconcepto al mercado. Trabajamos la marca en tres países: Uruguay, Chile y Paraguay.",
       "video": "https://vimeo.com/1139048900?fl=ip&fe=ec",
-      "cover": "work/altoconcepto-portada.webp",
-      "hero": "work/altoconcepto-portada.webp",
+      "cover": "work/altoconcepto-cover.webp",
+      "hero": "work/altoconcepto-hero.webp",
       "stills": [
-        "work/altoconcepto-portada.webp",
-        "work/aya0750.webp",
-        "work/aya0684-1.webp",
-        "work/aya0687.webp"
+        "work/altoconcepto-02.webp",
+        "",
+        "",
+        ""
       ],
       "page": "Arenga%20Proyecto%20Altoconcepto.dc.html"
     }
   ],
   "selected": [
     {
+      "title": "Megal"
+    },
+    {
       "title": "RefMe Pro"
     },
     {
-      "title": "EigenCloud"
-    },
-    {
-      "title": "Altoconcepto"
-    },
-    {
-      "title": "Megal"
+      "title": "Club Nacional de Football"
     }
   ],
   "clients": [
