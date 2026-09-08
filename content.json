@@ -413,14 +413,14 @@
   ],
   "brands": [
     {
-      "name": "Potrero",
-      "url": "https://potrero.com.uy/",
-      "logo": "logos/potrero.svg"
-    },
-    {
       "name": "Coach",
       "url": "https://www.coach.uy/",
       "logo": "logos/coach.webp"
+    },
+    {
+      "name": "Potrero",
+      "url": "https://potrero.com.uy/",
+      "logo": "logos/potrero.svg"
     }
   ]
 }
