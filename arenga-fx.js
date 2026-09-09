@@ -574,7 +574,17 @@
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     if (a.target && a.target !== "_self") return;
     var href = a.getAttribute("href") || "";
-    if (!href || href.charAt(0) === "#") return;
+    if (!href) return;
+    if (href.charAt(0) === "#") {
+      // se baja sin escribir el hash: si no, al refrescar el navegador vuelve a saltar ahí
+      var target = href.length > 1 ? document.getElementById(href.slice(1)) : document.documentElement;
+      if (!target) return;
+      e.preventDefault();
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var top = href.length > 1 ? target.getBoundingClientRect().top + (window.scrollY || 0) : 0;
+      window.scrollTo({ top: top, behavior: reduce ? "auto" : "smooth" });
+      return;
+    }
     if (/^[a-z][a-z0-9+.-]*:/i.test(href) && !/^https?:/i.test(href)) return;
     var url; try { url = new URL(devHref(href), location.href); } catch (err) { return; }
     if (url.origin !== location.origin || url.pathname === location.pathname) return;
