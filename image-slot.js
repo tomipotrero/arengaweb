@@ -445,7 +445,7 @@
 
   class ImageSlot extends HTMLElement {
     static get observedAttributes() {
-      return ['shape', 'radius', 'mask', 'fit', 'placeholder', 'src', 'id', 'credit', 'credit-href'];
+      return ['shape', 'radius', 'mask', 'fit', 'placeholder', 'src', 'alt', 'id', 'credit', 'credit-href'];
     }
 
     /** Duplicate-slide hook (called by deck-stage, see its
@@ -1136,6 +1136,9 @@
         !credit && !this._userUrl && srcAttr && isUnsplashHost(srcAttr)
       );
       this.toggleAttribute('data-attribution-error', attrError);
+      // alt for search engines and screen readers: the host attribute wins,
+      // the placeholder is the fallback label.
+      this._img.alt = this.getAttribute('alt') || this.getAttribute('placeholder') || '';
       if (url && !attrError) {
         const prev = this._img.getAttribute('src');
         if (prev !== url) {
