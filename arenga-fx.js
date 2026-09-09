@@ -272,33 +272,7 @@
       });
   }
 
-  /* Sello de procedencia: en la vista previa dice de dónde salió lo que se ve.
-     Nunca aparece en el sitio publicado. */
-  function badge() {
-    var s = window.ArengaSync, el = document.getElementById("arenga-sync-badge");
-    if (!s.canonical) return;
-    var bits = [];
-    if (s.source === "repo") {
-      bits.push("contenido publicado · " + s.canonical + (s.version ? " @ " + String(s.version).slice(0, 7) : ""));
-      if (s.inSync === false) bits.push("la copia del proyecto es distinta (se ignora)");
-    } else {
-      bits.push("copia local del proyecto");
-      if (s.note) bits.push(s.note);
-    }
-    if (s.healed && s.healed.length) bits.push(s.healed.length + " imágenes leídas del repo");
-    var txt = bits.join("  ·  ");
-    if (!el) {
-      el = document.createElement("button");
-      el.id = "arenga-sync-badge";
-      el.type = "button";
-      el.title = "Procedencia del contenido. Clic para ocultar.";
-      el.style.cssText = "position:fixed;left:14px;bottom:14px;z-index:120;max-width:min(92vw,560px);padding:7px 11px;border:none;border-radius:999px;font:500 10.5px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;text-align:left;color:rgba(244,242,238,.66);background:rgba(7,9,11,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 0 0 1px rgba(255,255,255,.12);cursor:pointer";
-      el.addEventListener("click", function () { el.remove(); });
-      (document.body || document.documentElement).appendChild(el);
-    }
-    el.textContent = txt;
-    el.style.color = s.source === "repo" ? "rgba(244,242,238,.66)" : "rgba(255,141,90,.92)";
-  }
+  function badge() {}
   function dig(o, path) { return String(path).split(".").reduce(function (a, k) { return a == null ? undefined : a[k]; }, o); }
   function setLines(el, v) {
     while (el.firstChild) el.removeChild(el.firstChild);
