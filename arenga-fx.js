@@ -743,6 +743,9 @@
         rv.el.__py = py;
         rv.el.style.opacity = String(0.05 + e * 0.95);
         rv.el.style.transform = "translate3d(0," + py.toFixed(1) + "px,0)" + (rv.el.__hoverTf || "");
+        // terminada la entrada, y sin parallax, la capa de composición ya no aporta nada
+        if (p >= 1 && !rv.f) { if (!rv.settled) { rv.settled = true; rv.el.style.willChange = "auto"; } }
+        else if (rv.settled) { rv.settled = false; rv.el.style.willChange = "transform, opacity"; }
       }
     }
     /* marquee: a track duplicated N times slides right-to-left, pauses under the mouse, drags with inertia */
