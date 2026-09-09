@@ -1098,7 +1098,8 @@
       this._ring.style.display = mask ? 'none' : '';
 
       // Controls and reframe entry gate on this so share links stay read-only.
-      const editable = !!(window.omelette && window.omelette.writeFile);
+      // CMS mode: images come from the panel, so no drop affordance either.
+      const editable = !!(window.omelette && window.omelette.writeFile) && !window.ARENGA_CMS_IMAGES;
       this.toggleAttribute('data-editable', editable);
       this._sub.style.display = editable ? '' : 'none';
 
