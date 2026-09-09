@@ -339,6 +339,7 @@
       var alt = still ? v + " — imagen " + (Number(still[1]) + 2) : (/^brands\./.test(path) ? "Logo de " + v : v);
       if (el.getAttribute("alt") !== alt) el.setAttribute("alt", alt);
     });
+    devLinks();
     ENGINES.forEach(function (e) {
       if (reType) { e.typeRecs = e.typeRecs.filter(function (r) { return r.el.__typeRec === r; }); e.initType(e.root); }
       if (reBlur) { e.blurEls = e.blurEls.filter(function (x) { return x.__blur; }); e.initBlur(e.root); e.blurFallback(); }
@@ -352,7 +353,7 @@
 
   /* ---- footer "Dev Utilities": collapsible gate into the content panel ----
      A client-side check only hides the entrance; the panel's real protection is the GitHub token. */
-  var DEV_U = atob("cG90cmVybw=="), DEV_P = atob("cG90cmVuZXRhMjAyNQ=="), ADMIN = "Arenga%20Admin.dc.html";
+  var DEV_U = atob("cG90cmVybw=="), DEV_P = atob("cG90cmVuZXRhMjAyNQ=="), ADMIN = "/panel";
   function devSet(wrap, open) {
     var panel = wrap.querySelector("[data-dev-panel]"), btn = wrap.querySelector("[data-dev-toggle]"), caret = wrap.querySelector("[data-dev-caret]");
     wrap.setAttribute("data-open", open ? "1" : "0");
@@ -371,7 +372,7 @@
     if (!ok) { if (p) { p.value = ""; p.focus(); } return; }
     try { sessionStorage.setItem("arenga-dev", "1"); } catch (e) {}
     if (p) p.value = "";
-    setTimeout(function () { if (typeof leaveTo === "function") leaveTo(ADMIN); else location.href = ADMIN; }, 260);
+    setTimeout(function () { var t = devHref(ADMIN); if (typeof leaveTo === "function") leaveTo(t); else location.href = t; }, 260);
   }
   document.addEventListener("click", function (e) {
     var t = e.target && e.target.closest ? e.target.closest("[data-dev-toggle],[data-dev-submit]") : null;
@@ -507,6 +508,37 @@
   });
 
   /* ---- link interception (curtain) + click suppression after a drag ---- */
+  /* ---- rutas ----
+     En producción las URLs son limpias (/trabajos, /proyectos/megal): Cloudflare Pages
+     sirve el archivo por detrás. Abriendo el .dc.html directo (vista previa) esas rutas
+     no existen, así que se traducen al archivo. */
+  var ROUTES = {
+    "/": "index.dc.html",
+    "/trabajos": "Arenga%20Trabajos.dc.html",
+    "/quienes-somos": "Arenga%20Quienes%20Somos.dc.html",
+    "/contacto": "Arenga%20Contacto.dc.html",
+    "/panel": "Arenga%20Admin.dc.html",
+    "/proyectos/megal": "Arenga%20Proyecto.dc.html",
+    "/proyectos/refme-pro": "Arenga%20Proyecto%20RefMe.dc.html",
+    "/proyectos/eigencloud": "Arenga%20Proyecto%20Eigen.dc.html",
+    "/proyectos/nacional": "Arenga%20Proyecto%20Nacional.dc.html",
+    "/proyectos/altoconcepto": "Arenga%20Proyecto%20Altoconcepto.dc.html"
+  };
+  var DEV_ROUTING = /\.dc\.html$/i.test(location.pathname);
+  function devHref(h) {
+    if (!DEV_ROUTING || !h || h.charAt(0) !== "/") return h;
+    var i = h.indexOf("#"), p = i < 0 ? h : h.slice(0, i), hash = i < 0 ? "" : h.slice(i);
+    var f = ROUTES[p.length > 1 ? p.replace(/\/$/, "") : p];
+    return f ? f + hash : h;
+  }
+  function devLinks() {
+    if (!DEV_ROUTING) return;
+    Array.prototype.forEach.call(document.querySelectorAll('a[href^="/"]'), function (a) {
+      var h = a.getAttribute("href"), d = devHref(h);
+      if (d !== h) a.setAttribute("href", d);
+    });
+  }
+
   var suppressUntil = 0;
   window.__arengaSuppressClick = function (ms) { suppressUntil = performance.now() + (ms || 350); };
   document.addEventListener("click", function (e) {
@@ -517,8 +549,9 @@
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     if (a.target && a.target !== "_self") return;
     var href = a.getAttribute("href") || "";
-    if (!/\.dc\.html/i.test(href)) return;
-    var url; try { url = new URL(a.href, location.href); } catch (err) { return; }
+    if (!href || href.charAt(0) === "#") return;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(href) && !/^https?:/i.test(href)) return;
+    var url; try { url = new URL(devHref(href), location.href); } catch (err) { return; }
     if (url.origin !== location.origin || url.pathname === location.pathname) return;
     e.preventDefault();
     leaveTo(url.href);
