@@ -15,7 +15,8 @@
     "clientsTitle": "Marcas que confían",
     "clientsText": "Veintiuna marcas con las que trabajamos y seguimos trabajando.",
     "teamTitle": "Quiénes somos",
-    "teamText": "Diez personas que crean, ejecutan y gestionan proyectos de principio a fin."
+    "teamText": "Diez personas que crean, ejecutan y gestionan proyectos de principio a fin.",
+    "heroPoster": ""
   },
   "about": {
     "title": "Arenga es la fusión de Potrero y Coach",
@@ -242,7 +243,7 @@
         "work/eigen-02.webp",
         "work/eigen-03.webp",
         "work/eigen-04.webp",
-        "work/eigen-05.webp"
+        "media/eigen-ticker-cec195f056.webp"
       ],
       "page": "Arenga%20Proyecto%20Eigen.dc.html"
     },
@@ -478,5 +479,12 @@
       "url": "https://www.coach.uy/",
       "logo": "logos/coach.webp"
     }
-  ]
+  ],
+  "runtime": {
+    "repo": "tomipotrero/arengaweb",
+    "branch": "main",
+    "contentPath": "content.json",
+    "assetDir": "media/",
+    "canonicalOrigin": ""
+  }
 }
