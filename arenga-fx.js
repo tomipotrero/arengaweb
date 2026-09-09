@@ -212,12 +212,15 @@
     return contentP;
   }
 
-  /* Vista previa: el repositorio es el origen canónico del proyecto.
-     1. se compara esta copia con la publicada (una sola llamada, sin polling)
-     2. las imágenes que el CMS referencia y esta copia no tiene se traen del
-        repositorio, en memoria y sólo por esta carga: ninguna imagen depende
-        del navegador ni de la máquina. */
-  function reconcile(c, cfg) {
+  /* Vista previa: lo que se ve es lo PUBLICADO.
+     1. se lee content.json del repositorio (una sola llamada, sin polling) y eso
+        es lo que se renderiza: publicar desde el panel alcanza, no hay que
+        sincronizar nada a mano ni desde otra máquina
+     2. las imágenes que el contenido publicado referencia y esta copia del
+        proyecto no tiene se leen del repositorio, en memoria y sólo por esta
+        carga: ninguna imagen depende del navegador ni de la máquina
+     Si el repositorio no contesta, sigue la copia local y el sello lo dice. */
+  function reconcile(local, cfg) {
     // el token del panel (archivo del proyecto, sólo existe en la vista previa)
     // sube el límite de la API de GitHub; sin él igual funciona, más limitado
     return (window.omelette ? fetch("admin.state.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : {}; }) : Promise.resolve({}))
@@ -225,38 +228,45 @@
       .then(function (dev) {
         var svc = window.ArengaCms.create({ repo: cfg.repo, branch: cfg.branch || "main", contentPath: cfg.contentPath || "content.json", token: dev.token || "" });
         window.ArengaSync.canonical = cfg.repo + "@" + (cfg.branch || "main");
-        var refs = window.ArengaCms.helpers.assetRefs(c);
 
-        // 1. ¿esta copia es igual a la publicada? (sólo informa; no reescribe nada)
-        svc.compare().then(function (r) {
-          window.ArengaSync.inSync = r.inSync;
-          window.ArengaSync.version = r.canonical.version;
+        // 1. el contenido publicado manda
+        return svc.readCanonical().then(function (r) {
+          if (!r || !r.data) { window.ArengaSync.note = "el repo no devolvió contenido"; return local; }
+          var c = decode(r.data);
+          window.ArengaSync.source = "repo";
+          window.ArengaSync.version = r.version;
+          window.ArengaSync.inSync = !!(local && JSON.stringify(c) === JSON.stringify(local));
+          return c;
+        }).catch(function () {
+          window.ArengaSync.note = "no se pudo leer el repo — copia local";
+          return local;
+        }).then(function (c) {
           badge();
-        }).catch(function (e) { window.ArengaSync.note = "no se pudo verificar el repo"; badge(); });
-
-        // 2. imágenes faltantes en esta copia -> se leen del repositorio
-        return Promise.all(refs.map(function (p) {
-          return window.ArengaPersistence.mirror.has(p).then(function (ok) { return ok ? null : p; });
-        })).then(function (miss) {
-          var missing = miss.filter(Boolean);
-          if (!missing.length) { badge(); return c; }
-          var map = {};
-          return Promise.all(missing.slice(0, 24).map(function (p) {
-            return svc.readAssetDataUrl(p).then(function (u) { if (u) map[p] = u; }).catch(function () {});
-          })).then(function () {
-            var healed = Object.keys(map);
-            window.ArengaSync.healed = healed;
-            if (!healed.length) { badge(); return c; }
-            (function walk(o) {
-              if (!o || typeof o !== "object") return;
-              Object.keys(o).forEach(function (k) {
-                var v = o[k];
-                if (typeof v === "string") { if (map[v]) o[k] = map[v]; }
-                else walk(v);
-              });
-            })(c);
-            badge();
-            return c;
+          // 2. imágenes que esta copia no tiene -> se leen del repositorio
+          var refs = window.ArengaCms.helpers.assetRefs(c);
+          return Promise.all(refs.map(function (p) {
+            return window.ArengaPersistence.mirror.has(p).then(function (ok) { return ok ? null : p; });
+          })).then(function (miss) {
+            var missing = miss.filter(Boolean);
+            if (!missing.length) { badge(); return c; }
+            var map = {};
+            return Promise.all(missing.slice(0, 24).map(function (p) {
+              return svc.readAssetDataUrl(p).then(function (u) { if (u) map[p] = u; }).catch(function () {});
+            })).then(function () {
+              var healed = Object.keys(map);
+              window.ArengaSync.healed = healed;
+              if (!healed.length) { badge(); return c; }
+              (function walk(o) {
+                if (!o || typeof o !== "object") return;
+                Object.keys(o).forEach(function (k) {
+                  var v = o[k];
+                  if (typeof v === "string") { if (map[v]) o[k] = map[v]; }
+                  else walk(v);
+                });
+              })(c);
+              badge();
+              return c;
+            });
           });
         });
       });
@@ -267,10 +277,14 @@
   function badge() {
     var s = window.ArengaSync, el = document.getElementById("arenga-sync-badge");
     if (!s.canonical) return;
-    var bits = ["CMS · content.json"];
-    if (s.inSync === true) bits.push("igual al repo (" + s.canonical + ")");
-    else if (s.inSync === false) bits.push("⚠ distinto del repo — publicá desde el panel");
-    else if (s.note) bits.push(s.note);
+    var bits = [];
+    if (s.source === "repo") {
+      bits.push("contenido publicado · " + s.canonical + (s.version ? " @ " + String(s.version).slice(0, 7) : ""));
+      if (s.inSync === false) bits.push("la copia del proyecto es distinta (se ignora)");
+    } else {
+      bits.push("copia local del proyecto");
+      if (s.note) bits.push(s.note);
+    }
     if (s.healed && s.healed.length) bits.push(s.healed.length + " imágenes leídas del repo");
     var txt = bits.join("  ·  ");
     if (!el) {
@@ -283,7 +297,7 @@
       (document.body || document.documentElement).appendChild(el);
     }
     el.textContent = txt;
-    el.style.color = s.inSync === false ? "rgba(255,141,90,.92)" : "rgba(244,242,238,.66)";
+    el.style.color = s.source === "repo" ? "rgba(244,242,238,.66)" : "rgba(255,141,90,.92)";
   }
   function dig(o, path) { return String(path).split(".").reduce(function (a, k) { return a == null ? undefined : a[k]; }, o); }
   function setLines(el, v) {
