@@ -873,8 +873,11 @@ class Component extends DCLogic {
     let scale, cxp, cyp;
     if (mob) {
       const copy = this.heroCopy;
-      const top = copy && copy.offsetParent ? Math.max(H * 0.4, copy.offsetTop + copy.offsetHeight + 18) : H * 0.5;
-      const avail = Math.max(130, H - top - 26);
+      // el alto útil es el de la pantalla, no el de la sección (min-height 760):
+      // en teléfonos bajos la mitad de abajo de la sección cae debajo del fold
+      const VH = Math.min(H, window.innerHeight || H);
+      const top = copy && copy.offsetParent ? Math.max(VH * 0.4, copy.offsetTop + copy.offsetHeight + 28) : VH * 0.5;
+      const avail = Math.max(130, VH - top - 30);
       scale = Math.min(W * 0.82 / MARK_W, avail / MARK_H);
       cxp = W * 0.5;
       cyp = top + avail / 2;
