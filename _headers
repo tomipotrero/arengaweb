@@ -38,6 +38,7 @@
 
 /*
   Access-Control-Allow-Origin: *
+  Access-Control-Expose-Headers: *
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
