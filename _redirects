@@ -1,0 +1,28 @@
+# URLs limpias — el navegador muestra la ruta corta y Pages sirve el archivo (proxy 200).
+# Las páginas piden sus assets con rutas relativas, por eso las rutas de un solo
+# segmento resuelven contra la raíz y las anidadas necesitan el comodín del final.
+/                          /index.dc.html 200
+/trabajos                  /Arenga%20Trabajos.dc.html 200
+/quienes-somos             /Arenga%20Quienes%20Somos.dc.html 200
+/contacto                  /Arenga%20Contacto.dc.html 200
+/panel                     /Arenga%20Admin.dc.html 200
+/proyectos/megal           /Arenga%20Proyecto.dc.html 200
+/proyectos/refme-pro       /Arenga%20Proyecto%20RefMe.dc.html 200
+/proyectos/eigencloud      /Arenga%20Proyecto%20Eigen.dc.html 200
+/proyectos/nacional        /Arenga%20Proyecto%20Nacional.dc.html 200
+/proyectos/altoconcepto    /Arenga%20Proyecto%20Altoconcepto.dc.html 200
+
+# assets pedidos desde una URL anidada (/proyectos/…): support.js, content.json, work/…
+/proyectos/*               /:splat 200
+
+# una sola URL por página: los archivos quedan como redirección permanente
+/index.dc.html                            / 301
+/Arenga%20Trabajos.dc.html                /trabajos 301
+/Arenga%20Quienes%20Somos.dc.html         /quienes-somos 301
+/Arenga%20Contacto.dc.html                /contacto 301
+/Arenga%20Admin.dc.html                   /panel 301
+/Arenga%20Proyecto.dc.html                /proyectos/megal 301
+/Arenga%20Proyecto%20RefMe.dc.html        /proyectos/refme-pro 301
+/Arenga%20Proyecto%20Eigen.dc.html        /proyectos/eigencloud 301
+/Arenga%20Proyecto%20Nacional.dc.html     /proyectos/nacional 301
+/Arenga%20Proyecto%20Altoconcepto.dc.html /proyectos/altoconcepto 301
