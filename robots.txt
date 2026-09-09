@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /panel
 Disallow: /Arenga%20Admin.dc.html
 Disallow: /admin.state.json
