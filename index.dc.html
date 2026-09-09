@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style data-omelette-injected>html,body{background:transparent}</style><script data-omelette-injected>(()=>{{const n=new URLSearchParams(location.search).get("theme");if(n==="light"||n==="dark"){document.documentElement.dataset.theme=n}}{if(new URLSearchParams(location.search).get("_omthumb")==="1"){const n=(f)=>{const g=f.focus;if(!g)return;f.focus=function(h){g.call(this,{...h,preventScroll:true})}};n(HTMLElement.prototype);n(SVGElement.prototype);if(typeof MathMLElement!=="undefined"){n(MathMLElement.prototype)}const d=(f)=>{f.removeAttribute("autofocus");f.inert=true;if(!(f instanceof HTMLElement))f.removeAttribute("tabindex")};const p=(f)=>{if(f.hasAttribute("autofocus"))d(f);for(const g of f.querySelectorAll("[autofocus]")){d(g)}};p(document.documentElement);new MutationObserver((f)=>{for(const g of f){for(const h of g.addedNodes){if(h.nodeType===1)p(h)}}}).observe(document,{childList:true,subtree:true})}}{const n=()=>{try{if(document.querySelector('meta[name="color-scheme"]'))return;const d=getComputedStyle(document.documentElement).getPropertyValue("color-scheme").trim();if(d&&d!=="normal")return;const p=(y)=>{if(!y)return null;const m=getComputedStyle(y).backgroundColor.match(/^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([\d.]+%?))?\s*\)$/);if(!m)return null;const w=m[4]==null?1:parseFloat(m[4])/(m[4].endsWith("%")?100:1);if(w<0.99)return null;return[+m[1],+m[2],+m[3]]};const f=p(document.body)||p(document.documentElement);if(!f)return;const g=(y)=>{const m=y/255;return m<=0.04045?m/12.92:((m+0.055)/1.055)**2.4};const h=0.2126*g(f[0])+0.7152*g(f[1])+0.0722*g(f[2]);document.documentElement.style.setProperty("color-scheme",h<0.4?"dark":"light")}catch{}};if(document.readyState==="complete")n();else window.addEventListener("load",n)}var I=["https://claude.ai","https://preview.claude.ai","https://b99a0b94-9f25-4a80-b0d8-3044c19db3fc.claudeusercontent.com"];var B=true;var K=false;var C=()=>{};if(K===true){try{const n=setTimeout.bind(window);const d=1e4;const p=15;const f=1e4;const g=120000;const h=200;const y=(o)=>{try{let r;if(typeof o==="string")r=o;else if(o instanceof URL)r=o.href;else if(typeof Request!=="undefined"&&o instanceof Request)r=o.url;else return null;if(!r)return null;const l=document.baseURI;const i=new URL(r,l);if(i.protocol!=="http:"&&i.protocol!=="https:")return null;if(i.origin!==new URL(l).origin)return null;return i.origin+i.pathname}catch{return null}};const m=new Map;const w=(o)=>{let r=m.get(o);if(!r){if(m.size>=h){const l=m.keys().next().value;if(l!==undefined)m.delete(l)}r={fails:[],until:0,cooldown:f,hard:false};m.set(o,r)}return r};const R=(o)=>{const r=m.get(o);return r!==undefined&&r.until>Date.now()};const O=(o,r)=>{const l=Date.now();const i=w(o);if(r)i.hard=true;if(i.until>l)return;i.fails.push(l);while(i.fails.length>0&&i.fails[0]<=l-d)i.fails.shift();if(i.fails.length>=p){i.until=l+i.cooldown;if(i.hard)i.cooldown=Math.min(i.cooldown*2,g);i.fails.length=0;try{n(()=>{try{S(true)}catch{}},i.until-l+100)}catch{}console.warn("[omelette] asset circuit breaker: pausing requests to "+o+" for "+Math.round((i.until-l)/1000)+"s after "+p+" failures in "+d/1000+"s")}};const e=(o)=>{m.delete(o)};const t=100;const a=new WeakMap;const u=new Set;let s=null;const S=(o)=>{for(const r of Array.from(u)){try{const l=a.get(r);if(l===undefined){u.delete(r);continue}if(o){const i=y(l);if(i!==null&&R(i))continue}a.delete(r);u.delete(r);if(s!==null)s.call(r,l)}catch{}}};C=()=>{try{m.clear();S(false)}catch{}};document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")C()});const _=window.fetch;if(typeof _==="function"){const o=function(...r){let l=null;try{l=y(r[0])}catch{}if(l!==null&&R(l)){let c;try{if(r[1]&&r[1].signal!==undefined){c=r[1].signal||undefined}else if(typeof Request!=="undefined"&&r[0]instanceof Request){c=r[0].signal||undefined}}catch{c=undefined}return new Promise((k,b)=>{const E=()=>{try{return c.reason!==undefined?c.reason:new DOMException("The operation was aborted.","AbortError")}catch{return new DOMException("The operation was aborted.","AbortError")}};try{if(c&&c.aborted){b(E());return}}catch{}let T=false;const j=()=>{if(T)return;T=true;b(E())};try{if(c)c.addEventListener("abort",j,{once:true})}catch{}n(()=>{if(T)return;T=true;try{if(c)c.removeEventListener("abort",j)}catch{}let L;try{L=new Response(null,{status:429,statusText:"Too Many Requests",headers:{"Retry-After":"10"}})}catch{L={ok:false,status:429}}k(L)},250)})}const i=_.apply(window,r);if(l!==null){const c=l;i.then((k)=>{try{if(k.ok)e(c);else if(k.status===401||k.status===403||k.status===404||k.status===429){O(c,k.status!==404)}}catch{}},()=>{})}return i};window.fetch=o}const v=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,"src");if(v!==undefined&&v.set!==undefined&&v.get!==undefined){const o=v.set;s=o;Object.defineProperty(HTMLImageElement.prototype,"src",{configurable:true,enumerable:v.enumerable,get:v.get,set(r){const l=`${r}`;try{const i=y(l);if(i!==null&&R(i)){a.set(this,l);if(u.size<t)u.add(this);return}}catch{}try{a.delete(this);u.delete(this)}catch{}o.call(this,l)}})}try{const o=HTMLImageElement.prototype.setAttribute;HTMLImageElement.prototype.setAttribute=function(r,l){if(arguments.length<2){o.apply(this,arguments);return}if(typeof r==="string"&&r.toLowerCase()==="src"){const i=`${l}`;try{const c=y(i);if(c!==null&&R(c)){a.set(this,i);if(u.size<t)u.add(this);return}a.delete(this);u.delete(this)}catch{}o.call(this,r,i);return}o.call(this,r,l)}}catch{}window.addEventListener("error",(o)=>{try{const r=o.target;if(r instanceof HTMLImageElement){const l=y(r.currentSrc||r.src||"");if(l!==null)O(l,true)}}catch{}},true);window.addEventListener("load",(o)=>{try{const r=o.target;if(r instanceof HTMLImageElement){const l=y(r.currentSrc||r.src||"");if(l!==null)e(l);const i=a.get(r);if(i!==undefined){let c=false;try{c=new URL(i,document.baseURI).href===new URL(r.currentSrc||r.src||"",document.baseURI).href}catch{c=false}if(c){a.delete(r);u.delete(r)}}}}catch{}},true)}catch{}}var J=30000;var G=3000;document.addEventListener("DOMContentLoaded",()=>{const n=window.Babel;const d="om-src-id";if(n&&n.registerPlugin&&!(n.availablePlugins&&n.availablePlugins[d])){n.registerPlugin(d,({types:h})=>({visitor:{JSXOpeningElement(y,m){const w=y.node;if(w.name&&w.name.type==="JSXMemberExpression")return;for(let t=0;t<w.attributes.length;t++){const a=w.attributes[t];if(a.type==="JSXAttribute"&&a.name&&a.name.name==="data-om-id")return}const R=m.file&&m.file.opts&&m.file.opts.filename||"?";const O=w.loc&&w.loc.start;const e=`jsx:${R}:${w.start??0}:${O?O.line:0}:${O?O.column+1:0}`;w.attributes.push(h.jsxAttribute(h.jsxIdentifier("data-om-id"),h.stringLiteral(e)))}}}))}const p="om-text-extract";let f=false;if(B&&n&&n.registerPlugin&&!(n.availablePlugins&&n.availablePlugins[p])){const h=window.React;if(h&&h.useSyncExternalStore&&h.createElement){f=true;const y={};const m=new Set;let w=0;window.__omTextO=y;window.__omTextSet=(e)=>{for(const t in e){const a=e[t];if(a==null)delete y[t];else y[t]=a}w++;m.forEach((t)=>t())};const R=(e)=>{m.add(e);return()=>m.delete(e)};const O=()=>w;window.__OmT=function e(t){h.useSyncExternalStore(R,O,O);return h.createElement("span",{"data-om-text":t.i,className:"__om-t"},t.i in y?y[t.i]:t.children)};n.registerPlugin(p,({types:e})=>{const t={style:1,script:1,noscript:1,textarea:1,title:1,option:1,text:1,tspan:1,textPath:1};const a={placeholder:1,alt:1,title:1,label:1,"aria-label":1,"aria-description":1,"aria-placeholder":1};const u=(o,r)=>e.logicalExpression("??",e.memberExpression(e.logicalExpression("||",e.memberExpression(e.identifier("window"),e.identifier("__omTextO")),e.objectExpression([])),e.stringLiteral(o),true),r);const s=(o)=>o.file&&o.file.opts&&o.file.opts.filename||"?";const S=(o)=>o.file&&o.file.code||"";const _=(o,r)=>{const l=(c)=>c&&c.start!=null&&c.end!=null&&(c.type==="StringLiteral"||c.type==="TemplateLiteral"&&c.expressions.length===0)?[c.start,c.end]:null;const i=l(r);if(i)return i;if(r&&r.type==="Identifier"){const c=o.scope.getBinding(r.name);if(c&&c.constant&&c.path.node.type==="VariableDeclarator"){return l(c.path.node.init)}}return null};const v=(o,r,l)=>{const i=o.node;let c=false;const k=(E,T)=>{c=true;return e.jsxElement(e.jsxOpeningElement(e.jsxIdentifier("__OmT"),[e.jsxAttribute(e.jsxIdentifier("i"),e.stringLiteral(E))],false),e.jsxClosingElement(e.jsxIdentifier("__OmT")),[T],false)};const b=i.children.map((E)=>{if(E.type==="JSXText"){if(E.start==null||E.end==null)return E;const T=l.slice(E.start,E.end);const j=T.length-T.trimStart().length;const L=T.length-T.trimEnd().length;if(j+L>=T.length)return E;return k(`txt:${r}:${E.start+j}:${E.end-L}`,E)}if(E.type==="JSXExpressionContainer"){const T=_(o,E.expression);if(T)return k(`str:${r}:${T[0]}:${T[1]}`,E)}return E});if(c)i.children=b};return{visitor:{JSXOpeningElement(o,r){const l=o.node;const i=s(r);const c={};for(let k=0;k<l.attributes.length;k++){const b=l.attributes[k];if(b.type!=="JSXAttribute"||!b.name)continue;const E=b.name.name;if(!a[E])continue;if(!b.value||b.value.type!=="StringLiteral")continue;if(b.value.start==null||b.value.end==null)continue;const T=`txt:${i}:${b.value.start}:${b.value.end}`;c[E]=T;b.value=e.jsxExpressionContainer(u(T,e.stringLiteral(b.value.value)))}if(Object.keys(c).length){l.attributes.push(e.jsxAttribute(e.jsxIdentifier("data-om-text-attrs"),e.stringLiteral(JSON.stringify(c))))}},JSXElement(o,r){const l=o.node.openingElement;const i=l&&l.name&&l.name.name;if(i==="__OmT")return;if(typeof i==="string"&&t[i])return;v(o,s(r),S(r))},JSXFragment(o,r){v(o,s(r),S(r))}}}})}}const g=f?["transform-react-jsx-source",d,p]:["transform-react-jsx-source",d];document.querySelectorAll('script[type="text/babel"],script[type="text/jsx"]').forEach((h,y)=>{const m=h.getAttribute("data-plugins")||"";const w=g.filter((R)=>m.indexOf(R)<0);if(w.length){h.setAttribute("data-plugins",m?`${m},${w.join(",")}`:w.join(","))}if(!h.hasAttribute("data-filename")){h.setAttribute("data-filename",h.getAttribute("src")||`inline-${y}`)}})});var A=window.parent;var U="not editable here — open the project in the Claude Design editor to save";var W=()=>Promise.resolve({persisted:false,noHost:true,reason:U});var H=W;var M="data/storage.json";var z=()=>{try{const n=new URL(document.baseURI);const d=n.pathname.match(/\/projects\/([^/]+)\/serve\//);if(d)return d[1];return n.hostname.split(".")[0]||""}catch{return location.hostname.split(".")[0]||""}};var Z=()=>{try{const n=new URL(document.baseURI);const d=n.pathname.indexOf("/serve/");if(d>=0)return n.origin+n.pathname.slice(0,d+"/serve/".length)+M}catch{}return"./"+M};var x=null;var N=()=>{if(!x){x=fetch(Z(),{cache:"no-store"}).then((n)=>{if(n.ok)return n.text();return n.status===404?"":null}).catch(()=>null).then((n)=>{if(n===null){x=null;return null}const d=new Map;if(!n)return d;let p;try{p=JSON.parse(n)}catch{console.warn("[omelette.storage] "+M+" is not valid JSON; treating the store as unreadable so a save cannot overwrite the "+"hand-edited bytes. Fix the JSON (or delete the file) to re-enable persistence.");x=null;return null}if(p===null||typeof p!=="object"||Array.isArray(p)){console.warn("[omelette.storage] "+M+" doesn't hold a JSON object; treating the store as unreadable so a save cannot "+"overwrite the hand-edited bytes. Make the top level a JSON object to re-enable persistence.");x=null;return null}const f=p;if("data"in f){const g=f.data;if(g===null||typeof g!=="object"||Array.isArray(g)){console.warn("[omelette.storage] "+M+' has a "data" field that is not a JSON object; treating the store as unreadable so a '+'save cannot overwrite the hand-edited bytes. Make "data" a JSON object to re-enable persistence.');x=null;return null}const h=f._meta;const y=h!==null&&typeof h==="object"?h.project:undefined;if(typeof y==="string"&&y!==""&&y!==z())return d;for(const m of Object.keys(g))d.set(m,g[m]);return d}for(const g of Object.keys(f)){if(g!=="_meta")d.set(g,f[g])}return d})}return x};var F=(n)=>H(M,JSON.stringify({_meta:{project:z(),version:1},data:Object.fromEntries(n)},null,2));var D=Promise.resolve();var $=(n)=>{const d=D.then(n);D=d.then(()=>{return},()=>{return});return d};var V=/sk-(?:ant-)?[A-Za-z0-9_-]{16,}|AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{20,}|xox[a-z]-[A-Za-z0-9][A-Za-z0-9-]{9,}|AIza[0-9A-Za-z_-]{30,}|-----BEGIN [A-Z ]*PRIVATE KEY-----/;var Y=/password|passwd|secret|api[_-]?key|access[_-]?token|auth[_-]?token|credential/i;var Q=(n,d,p)=>{if(V.test(d)||Y.test(n)&&typeof p==="string"&&p.length>=8){console.warn('[omelette.storage] the value for "'+n+'" looks like a credential. The storage file is a plaintext project file — visible to '+"everyone with project access and copied when the project is duplicated. Do not store secrets here.")}};var q={persisted:false,reason:"could not load the existing store — not overwriting it"};var X={persisted:false,reason:"stored value changed since a failed read — re-read this key before saving"};var P=new Set;var ee={get:(n)=>{if(typeof n!=="string"){return Promise.reject(new TypeError("storage.get: key must be a string"))}return $(N).then((d)=>{if(d===null){P.add(n);return null}P.delete(n);if(!d.has(n))return null;const p=d.get(n);return p==null?null:JSON.parse(JSON.stringify(p))})},set:(n,d)=>{if(typeof n!=="string"){return Promise.reject(new TypeError("storage.set: key must be a string"))}let p;try{p=JSON.stringify(d)}catch(g){return Promise.reject(new TypeError("storage.set: value must be JSON-serializable ("+String(g)+")"))}if(p===undefined){return Promise.reject(new TypeError("storage.set: value must be JSON-serializable"))}Q(n,p,d);const f=JSON.parse(p);return $(()=>N().then((g)=>{if(g===null)return q;if(P.has(n)){if(g.has(n))return X;P.delete(n)}g.set(n,f);return F(g)}))},delete:(n)=>{if(typeof n!=="string"){return Promise.reject(new TypeError("storage.delete: key must be a string"))}return $(()=>N().then((d)=>{if(d===null)return q;if(P.has(n)){if(d.has(n))return X;P.delete(n)}d.delete(n);return F(d)}))},keys:()=>$(N).then((n)=>n===null?[]:Array.from(n.keys()))};window.omelette={writeFile:(n,d)=>H(n,d).then((p)=>{if(!p.persisted&&!p.noHost){throw new Error(p.reason||"write failed")}}),storage:ee};if(A&&A!==window){const n=(e,t)=>{try{A.postMessage({__omelette_log:true,type:e,data:t},"*")}catch{}};["log","warn","error"].forEach((e)=>{const t=console[e];console[e]=(...a)=>{const u=a.map((s)=>{try{return typeof s==="object"?JSON.stringify(s):String(s)}catch{try{return String(s)}catch{return"[unstringifiable]"}}}).join(" ");n(e,u);t.apply(console,a)}});window.addEventListener("error",(e)=>{const t=e.target;if(t&&t!==window&&t.tagName){const a=t.src||t.href||"";n("resource_error",`${t.tagName} failed to load: ${a}`)}else{n("error",`${e.message||"Unknown error"} at ${e.filename||"?"}:${e.lineno||0}:${e.colno||0}`)}},true);window.addEventListener("unhandledrejection",(e)=>{const t=e.reason;const a=t instanceof Error?`${t.message} ${t.stack}`:String(t);n("error",`Unhandled rejection: ${a}`)});window.addEventListener("click",(e)=>{if(e.defaultPrevented||e.button!==0)return;if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;const t=e.composedPath?e.composedPath():[];const a=["button","input","select","textarea","summary","label"];let u=null;for(const v of t){if(!(v instanceof Element))continue;if(v.localName==="a"){if(!(v instanceof HTMLAnchorElement))return;u=v;break}if(a.indexOf(v.localName)!==-1)return}if(!u)return;if(u.isContentEditable)return;const s=u.closest("[contenteditable]");if(s&&s.getAttribute("contenteditable")!=="false")return;const S=(u.getAttribute("target")||"_self").toLowerCase();if(S!=="_self"&&S!=="_top"&&S!=="_parent")return;let _;try{_=new URL(u.href)}catch{return}if(_.protocol!=="http:"&&_.protocol!=="https:")return;if(location.origin==="null")return;if(_.origin===location.origin)return;e.preventDefault();window.open(_.href,"_blank","noopener,noreferrer")});const d=()=>{try{A.postMessage({type:"omelette:height",height:document.documentElement.scrollHeight},"*")}catch{}};if(window.ResizeObserver)new ResizeObserver(d).observe(document.documentElement);const p=()=>{d();if(!document.querySelector('script[type="text/babel"],script[type="text/jsx"]'))return;const e=()=>document.getElementById("root")||document.querySelector("body > div[id]");const t=e()?.firstElementChild??null;let a=0;const u=()=>{const s=e();if(s&&s.firstElementChild!==t||++a>30){d();return}setTimeout(u,100)};setTimeout(u,100)};if(document.readyState==="complete")p();else window.addEventListener("load",p);const f={};let g=0;const h=(e)=>new Promise((t,a)=>{if(!I.length){a(new Error("claude.complete: no parent origin"));return}const u=`c${++g}`;const s=()=>setTimeout(()=>{delete f[u];a(new Error(`claude.complete: no data for ${J/1000}s`))},J);const S=s();f[u]={resolve:t,reject:a,text:"",t:S,arm:s};try{for(const _ of I){A.postMessage({__om_api:true,id:u,body:e},_)}}catch(_){clearTimeout(S);delete f[u];a(_)}});const y=8;const m=async(e,t)=>{if(!Array.isArray(e.messages)){throw new Error("claude.complete: tools require a messages array")}const a=e.messages.slice();const u={...e,tools:e.tools.map((_)=>{if(_===null||typeof _!=="object")return _;const v={};for(const o of Object.keys(_)){if(typeof _[o]!=="function")v[o]=_[o]}return v})};const s=u.tool_choice;const S=s!=null&&(s.type==="any"||s.type==="tool")?{...u,tool_choice:s.disable_parallel_tool_use!==undefined?{type:"auto",disable_parallel_tool_use:s.disable_parallel_tool_use}:{type:"auto"}}:u;for(let _=0;_<y;_++){const v=await h({..._===0?u:S,messages:a});const o=v.message;const r=o&&Array.isArray(o.content)?o.content:null;const l=r?r.filter((c)=>c?.type==="tool_use"):[];if(o?.stop_reason!=="tool_use"||l.length===0){return v.text}const i=[];for(const c of l){const k=t.get(c.name);if(!k){i.push({type:"tool_result",tool_use_id:c.id,content:`no handler for tool "${c.name}"`,is_error:true});continue}try{const b=await k(c.input);const E=typeof b==="string"?b:O(b)??"";i.push({type:"tool_result",tool_use_id:c.id,content:E})}catch(b){i.push({type:"tool_result",tool_use_id:c.id,content:String(b?.message??b??"tool handler failed"),is_error:true})}}a.push({role:"assistant",content:r},{role:"user",content:i})}throw new Error(`claude.complete: exceeded ${y} tool turns`)};window.claude={complete(e){const t=e;if(t!==null&&typeof t==="object"&&Array.isArray(t.tools)&&t.tools.some((a)=>a!==null&&typeof a==="object"&&typeof a.run==="function")){const a=new Map;for(const u of t.tools){if(u!==null&&typeof u==="object"&&typeof u.run==="function"){a.set(String(u.name),u.run)}}return m(t,a)}return h(e).then((a)=>a.text)}};const w={};let R=0;H=(e,t)=>new Promise((a)=>{if(!I.length){a({persisted:false,noHost:true,reason:U});return}const u=`f${++R}`;const s=setTimeout(()=>{delete w[u];a({persisted:false,noHost:true,reason:U})},G);w[u]={settle:a,t:s};try{for(const S of I){A.postMessage({__om_file:true,id:u,op:"write",path:e,content:t},S)}}catch{clearTimeout(s);delete w[u];a({persisted:false,noHost:true,reason:U})}});const O=(e)=>{try{return JSON.stringify(e)}catch{return JSON.stringify(String(e))}};window.addEventListener("message",(e)=>{if(I.indexOf(e.origin)<0)return;if(e.source!==A)return;const t=e.data;if(!t)return;if(t.type==="omelette-preview-refresh"){if(typeof t.token!=="string"||!/^[0-9a-f.-]+(\.(rc|pr-[0-9]+))?(\.[0-9]+\.[0-9a-f]{16})?$/.test(t.token))return;const s=Math.max(1,Math.floor((t.expiresAt||0)-Date.now()/1000));document.cookie="__Host-omelette-preview="+t.token+"; Path=/; Secure; SameSite=None; Partitioned; Max-Age="+s;C();return}if(t.__om_file_r){const s=w[t.id];if(!s)return;clearTimeout(s.t);delete w[t.id];s.settle(t.ok?{persisted:true}:{persisted:false,reason:t.error||"write failed"});return}if(t.__om_api_r){const s=f[t.id];if(!s)return;if(t.error!=null){clearTimeout(s.t);delete f[t.id];s.reject(new Error(t.error));return}if(t.chunk!=null){clearTimeout(s.t);s.t=s.arm();s.text+=t.chunk;return}if(t.done){clearTimeout(s.t);delete f[t.id];s.resolve({text:t.text!=null?t.text:s.text,message:t.message});return}return}if(!t.__om_eval)return;const a=t;const u=(s)=>{e.source.postMessage({...s,__om_eval_r:1,id:a.id},e.origin)};try{const s=(0,eval)(a.code);if(s&&typeof s.then==="function"){s.then((S)=>u({ok:1,v:O(S)}),(S)=>u({ok:0,e:String(S)}))}else{u({ok:1,v:O(s)})}}catch(s){u({ok:0,e:String(s)})}})}})();
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="favicon-dark.svg" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="favicon-light.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-light.png" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Arenga — Productora creativa: contenido, producción y amplificación con influencers</title>
+<meta name="description" content="Arenga es una productora creativa, fusión de Potrero y Coach. Ideamos y producimos contenido relevante y lo amplificamos con influencers. Casos con Megal, RefMe Pro, EigenCloud, Nacional y Altoconcepto.">
+<meta name="theme-color" content="#050708">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Arenga">
+<meta property="og:locale" content="es_UY">
+<meta property="og:title" content="Arenga — Productora creativa: contenido, producción y amplificación con influencers">
+<meta property="og:description" content="Arenga es una productora creativa, fusión de Potrero y Coach. Ideamos y producimos contenido relevante y lo amplificamos con influencers. Casos con Megal, RefMe Pro, EigenCloud, Nacional y Altoconcepto.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Arenga — Productora creativa: contenido, producción y amplificación con influencers">
+<meta name="twitter:description" content="Arenga es una productora creativa, fusión de Potrero y Coach. Ideamos y producimos contenido relevante y lo amplificamos con influencers. Casos con Megal, RefMe Pro, EigenCloud, Nacional y Altoconcepto.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Arenga","description":"Productora creativa, fusión de Potrero y Coach. Idea y produce contenido relevante y lo amplifica con influencers.","parentOrganization":[{"@type":"Organization","name":"Potrero","url":"https://potrero.com.uy/"},{"@type":"Organization","name":"Coach","url":"https://www.coach.uy/"}]}</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="favicon-dark.svg" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="favicon-light.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-light.png" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&amp;family=Hubot+Sans:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&amp;family=Hubot+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="./cms-store.js"></script>
+<script src="./arenga-fx.js"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  @keyframes arenga-grain { 0% { transform: translate3d(0,0,0); } 12.5% { transform: translate3d(-3%,2%,0); } 25% { transform: translate3d(2%,-4%,0); } 37.5% { transform: translate3d(-4%,-1%,0); } 50% { transform: translate3d(3%,3%,0); } 62.5% { transform: translate3d(-1%,4%,0); } 75% { transform: translate3d(4%,-2%,0); } 87.5% { transform: translate3d(-2%,-3%,0); } 100% { transform: translate3d(0,0,0); } }
+  html, body { margin: 0; padding: 0; background: #050708; }
+  * { box-sizing: border-box; }
+  a { color: #ff5715; text-decoration: none; }
+  a:hover { color: #28ea9b; }
+  input::placeholder, textarea::placeholder { color: rgba(244,242,238,0.45); }
+  image-slot[fit="contain"]::part(frame) { background: transparent; }
+  @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } }
+  @media (min-width: 761px) { [data-m-only] { display: none !important; } }
+  @media (max-width: 1100px) { [data-foot-legal] { width: 100%; justify-content: space-between; } }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="position: relative; width: 100%; display: flex; flex-direction: column; font-family: 'Hubot Sans', 'Archivo', Helvetica, sans-serif; background: #050708; color: #f2efe9; overflow-x: clip; isolation: isolate;">
+
+  <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;">
+    <symbol id="arenga-mark" viewBox="0 0 52.5 31.1"><path fill="currentColor" d="M45.5435 7.84641L45.4397 8.03612C43.7536 11.1461 40.4758 13.0867 36.9054 13.0867H32.5423L34.263 17.8138H40.114L36.4336 24.6059C35.9523 25.4954 35.0149 26.049 33.9956 26.049H32.9513L31.7968 22.6L30.8436 19.7575L30.1925 17.8138H30.1296L23.9262 0H12.932L10.1103 4.95415L5.41691 13.1862L2.72104 17.9133L0.0629141 22.5783L0 23.1567H6.44241L6.50532 23.0447C8.2386 19.885 11.5825 17.9164 15.2189 17.9164H19.582L17.8613 13.1893H11.938L13.0075 11.2456L16.4678 4.95415H17.5121C18.503 4.95415 19.3838 5.57614 19.7047 6.50291L21.9916 13.0898L23.6714 17.8169L26.5938 26.049L28.3522 31.0031H39.3465L52.4106 8.42486L52.4735 7.84641H45.5435Z"></path></symbol>
+    <symbol id="arenga-wordmark" viewBox="0 0 207 31"><g fill="currentColor"><path d="M45.5435 7.84641L45.4397 8.03612C43.7536 11.1461 40.4758 13.0867 36.9054 13.0867H32.5423L34.263 17.8138H40.114L36.4336 24.6059C35.9523 25.4954 35.0149 26.049 33.9956 26.049H32.9513L31.7968 22.6L30.8436 19.7575L30.1925 17.8138H30.1296L23.9262 0H12.932L10.1103 4.95415L5.41691 13.1862L2.72104 17.9133L0.0629141 22.5783L0 23.1567H6.44241L6.50532 23.0447C8.2386 19.885 11.5825 17.9164 15.2189 17.9164H19.582L17.8613 13.1893H11.938L13.0075 11.2456L16.4678 4.95415H17.5121C18.503 4.95415 19.3838 5.57614 19.7047 6.50291L21.9916 13.0898L23.6714 17.8169L26.5938 26.049L28.3522 31.0031H39.3465L52.4106 8.42486L52.4735 7.84641H45.5435Z"></path><path d="M75 21.8441L82.1848 6.31299H89.7502L97.0703 21.8441V22.2422H92.3045L90.738 18.6346H81.024L79.4354 22.2422H75.0031V21.8441H75ZM89.3035 15.3847L86.8404 9.7215H84.9813L82.4742 15.3847H89.3004H89.3035Z"></path><path d="M98.9231 6.31299H109.779C115.061 6.31299 117.476 8.08255 117.476 11.2018C117.476 13.8142 115.485 15.4718 111.814 15.9601L117.543 21.869V22.2453H112.349L107.001 16.1156H103.33V22.2453H98.9199V6.31299H98.9231ZM109.754 12.9279C111.88 12.9279 112.821 12.3307 112.821 11.2671C112.821 10.2035 111.88 9.6282 109.754 9.6282H103.33V12.9247H109.754V12.9279Z"></path><path d="M120.562 6.31299H137.728V9.60954H124.995V12.4862H133.991V15.6055H124.995V18.9238H138.04V22.2422H120.562V6.31299Z"></path><path d="M141.035 6.31299H147.012L155.628 16.2244H156.03L155.829 6.31299H160.016V22.2422H155.65L145.511 10.6949H145.13L145.244 22.2422H141.035V6.31299Z"></path><path d="M162.686 14.3897C162.686 9.69985 167.207 5.91504 174.728 5.91504C177.547 5.91504 180.391 6.51215 182.674 7.6846V11.3575H182.316C180.233 10.1415 177.547 9.38886 174.728 9.38886C170.117 9.38886 167.543 11.4694 167.543 14.4114C167.543 17.3534 169.985 19.2132 174.055 19.2132C177.682 19.2132 179.56 17.8417 179.941 15.9384H173.583V12.7974H184.527C184.593 13.1954 184.618 13.6837 184.618 14.1253C184.618 18.9924 180.925 22.6435 173.964 22.6435C167.002 22.6435 162.683 19.0142 162.683 14.3897"></path><path d="M184.933 21.8441L192.118 6.31299H199.683L207.003 21.8441V22.2422H202.237L200.671 18.6346H190.957L189.368 22.2422H184.936V21.8441H184.933ZM199.236 15.3847L196.773 9.7215H194.917L192.41 15.3847H199.236Z"></path></g></symbol>
+    <symbol id="potrero-wordmark" viewBox="0 0 1822 343"><g fill="currentColor"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTpjNzVjMjYwYi1iOGMwLTRhOGQtODA2MC00OTZkYmYyYzQwM2IAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaCwCZ3HibUCVKh3D42x4FKAAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDo0ZGRkNmE1OS1mNzFlLTQyMDctOGQ1ZC03NmE5MGEyMTRiM2VscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoDhF0rlBZXYbRqWFh0cmHwAAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggw6iwQ20BZ9z464cauN76FEBpyK/dG4eoT+dhdZE96UmkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaP0KKoH/4IxQ5tSpEEX660AAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBBZsVC7JY6d+MEiBh8luRExDF1BaC6zuHOBSepVc3HzGRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBiNZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmM3NWMyNjBiLWI4YzAtNGE4ZC04MDYwLTQ5NmRiZjJjNDAzYi9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjdkZmI1NGI5LWNlNmQtNDdlNC1iN2E3LTI2MzRmNmFmZmE3MnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCDDqLBDbQFn3Pjrhxq43voUQGnIr90bh6hP52F1kT3pSaJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggKj/wnqsOqtlmDvon0/aHk4PvgwZ27+3oZYj53UnqZSaiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFgggUu85CR7Rp5ZXhina5NaylE8EBhyGjwQJpvT6B0VmIV0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQDS8PH3hlvoxckW/oAIv/PGLwZT804wmb+4zAfCrBeA+l1ZZhvj1wlzgMRvW2JVgUzQhW4QLJr0Xx/4sABxrYNU=</c2pa:manifest></metadata><path d="M204.016 24.9561C182.04 8.3187 148.178 0 102.505 0H0V338H36.538V205.667H100.479C131.59 205.667 157.236 202.026 177.377 194.742C197.519 187.458 212.463 176.149 222.285 160.892C232.108 145.635 237 125.931 237 101.856C237 67.2397 225.993 41.6318 204.016 24.9944V24.9561ZM189.302 144.063C182.537 154.567 171.95 162.311 157.58 167.217C143.209 172.124 124.176 174.616 100.479 174.616H36.538V31.0514H102.505C137.017 31.0514 161.784 36.495 176.842 47.3438C191.901 58.1926 199.43 76.3634 199.43 101.818C199.43 119.452 196.029 133.559 189.264 144.063H189.302Z"></path><path d="M443.574 108.827C428.733 98.3012 409.847 93 386.918 93C363.989 93 341.479 98.2628 320.496 108.827C299.513 119.352 281.276 134.065 265.786 152.965C250.297 171.826 238.966 193.53 231.831 218C224.582 242.816 223.095 264.596 227.406 283.304C231.717 302.012 241.217 316.648 255.867 327.173C270.517 337.699 289.479 343 312.789 343C336.1 343 358.228 337.737 379.212 327.173C400.195 316.648 418.546 301.858 434.226 282.805C449.945 263.751 461.314 242.163 468.372 218.038C475.545 193.569 476.88 171.864 472.454 153.003C467.991 134.142 458.376 119.429 443.574 108.865V108.827ZM431.441 219.498C423.086 248.078 409.123 270.666 389.551 287.338C369.979 304.01 347.355 312.345 321.717 312.345C296.079 312.345 278.796 304.01 268.991 287.338C259.186 270.666 258.423 248.078 266.778 219.498L267.389 217.462C275.858 188.575 290.051 165.603 310.081 148.585C330.072 131.606 352.734 123.078 378.067 123.078C403.4 123.078 420.835 131.568 430.373 148.585C439.911 165.603 440.483 188.536 432.014 217.462L431.403 219.498H431.441Z"></path><path d="M561.954 24L527.811 47.4111V97.7967H484V128.335H527.312V280.986C527.312 294.205 529 304.895 532.414 313.056C535.79 321.179 541.506 327.386 549.486 331.64C557.465 335.893 568.246 338 581.826 338H618.003V306.964H589.997C579.486 306.964 572.082 304.665 567.824 300.105C563.565 295.508 561.455 287.806 561.455 276.963V128.411H619V97.8733H561.954V24Z"></path><path d="M714.237 108.7C703.101 117.18 695.321 129.919 690.935 146.917V97.4964H656V338H691.469V217.249C691.469 186.668 695.931 164.606 704.893 151.023C713.818 137.44 730.141 130.648 753.749 130.648H774V96H762.864C741.582 96 725.374 100.259 714.237 108.739V108.7Z"></path><path d="M948.604 299.386C935.965 308.762 918.682 313.412 896.793 313.412C872.544 313.412 853.129 305.765 838.663 290.433C824.159 275.14 816.431 254.735 815.403 229.22H1004.98V215.963C1004.98 177.883 995.275 147.834 975.898 125.893C956.522 103.951 929.798 93 895.765 93C873.533 93 853.624 98.3412 836.112 109.062C818.601 119.783 804.858 134.654 794.923 153.713C784.987 172.773 780 194.522 780 219.038C780 243.553 784.72 265.149 794.161 283.824C803.602 302.537 817.154 317.062 834.856 327.437C852.558 337.812 873.191 343 896.793 343C926.105 343 949.784 336.621 967.828 323.864C985.872 311.106 998.93 294.506 1007 274.102L976.165 262.382C970.417 277.676 961.242 290.01 948.604 299.386ZM839.919 143.761C854.575 129.313 873.038 122.089 895.27 122.089C917.502 122.089 935.127 129.082 948.109 142.992C961.09 156.941 967.904 176.654 968.589 202.168H814.908C816.926 177.691 825.263 158.209 839.919 143.761Z"></path><path d="M1105.24 108.7C1094.1 117.18 1086.32 129.919 1081.93 146.917V97.4964H1047V338H1082.47V217.249C1082.47 186.668 1086.93 164.606 1095.89 151.023C1104.82 137.44 1121.14 130.648 1144.75 130.648H1165V96H1153.86C1132.58 96 1116.37 100.259 1105.24 108.739V108.7Z"></path><path d="M1347.2 108.827C1329.27 98.3012 1308.78 93 1285.77 93C1262.76 93 1241.77 98.2628 1223.84 108.827C1205.91 119.352 1191.92 134.065 1181.98 152.965C1172.01 171.826 1167 193.53 1167 218C1167 242.47 1171.89 264.596 1181.72 283.304C1191.54 302.012 1205.3 316.648 1223.08 327.173C1240.85 337.699 1261.42 343 1284.74 343C1308.05 343 1328.73 337.737 1346.66 327.173C1364.59 316.648 1378.66 301.858 1388.79 282.805C1398.95 263.751 1404 242.163 1404 218.038C1404 193.914 1398.99 171.864 1389.02 153.003C1379.04 134.142 1365.09 119.429 1347.16 108.865L1347.2 108.827ZM1367.49 219.498C1367.49 248.078 1360.12 270.666 1345.4 287.338C1330.68 304.01 1310.46 312.345 1284.74 312.345C1259.01 312.345 1239.28 304.01 1224.57 287.338C1209.85 270.666 1202.47 248.078 1202.47 219.498V217.462C1202.47 188.575 1210 165.603 1225.07 148.585C1240.13 131.606 1260.35 123.078 1285.73 123.078C1311.11 123.078 1331.07 131.568 1345.63 148.585C1360.19 165.603 1367.46 188.536 1367.46 217.462V219.498H1367.49Z"></path><path d="M1466.29 291.984C1463.79 287.552 1460.3 284.113 1455.83 281.668C1451.32 279.223 1446.17 278 1440.37 278C1434.57 278 1429.34 279.184 1424.91 281.592C1420.47 283.999 1417.06 287.399 1414.64 291.831C1412.21 296.264 1411 301.383 1411 307.267C1411 313.151 1412.21 318.004 1414.68 322.321C1417.14 326.639 1420.59 330.001 1424.98 332.408C1429.42 334.816 1434.53 336 1440.33 336C1446.13 336 1451.39 334.816 1455.83 332.408C1460.3 330.001 1463.75 326.639 1466.25 322.321C1468.75 318.004 1470 312.999 1470 307.267C1470 301.536 1468.75 296.378 1466.25 291.946L1466.29 291.984ZM1460.26 319.036C1458.33 322.436 1455.64 325.111 1452.19 327.021C1448.74 328.931 1444.8 329.887 1440.37 329.887C1435.93 329.887 1432.11 328.931 1428.66 327.059C1425.21 325.187 1422.52 322.513 1420.62 319.074C1418.73 315.635 1417.78 311.7 1417.78 307.306C1417.78 302.912 1418.73 298.671 1420.62 295.232C1422.52 291.793 1425.17 289.08 1428.62 287.17C1432.03 285.26 1435.97 284.304 1440.41 284.304C1444.84 284.304 1448.78 285.26 1452.23 287.17C1455.68 289.08 1458.37 291.793 1460.3 295.27C1462.23 298.747 1463.22 302.759 1463.22 307.306C1463.22 311.852 1462.23 315.597 1460.3 319.036H1460.26Z"></path><path d="M1453.7 317.879C1453.7 317.879 1453.66 317.374 1453.66 316.87C1453.66 314.542 1453.08 312.641 1451.97 311.205C1450.86 309.77 1449.21 308.761 1447.02 308.179C1449.21 307.597 1450.78 306.627 1451.74 305.191C1452.74 303.795 1453.2 302.01 1453.2 299.876C1453.2 297.315 1452.24 295.375 1450.36 294.018C1448.48 292.66 1445.49 292 1441.42 292H1428V322.573H1435.86V310.274H1436.9C1439.08 310.274 1440.7 310.429 1441.73 310.74C1442.77 311.05 1443.53 311.71 1444.03 312.641C1444.53 313.611 1444.76 315.085 1444.76 317.141C1444.76 319.198 1445.3 320.672 1446.33 321.603C1447.37 322.534 1448.87 323 1450.75 323C1452.28 323 1453.47 322.69 1454.27 322.108C1455.08 321.526 1455.65 320.633 1456 319.508V319.392L1453.89 318.344C1453.89 318.344 1453.66 318.034 1453.62 317.879H1453.7ZM1444.45 304.183C1443.65 304.842 1442.15 305.191 1440.01 305.191H1435.9V297.859H1440.08C1442.04 297.859 1443.46 298.13 1444.34 298.712C1445.22 299.294 1445.64 300.07 1445.64 301.04C1445.64 302.476 1445.22 303.484 1444.45 304.183Z"></path><path d="M1673.66 118.165C1684.12 117.539 1698.32 118.586 1708.8 119.898C1742.69 124.086 1774.6 132.862 1800.79 155.782C1825.57 177.479 1829.21 209.992 1806.21 234.519C1777.38 265.262 1730.12 275.376 1689.66 277.502C1681.25 278.027 1669.32 277.37 1660.83 276.615C1625.97 273.321 1589.05 263.888 1562 240.699C1537.43 219.646 1533.28 186.508 1555.63 162.116C1585.11 129.93 1631.41 120.435 1673.25 118.191C1673.39 118.181 1673.52 118.173 1673.66 118.165ZM1632.61 203.187C1628.79 202.658 1624.77 202.365 1621.01 202.671C1619.61 205.372 1622.7 218.67 1623.78 221.875C1629.14 237.774 1641.46 253.062 1656.56 260.674C1661.35 263.093 1668.12 265.697 1673.48 265.606C1673.84 262.937 1673.8 259.214 1673.75 256.505C1673.6 248.491 1673.81 240.134 1673.56 232.156C1672.93 211.677 1648.96 205.448 1632.61 203.187ZM1737.8 202.437C1718.46 203.432 1688.46 209.393 1689.28 234.597C1689.59 244.157 1688.72 254.221 1689.28 263.711C1689.31 264.287 1689.36 264.862 1689.43 265.435C1690.73 265.337 1692.13 265.269 1693.4 265.015C1721.02 259.609 1739.97 230.561 1742.21 203.935C1742.34 202.329 1738.77 202.475 1737.8 202.437ZM1805.34 205.107C1806.16 201.788 1802.26 202.545 1800.29 202.689C1790.07 203.619 1768.36 207.209 1762.18 215.784C1754.17 226.91 1751.35 239.296 1741.64 250.386C1739.9 252.377 1738.09 254.305 1736.21 256.166C1735.12 257.251 1732.62 259.245 1732.47 260.687C1733.56 261.363 1735.72 260.597 1736.91 260.21C1757.76 253.643 1779.22 244.541 1793.36 227.145C1798.76 220.494 1803.24 213.625 1805.34 205.107ZM1593.16 210.134C1583.21 206.177 1568.31 202.518 1557.63 202.917C1556.24 204.273 1557.97 208.485 1558.62 210.164C1562 219.038 1567.4 227.004 1574.38 233.432C1586.69 244.665 1601.14 251.522 1616.78 256.853C1622.26 258.722 1625.15 259.764 1630.8 260.821L1631.14 260.476C1629.07 258.216 1625.95 255.631 1623.62 253.52C1613.02 243.913 1608.38 230.797 1602.07 218.4C1600.31 214.933 1596.76 211.569 1593.16 210.134ZM1703.12 133.657C1698.35 131.599 1694.35 130.098 1689.03 130.355C1688.73 134.588 1689.02 139.156 1688.94 143.436C1688.82 150.817 1688.89 158.229 1688.91 165.612C1688.92 170.595 1690.52 173.645 1693.78 177.388C1703.74 188.853 1719.99 192.41 1734.48 193.373C1736.48 193.499 1739.61 193.75 1741.55 193.397C1742.83 190.597 1738.75 174.47 1737.4 171.045C1730.95 154.702 1719.48 140.734 1703.12 133.657ZM1673.45 129.888C1672.72 129.773 1672.75 129.766 1672.03 129.904C1643.31 135.199 1621.33 163.289 1620.82 192.206C1620.81 192.615 1621.08 192.764 1621.35 193.005C1621.87 193.084 1622.45 193.181 1622.97 193.23C1632.61 192.948 1641.91 192.012 1650.87 188.44C1660.98 184.402 1673.41 178.078 1673.8 165.645C1673.84 164.578 1673.93 160.328 1673.86 159.579C1673.59 156.475 1674.49 131.176 1673.45 129.888ZM1731.75 134.431C1731.8 135.769 1739.49 142.971 1741.1 144.431C1751.2 153.601 1755.29 172.922 1763.76 181.623C1771.46 189.528 1793.76 193.672 1804.7 193.088L1804.84 193.079C1804.85 183.15 1796.43 170.71 1789.53 163.929C1776.74 151.372 1761.03 143.885 1744.34 137.965C1741.09 136.812 1734.92 134.619 1731.75 134.431ZM1631.89 134.176C1626.14 135.173 1620.46 137.158 1614.81 139.207C1596.87 145.71 1578.36 155.723 1566.74 171.293C1564.66 174.073 1554.98 189.733 1557.46 192.833C1568.92 192.78 1591.02 189.12 1599.91 180.728C1603.54 177.307 1606.52 168.183 1608.96 163.195C1611.18 158.607 1613.86 154.252 1616.95 150.194C1619.89 146.299 1623.36 142.318 1626.99 139.024C1628.2 137.928 1631.76 135.628 1632.25 134.332L1631.89 134.176Z" fill="#FCFCFC"></path></g></symbol>
+  </svg>
+
+  <div ref="{{ loaderRef }}" data-loader="1" style="position: fixed; inset: 0; z-index: 60; color: #f4f2ee; background: linear-gradient(170deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015) 46%, rgba(255,255,255,0.04)), rgba(5,7,8,0.5); backdrop-filter: blur(28px) saturate(140%); -webkit-backdrop-filter: blur(28px) saturate(140%); box-shadow: inset 0 -1px 0 rgba(255,255,255,0.16), 0 30px 80px -20px rgba(0,0,0,0.8); transform: translate3d(0,0,0); will-change: transform;">
+    <div ref="{{ loaderInnerRef }}" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 26px clamp(30px, 5.2vw, 104px) 22px; will-change: transform, opacity;">
+      <div style="display: flex; align-items: center; min-height: 37px; color: #f4f2ee;"><svg viewBox="0 0 207 31" style="height: 21px; width: auto;" aria-label="Arenga"><use href="#arenga-wordmark"></use></svg></div>
+      <div style="position: absolute; left: clamp(30px, 5.2vw, 104px); right: clamp(30px, 5.2vw, 104px); top: 50%; height: 1px; background: rgba(244,242,238,0.14);">
+        <div ref="{{ loaderBarRef }}" style="position: absolute; inset: 0; background: #f4f2ee; transform-origin: 0 50%; transform: scaleX(0); box-shadow: 0 0 14px rgba(244,242,238,0.35);"></div>
+      </div>
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;">
+        <span style="padding-bottom: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 11px; letter-spacing: 0.1em; color: rgba(244,242,238,0.55);">Iniciando sistema</span>
+        <div style="display: flex; align-items: baseline; gap: 4px; line-height: 0.78; font-family: 'Archivo', Helvetica, sans-serif;">
+          <span ref="{{ loaderNumRef }}" style="font-size: clamp(120px, 15.5vw, 236px); font-weight: 400; letter-spacing: -0.06em; font-variant-numeric: tabular-nums;">0</span>
+          <span style="font-size: clamp(28px, 3.2vw, 50px); font-weight: 400; letter-spacing: -0.02em;">%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position: fixed; inset: 0; pointer-events: none; z-index: -2; overflow: hidden;">
+    <div data-bg="warm" data-parallax="0" data-opacity="1" style="position: absolute; inset: 0; will-change: opacity; background: radial-gradient(circle 34vmax at 1% 0%, rgba(255,87,21,1) 0%, rgba(255,87,21,0.9) 12%, rgba(255,87,21,0.7) 24%, rgba(255,87,21,0.48) 36%, rgba(255,87,21,0.28) 48%, rgba(255,87,21,0.14) 60%, rgba(255,87,21,0.06) 72%, rgba(255,87,21,0.015) 84%, rgba(255,87,21,0) 100%), radial-gradient(circle 58vmax at 10% 6%, rgba(255,87,21,0.42) 0%, rgba(255,87,21,0.378) 12%, rgba(255,87,21,0.294) 24%, rgba(255,87,21,0.202) 36%, rgba(255,87,21,0.118) 48%, rgba(255,87,21,0.059) 60%, rgba(255,87,21,0.025) 72%, rgba(255,87,21,0.006) 84%, rgba(255,87,21,0) 100%), radial-gradient(circle 40vmax at -6% 66%, rgba(255,87,21,0.2) 0%, rgba(255,87,21,0.18) 12%, rgba(255,87,21,0.14) 24%, rgba(255,87,21,0.096) 36%, rgba(255,87,21,0.056) 48%, rgba(255,87,21,0.028) 60%, rgba(255,87,21,0.012) 72%, rgba(255,87,21,0.003) 84%, rgba(255,87,21,0) 100%), linear-gradient(140deg, rgba(255,87,21,0.42) 0%, rgba(255,87,21,0.22) 14%, rgba(255,87,21,0.07) 30%, rgba(255,87,21,0) 46%);"></div>
+    <div data-bg="cool" data-parallax="0" data-opacity="1" style="position: absolute; inset: 0; will-change: opacity; background: radial-gradient(circle 44vmax at 27% 4%, rgba(40,234,155,0.7) 0%, rgba(40,234,155,0.63) 12%, rgba(40,234,155,0.49) 24%, rgba(40,234,155,0.336) 36%, rgba(40,234,155,0.196) 48%, rgba(40,234,155,0.098) 60%, rgba(40,234,155,0.042) 72%, rgba(40,234,155,0.01) 84%, rgba(40,234,155,0) 100%), radial-gradient(circle 50vmax at 100% 100%, rgba(40,234,155,0.8) 0%, rgba(40,234,155,0.72) 12%, rgba(40,234,155,0.56) 24%, rgba(40,234,155,0.384) 36%, rgba(40,234,155,0.224) 48%, rgba(40,234,155,0.112) 60%, rgba(40,234,155,0.048) 72%, rgba(40,234,155,0.012) 84%, rgba(40,234,155,0) 100%), radial-gradient(circle 54vmax at -10% 60%, rgba(40,234,155,0.15) 0%, rgba(40,234,155,0.135) 12%, rgba(40,234,155,0.105) 24%, rgba(40,234,155,0.072) 36%, rgba(40,234,155,0.042) 48%, rgba(40,234,155,0.021) 60%, rgba(40,234,155,0.009) 72%, rgba(40,234,155,0.002) 84%, rgba(40,234,155,0) 100%), linear-gradient(158deg, rgba(40,234,155,0.13) 0%, rgba(40,234,155,0.04) 24%, rgba(40,234,155,0) 50%);"></div>
+  </div>
+  <div style="position: fixed; inset: -10%; pointer-events: none; z-index: -1; opacity: 0.13; background-image: url(noise.svg); background-size: 180px 180px; contain: strict; animation: arenga-grain 640ms steps(1) infinite; will-change: transform;"></div>
+
+  <div data-nav-float="1" style="position: fixed; top: 14px; left: 0; right: 0; z-index: 55; display: flex; justify-content: center; pointer-events: none; opacity: 0; transform: translate3d(0,-130%,0); transition: transform 560ms cubic-bezier(.2,.7,.2,1), opacity 360ms ease; will-change: transform, opacity;">
+    <nav data-glass="1" style="pointer-events: auto; display: flex; align-items: center; gap: 22px; padding: 8px 8px 8px 20px; border-radius: 999px; background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)), rgba(5,7,8,0.6); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 24px 50px -20px rgba(0,0,0,0.8);">
+      <a href="index.dc.html" aria-label="Arenga" style="display: flex; align-items: center; color: #f4f2ee;"><svg viewBox="0 0 52.5 31.1" style="height: 17px; width: auto;"><use href="#arenga-mark"></use></svg></a>
+      <div data-m-hide="1" style="display: flex; align-items: center; gap: 22px;">
+        <a data-ul="1" href="Arenga%20Trabajos.dc.html" style="position: relative; padding: 6px 0; font-size: 13.5px; font-weight: 500; color: rgba(244,242,238,0.82); transition: color 220ms ease;" style-hover="color: #ff5715;">Work<span data-ul-line="1" style="position: absolute; left: 0; right: 0; bottom: 1px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.2,.7,.2,1);"></span></a>
+        <a data-ul="1" href="Arenga%20Quienes%20Somos.dc.html" style="position: relative; padding: 6px 0; font-size: 13.5px; font-weight: 500; color: rgba(244,242,238,0.82); transition: color 220ms ease;" style-hover="color: #ff5715;">Quiénes somos<span data-ul-line="1" style="position: absolute; left: 0; right: 0; bottom: 1px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.2,.7,.2,1);"></span></a>
+      </div>
+      <a href="Arenga%20Contacto.dc.html" style="padding: 10px 18px; border-radius: 999px; font-size: 13px; font-weight: 500; color: #07090c; background: #ff5715; transition: transform 240ms cubic-bezier(.2,.7,.2,1);" style-hover="transform: translateY(-1px);">Contact</a>
+      <button data-m-only="1" data-menu-toggle="1" aria-label="Menú" style="appearance: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 999px; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14);"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 8.5h16M4 15.5h16"></path></svg></button>
+    </nav>
+  </div>
+
+  <div data-m-only="1" data-menu="1" data-open="0" style="position: fixed; inset: 0; z-index: 80; display: flex; flex-direction: column; justify-content: space-between; padding: 22px clamp(22px, 6vw, 40px) 34px; opacity: 0; pointer-events: none; transform: translate3d(0,-14px,0); transition: opacity 360ms ease, transform 520ms cubic-bezier(.2,.7,.2,1); color: #f4f2ee; background: linear-gradient(170deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02) 40%, rgba(255,255,255,0.04)), rgba(5,7,8,0.74); backdrop-filter: blur(26px) saturate(140%); -webkit-backdrop-filter: blur(26px) saturate(140%);">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <svg viewBox="0 0 207 31" style="height: 21px; width: auto;" aria-label="Arenga"><use href="#arenga-wordmark"></use></svg>
+      <button data-menu-toggle="1" aria-label="Cerrar" style="appearance: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14);"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+    </div>
+    <nav style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px; font-family: 'Archivo', Helvetica, sans-serif;">
+      <a data-menu-item="1" href="Arenga%20Trabajos.dc.html" style="font-size: clamp(40px, 11vw, 64px); font-weight: 400; line-height: 1.04; letter-spacing: -0.04em; color: #f4f2ee; opacity: 0; transform: translate3d(0,22px,0); transition: opacity 400ms ease, transform 620ms cubic-bezier(.2,.7,.2,1);">Work</a>
+      <a data-menu-item="1" href="Arenga%20Quienes%20Somos.dc.html" style="font-size: clamp(40px, 11vw, 64px); font-weight: 400; line-height: 1.04; letter-spacing: -0.04em; color: #f4f2ee; opacity: 0; transform: translate3d(0,22px,0); transition: opacity 400ms ease, transform 620ms cubic-bezier(.2,.7,.2,1);">Quiénes somos</a>
+      <a data-menu-item="1" href="Arenga%20Contacto.dc.html" style="font-size: clamp(40px, 11vw, 64px); font-weight: 400; line-height: 1.04; letter-spacing: -0.04em; color: #ff5715; opacity: 0; transform: translate3d(0,22px,0); transition: opacity 400ms ease, transform 620ms cubic-bezier(.2,.7,.2,1);">Contacto</a>
+    </nav>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 13px; color: rgba(244,242,238,0.6);">
+      <span data-cms="site.email">hola@arenga.uy</span>
+      <span data-cms="site.city">Montevideo · Uruguay</span>
+    </div>
+  </div>
+
+  <section style="position: relative; min-height: max(100vh, 760px); overflow: hidden;">
+    <div data-m-hide="1" data-stage="1" ref="{{ stageRef }}" onPointerDown="{{ onStageDown }}" style="position: absolute; inset: 0; cursor: grab; touch-action: none;">
+      <canvas ref="{{ canvasRef }}" data-hero-canvas="1" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; will-change: transform;"></canvas>
+    </div>
+    <div data-m-hide="1" style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(98deg, rgba(5,7,8,0.6) 0%, rgba(5,7,8,0.24) 42%, rgba(5,7,8,0) 68%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 22%, #000 46%, #000 62%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 22%, #000 46%, #000 62%, rgba(0,0,0,0) 100%);"></div>
+
+    <header style="position: absolute; top: 26px; left: clamp(30px, 5.2vw, 104px); right: clamp(30px, 5.2vw, 104px); display: flex; align-items: center; justify-content: space-between; gap: 20px; z-index: 20;">
+      <a onPointerDown="{{ blockDrag }}" href="index.dc.html" aria-label="Arenga" style="display: flex; align-items: center; color: #f4f2ee;"><svg viewBox="0 0 207 31" style="height: 21px; width: auto;"><use href="#arenga-wordmark"></use></svg></a>
+      <nav onPointerDown="{{ blockDrag }}" style="display: flex; align-items: center; gap: clamp(18px, 2.4vw, 34px);">
+        <a data-m-hide="1" data-ul="1" href="Arenga%20Trabajos.dc.html" style="position: relative; padding: 6px 0; font-size: 14px; font-weight: 500; color: rgba(244,242,238,0.84); transition: color 220ms ease;" style-hover="color: #ff5715;">Work<span data-ul-line="1" style="position: absolute; left: 0; right: 0; bottom: 1px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.2,.7,.2,1);"></span></a>
+        <a data-m-hide="1" data-ul="1" href="Arenga%20Quienes%20Somos.dc.html" style="position: relative; padding: 6px 0; font-size: 14px; font-weight: 500; color: rgba(244,242,238,0.84); transition: color 220ms ease;" style-hover="color: #ff5715;">Quiénes somos<span data-ul-line="1" style="position: absolute; left: 0; right: 0; bottom: 1px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.2,.7,.2,1);"></span></a>
+        <a data-glass="1" href="Arenga%20Contacto.dc.html" style="display: inline-block; margin-left: 6px; padding: 11px 20px; border-radius: 999px; font-size: 14px; font-weight: 500; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)); backdrop-filter: blur(8px) saturate(125%); -webkit-backdrop-filter: blur(8px) saturate(125%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65); transition: transform 240ms cubic-bezier(.2,.7,.2,1);" style-hover="transform: translateY(-1px);">Contact</a>
+        <button data-m-only="1" data-menu-toggle="1" aria-label="Menú" style="appearance: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 999px; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)); backdrop-filter: blur(8px) saturate(125%); -webkit-backdrop-filter: blur(8px) saturate(125%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65);"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 8.5h16M4 15.5h16"></path></svg></button>
+      </nav>
+    </header>
+
+    <div style="position: relative; z-index: 15; min-height: max(100vh, 760px); display: flex; flex-direction: column; justify-content: center; gap: 34px; padding: clamp(110px, 16vh, 150px) clamp(30px, 5.2vw, 104px) clamp(48px, 9vh, 120px); pointer-events: none;">
+      <div data-hero-copy="1" data-m-full="1" style="max-width: min(900px, 64%); display: flex; flex-direction: column; gap: clamp(22px, 3vh, 34px); will-change: transform, opacity;">
+        <h1 data-cms="home.heroTitle" data-cms-mode="lines" data-blur="hero" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(76px, 11.4vw, 196px); font-weight: 400; line-height: 0.88; letter-spacing: -0.045em; color: #f4f2ee;">Somos<br>Arenga.</h1>
+        <p data-cms="home.heroText" data-type="1" style="margin: 0; max-width: 38ch; font-size: clamp(18px, 1.45vw, 23px); line-height: 1.5; color: rgba(242,239,233,0.74);">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
+        <div data-m-hide="1" style="display: flex; align-items: center; gap: 12px; font-size: 15px; color: rgba(244,242,238,0.56);">
+          <span style="width: 7px; height: 7px; border-radius: 999px; background: #28ea9b; box-shadow: 0 0 12px rgba(40,234,155,0.8);"></span>
+          <span>Arrastrá para rotar la marca</span>
+        </div>
+      </div>
+      <div data-m-only="1" data-hero-video="1" style="position: relative; width: 100%; aspect-ratio: 16 / 10; border-radius: 22px; overflow: hidden; background: #0b0e13; pointer-events: auto; transform: perspective(1200px) rotateX(11deg) rotateY(-9deg); box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.45), 0 0 0 1px rgba(255,255,255,0.12), 0 40px 80px -36px rgba(0,0,0,0.95); will-change: transform;">
+        <image-slot data-cms="home.heroPoster" data-cms-mode="src" id="arenga-hero-video" shape="rect" fit="cover" placeholder="Video · reel" style="position: absolute; inset: 0; width: 100%; height: 100%;"></image-slot>
+        <div style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(5,7,8,0.5) 0%, rgba(5,7,8,0) 40%);"></div>
+        <div style="position: absolute; left: 18px; bottom: 16px; display: flex; align-items: center; gap: 12px; pointer-events: none; color: #f4f2ee;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; background: rgba(255,255,255,0.12); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.6), 0 0 0 1px rgba(255,255,255,0.14);"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8.5 5.8v12.4l10.5-6.2z"></path></svg></span>
+          <span style="font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 11px; letter-spacing: 0.08em; color: rgba(244,242,238,0.8);">Reel</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="position: relative; padding: 96px clamp(30px, 5.2vw, 104px) 90px;">
+    <div id="work" data-stack="1" style="position: relative;">
+      <div data-stack-sticky="1" style="position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; gap: 36px; padding: 26px 0 48px;">
+        <div style="flex: none; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px 28px;">
+          <div style="display: flex; align-items: center; gap: 18px;">
+            <h2 data-cms="home.workTitle" data-blur="1" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(30px, 3.2vw, 50px); font-weight: 400; line-height: 1; letter-spacing: -0.035em; color: #f4f2ee;">Selected work</h2>
+            <span data-m-hide="1" data-glass="1" style="padding: 10px 19px; border-radius: 999px; font-size: 12px; font-weight: 500; color: rgba(244,242,238,0.85); background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)); backdrop-filter: blur(7px) saturate(125%); -webkit-backdrop-filter: blur(7px) saturate(125%); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.7), inset 0 -1px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65);">Showcase</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 22px;">
+            <p data-cms="home.workText" data-m-hide="1" data-type="1" style="margin: 0; font-size: 14px; line-height: 1.5; color: rgba(242,239,233,0.62);">Film, motion y diseño en equipo.</p>
+            <span data-stack-counter="1" style="font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; color: #28ea9b;">01 / 03</span>
+          </div>
+        </div>
+        <div data-stack-frame="1" style="position: relative; flex: 1 1 auto; min-height: 0; width: 100%; perspective: 1600px;">
+          <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
+            <article data-stack-card="1" style="position: absolute; inset: 0; will-change: transform, opacity; transform-origin: 50% 100%;">
+              <a href="{{ p.href }}" aria-label="Ver proyecto: {{ p.title }}" data-ul="1" data-stack-link="1" data-video="1" data-video-manual="1" data-glass="1" data-magnet="0.6" style="display: block; color: #f4f2ee; position: absolute; inset: 0; overflow: hidden; border-radius: 28px; transition: transform 900ms cubic-bezier(.16,1,.3,1), box-shadow 600ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)), #0b0e13; box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.6), inset 0 -1.5px 0.5px rgba(255,255,255,0.28), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.09), 0 0 0 1px rgba(255,255,255,0.11), 0 30px 60px -26px rgba(0,0,0,0.85);">
+                <image-slot id="{{ p.slot }}" shape="rect" fit="cover" src="{{ p.photo }}" placeholder="{{ p.placeholder }}" style="position: absolute; inset: 0; width: 100%; height: 100%;"></image-slot>
+                <video data-video-el="1" data-src="{{ p.video }}" muted loop playsinline preload="none" aria-label="Reel de {{ p.title }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 700ms ease; pointer-events: none;"></video>
+                <div style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(5,7,8,0.9) 0%, rgba(5,7,8,0.32) 36%, rgba(5,7,8,0) 64%);"></div>
+                <div data-stack-cap="1" style="position: absolute; left: clamp(22px, 3vw, 46px); right: clamp(22px, 3vw, 46px); bottom: clamp(22px, 3vw, 40px); pointer-events: none; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; color: #f2efe9;">
+                  <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <span style="font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(242,239,233,0.66);">{{ p.kind }}</span>
+                    <h3 data-blur="stack" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(30px, 3.6vw, 52px); font-weight: 400; letter-spacing: -0.035em; line-height: 1;">{{ p.title }}</h3>
+                  </div>
+                  <span style="font-size: 14px; font-weight: 500; color: rgba(242,239,233,0.62);">{{ p.index }} / {{ p.of }}</span>
+                </div>
+                <span data-stack-cta="1" data-glass="1" style="position: absolute; right: clamp(22px, 3vw, 46px); top: clamp(22px, 3vw, 40px); pointer-events: none; display: inline-flex; align-items: center; gap: 10px; padding: 11px 20px; border-radius: 999px; font-size: 14px; font-weight: 500; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04) 48%, rgba(255,255,255,0.08)), rgba(5,7,8,0.42); backdrop-filter: blur(12px) saturate(135%); -webkit-backdrop-filter: blur(12px) saturate(135%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.14), 0 14px 30px -14px rgba(0,0,0,0.7); transition: color 220ms ease, transform 240ms cubic-bezier(.2,.7,.2,1);" style-hover="color: #ff5715; transform: translateY(-1px);"><span style="position: relative;">Ver proyecto<span data-ul-line="1" style="position: absolute; left: 0; right: 0; bottom: -3px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.2,.7,.2,1);"></span></span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+                <div data-stack-dim="1" style="position: absolute; inset: 0; pointer-events: none; background: #050708; opacity: 0; will-change: opacity;"></div>
+              </a>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div data-reveal="1" style="display: flex; justify-content: center; margin-top: 40px; will-change: transform, opacity;">
+      <a href="Arenga%20Trabajos.dc.html" data-glass="1" style="display: inline-flex; align-items: center; gap: 16px; padding: 9px 9px 9px 26px; border-radius: 999px; font-size: 15px; font-weight: 500; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)); backdrop-filter: blur(7px) saturate(125%); -webkit-backdrop-filter: blur(7px) saturate(125%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 14px 30px -14px rgba(0,0,0,0.7); transition: transform 260ms cubic-bezier(.2,.7,.2,1);" style-hover="transform: translateY(-2px);">Ver todos los trabajos<span style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 999px; background: #ff5715; color: #07090c;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a>
+    </div>
+  </section>
+
+  <section id="clientes" style="position: relative; padding: 110px clamp(30px, 5.2vw, 104px) 50px;">
+    <div data-reveal="1" data-par="-0.03" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; margin-bottom: 20px; will-change: transform, opacity;">
+      <span data-glass="1" style="padding: 10px 19px; border-radius: 999px; font-size: 12px; font-weight: 500; color: rgba(244,242,238,0.85); background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)); backdrop-filter: blur(7px) saturate(125%); -webkit-backdrop-filter: blur(7px) saturate(125%); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.7), inset 0 -1px 0.5px rgba(255,255,255,0.3), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65);">Clientes</span>
+      <h2 data-cms="home.clientsTitle" data-blur="1" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(44px, 5.6vw, 88px); font-weight: 400; line-height: 0.95; letter-spacing: -0.035em; color: #f4f2ee;">Marcas que confían</h2>
+      <p style="margin: 6px 0 0; max-width: 40ch; font-size: 16px; line-height: 1.6; color: rgba(242,239,233,0.62);"><span data-cms="home.clientsText" data-type="1">Veintiuna marcas con las que trabajamos y seguimos trabajando.</span></p>
+    </div>
+    <div data-reveal="1" data-par="0.04" data-cf="1" style="position: relative; height: 620px; margin: 0 calc(-1 * clamp(30px, 5.2vw, 104px)); overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none; -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 12%, #000 88%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 12%, #000 88%, rgba(0,0,0,0) 100%); will-change: transform, opacity;">
+      <sc-for list="{{ clients }}" as="cl" hint-placeholder-count="21">
+        <div data-cf-card="1" data-tilt="0.7" style="position: absolute; left: 50%; top: 50%; width: 380px; height: 430px; margin: -215px 0 0 -190px; border-radius: 28px; overflow: hidden; background: transparent; transform: translate3d(0,0,0) scale(0.6); opacity: 0; will-change: transform, opacity;">
+          <div data-cf-skin="1" style="position: absolute; inset: 0; opacity: 0; transition: opacity 500ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)), #0d1116; box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.6), inset 0 -1.5px 0.5px rgba(255,255,255,0.26), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.09); pointer-events: none;"></div>
+          <div data-cf-meta="1" style="position: absolute; left: 26px; right: 26px; top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 11px; color: rgba(244,242,238,0.5); opacity: 0; transition: opacity 500ms ease; pointer-events: none;">
+            <span>{{ cl.index }}</span>
+            <span>{{ cl.sector }}</span>
+          </div>
+          <div data-cf-logo="1" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 118px 92px; color: rgba(244,242,238,0.55);">
+            <image-slot id="{{ cl.slot }}" shape="rect" fit="contain" src="{{ cl.src }}" placeholder="{{ cl.placeholder }}" style="width: 100%; height: 100%;"></image-slot>
+          </div>
+          <div data-cf-foot="1" style="position: absolute; left: 26px; right: 26px; bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.12); opacity: 0; transition: opacity 500ms ease; pointer-events: none;">
+            <span style="font-size: 14px; font-weight: 500; letter-spacing: -0.01em; color: #f4f2ee;">{{ cl.name }}</span>
+            <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px; color: #28ea9b;"><span style="width: 6px; height: 6px; border-radius: 999px; background: #28ea9b; box-shadow: 0 0 10px rgba(40,234,155,0.8);"></span>{{ cl.tag }}</span>
+          </div>
+        </div>
+      </sc-for>
+    <div data-cf-ctl="1" style="position: absolute; left: 0; right: 0; bottom: 14px; z-index: 30; display: flex; align-items: center; justify-content: center; gap: 22px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 12px; letter-spacing: 0.06em; color: rgba(244,242,238,0.55);">
+      <button data-cf-prev="1" data-glass="1" aria-label="Anterior" style="appearance: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)), rgba(5,7,8,0.35); backdrop-filter: blur(8px) saturate(125%); -webkit-backdrop-filter: blur(8px) saturate(125%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65); transition: transform 240ms cubic-bezier(.2,.7,.2,1), color 220ms ease;" style-hover="transform: translateY(-2px); color: #ff5715;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></button>
+      <span data-cf-counter="1" style="min-width: 64px; text-align: center; color: #28ea9b;">01 / 21</span>
+      <button data-cf-next="1" data-glass="1" aria-label="Siguiente" style="appearance: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)), rgba(5,7,8,0.35); backdrop-filter: blur(8px) saturate(125%); -webkit-backdrop-filter: blur(8px) saturate(125%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65); transition: transform 240ms cubic-bezier(.2,.7,.2,1), color 220ms ease;" style-hover="transform: translateY(-2px); color: #ff5715;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+    </div>
+    </div>
+  </section>
+
+  <section id="equipo" style="position: relative; padding: 110px 0 120px;">
+    <div data-reveal="1" data-par="-0.1" style="display: flex; align-items: flex-end; justify-content: space-between; gap: 36px; flex-wrap: wrap; margin: 0 clamp(30px, 5.2vw, 104px) 56px; will-change: transform, opacity;">
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <span data-glass="1" style="align-self: flex-start; padding: 10px 19px; border-radius: 999px; font-size: 12px; font-weight: 500; color: rgba(244,242,238,0.85); background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)); backdrop-filter: blur(7px) saturate(125%); -webkit-backdrop-filter: blur(7px) saturate(125%); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.7), inset 0 -1px 0.5px rgba(255,255,255,0.3), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65);">Equipo</span>
+        <h2 data-blur="1" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(44px, 5.6vw, 88px); font-weight: 400; line-height: 0.95; letter-spacing: -0.035em; color: #f4f2ee;">Quiénes somos</h2>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 18px; max-width: 36ch;">
+        <p style="margin: 0; font-size: 16px; line-height: 1.6; color: rgba(242,239,233,0.62);"><span data-cms="home.teamText" data-type="1">Diez personas que crean, ejecutan y gestionan proyectos de principio a fin.</span></p>
+        <a href="Arenga%20Quienes%20Somos.dc.html" data-ul="1" style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; font-weight: 500; color: #f4f2ee; transition: color 220ms ease;" style-hover="color: #ff5715;"><span style="position: relative;">Conocé al equipo<span data-ul-line="1" style="position: absolute; left: 0; right: 0; bottom: -3px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.2,.7,.2,1);"></span></span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+      </div>
+    </div>
+
+    <div data-m-hide="1" data-ring="1" style="position: relative; height: 520px; perspective: 1500px; perspective-origin: 50% 50%; cursor: grab; touch-action: pan-y; user-select: none; -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 16%, #000 84%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 16%, #000 84%, rgba(0,0,0,0) 100%);">
+      <div data-ring-track="1" style="position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; will-change: transform;">
+        <sc-for list="{{ teamRing }}" as="m" hint-placeholder-count="14">
+          <article data-ring-card="1" style="position: absolute; left: 0; top: 0; transform-origin: 0 0; width: 262px; height: 382px; transform-style: preserve-3d; will-change: transform, opacity;">
+            <div data-ring-inner="1" data-tilt="1" style="position: absolute; inset: 0; display: flex; flex-direction: column; gap: 13px; padding: 13px; border-radius: 26px; overflow: hidden; transform-origin: 50% 50%; will-change: transform; background: linear-gradient(158deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.07)), rgba(14,18,24,0.88); box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.62), inset 0 -1.5px 0.5px rgba(255,255,255,0.28), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.09), 0 0 0 1px rgba(255,255,255,0.11), 0 30px 60px -26px rgba(0,0,0,0.85);">
+              <div style="position: relative; flex: 1 1 auto; min-height: 0; width: 100%; border-radius: 18px; overflow: hidden; background: #0b0e13; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);">
+                <image-slot id="{{ m.slot }}" shape="rect" fit="cover" src="{{ m.photo }}" placeholder="{{ m.placeholder }}" style="position: absolute; inset: 0; width: 100%; height: 100%;"></image-slot>
+              </div>
+              <div style="flex: none; display: flex; flex-direction: column; gap: 4px; padding: 0 4px 3px;">
+                <span style="font-size: 18px; font-weight: 600; letter-spacing: -0.02em; color: #f4f2ee;">{{ m.name }}</span>
+                <span style="font-size: 13px; line-height: 1.35; color: rgba(244,242,238,0.6); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;">{{ m.role }}</span>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+
+    <div data-m-only="1" data-marquee="1" data-speed="52" data-copies="3" style="position: relative; overflow: hidden; padding: 16px 0 28px; cursor: grab; touch-action: pan-y; user-select: none; -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 8%, #000 92%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 8%, #000 92%, rgba(0,0,0,0) 100%);">
+      <div data-marquee-track="1" style="display: flex; align-items: stretch; gap: 18px; width: max-content; padding-left: 18px; will-change: transform;">
+        <sc-for list="{{ teamLoop }}" as="m" hint-placeholder-count="12">
+          <article data-tilt="0.7" style="flex: none; position: relative; width: clamp(220px, 20vw, 264px); padding: 16px; border-radius: 26px; overflow: hidden; transition: transform 420ms cubic-bezier(.2,.7,.2,1), box-shadow 420ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.06)), rgba(13,17,22,0.72); box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.6), inset 0 -1.5px 0.5px rgba(255,255,255,0.26), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.09), 0 0 0 1px rgba(255,255,255,0.11), 0 22px 44px -20px rgba(0,0,0,0.7);">
+            <div style="position: relative; display: flex; flex-direction: column; gap: 16px;">
+              <div style="position: relative; width: 100%; aspect-ratio: 4 / 5; border-radius: 18px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);">
+                <image-slot id="{{ m.slot }}" shape="rect" fit="cover" src="{{ m.photo }}" placeholder="{{ m.placeholder }}" style="position: absolute; inset: 0; width: 100%; height: 100%;"></image-slot>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; padding: 0 4px 4px;">
+                <span style="font-size: 19px; font-weight: 600; letter-spacing: -0.02em; color: #f4f2ee;">{{ m.name }}</span>
+                <span style="font-size: 13.5px; line-height: 1.45; color: rgba(244,242,238,0.64);">{{ m.role }}</span>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contacto" data-footer="1" data-glass="1" style="position: relative; overflow: hidden; margin: 110px clamp(30px, 5.2vw, 104px) 0; padding: 76px clamp(28px, 4vw, 72px) 34px; border-radius: 36px 36px 0 0; display: flex; flex-direction: column; gap: 64px; color: #f4f2ee; will-change: transform, opacity; background: linear-gradient(170deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02) 40%, rgba(255,255,255,0.04)), rgba(9,12,16,0.72); backdrop-filter: blur(10px) saturate(125%); -webkit-backdrop-filter: blur(10px) saturate(125%); box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.6), inset 3px 3px 10px rgba(255,150,90,0.09), inset -3px 0 10px rgba(40,234,155,0.08), 0 0 0 1px rgba(255,255,255,0.1);">
+    <div style="position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; padding-bottom: 44px; border-bottom: 1px solid rgba(255,255,255,0.14);">
+      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 26px;">
+        <svg viewBox="0 0 207 31" style="height: 26px; width: 174px; color: #f4f2ee;" aria-label="Arenga"><use href="#arenga-wordmark"></use></svg>
+        <span data-blur="1" style="font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(38px, 4.6vw, 72px); font-weight: 400; letter-spacing: -0.04em; line-height: 1;">Hablemos de<br>tu próximo proyecto</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <a data-glass="1" data-cms="site.instagram" data-cms-mode="href" href="#" aria-label="Instagram" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)); backdrop-filter: blur(8px) saturate(125%); -webkit-backdrop-filter: blur(8px) saturate(125%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65); transition: transform 240ms cubic-bezier(.2,.7,.2,1), color 220ms ease;" style-hover="transform: translateY(-2px);"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5.4"></rect><circle cx="12" cy="12" r="4.1"></circle><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"></circle></svg></a>
+          <a data-glass="1" data-cms="site.linkedin" data-cms-mode="href" href="#" aria-label="LinkedIn" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)); backdrop-filter: blur(8px) saturate(125%); -webkit-backdrop-filter: blur(8px) saturate(125%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65); transition: transform 240ms cubic-bezier(.2,.7,.2,1), color 220ms ease;" style-hover="transform: translateY(-2px);"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4.2"></rect><path d="M7.6 10.4v6.2"></path><circle cx="7.6" cy="7.6" r="0.95" fill="currentColor" stroke="none"></circle><path d="M11.4 16.6v-3.5a2.6 2.6 0 0 1 5.2 0v3.5"></path><path d="M11.4 16.6v-6.2"></path></svg></a>
+          <a data-glass="1" data-cms="site.x" data-cms-mode="href" href="#" aria-label="X" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)); backdrop-filter: blur(8px) saturate(125%); -webkit-backdrop-filter: blur(8px) saturate(125%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65); transition: transform 240ms cubic-bezier(.2,.7,.2,1), color 220ms ease;" style-hover="transform: translateY(-2px);"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M17.5 3h3.1l-6.8 7.8L21.5 21h-5.6l-4.4-5.7L6.4 21H3.3l7.1-8.1L3 3h5.7l4.1 5.4L17.5 3Zm-1.1 16.1h1.7L7.6 4.8H5.8l10.6 14.3Z"></path></svg></a>
+        </div>
+        <a href="Arenga%20Contacto.dc.html" style="display: inline-flex; align-items: center; gap: 14px; padding: 16px 28px; border-radius: 999px; font-size: 15px; font-weight: 500; color: #07090c; background: #ff5715; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Contacto<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+      </div>
+    </div>
+    <div style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 13px; font-weight: 500; color: rgba(244,242,238,0.7);">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><ellipse cx="12" cy="12" rx="4" ry="9"></ellipse><path d="M3.4 9.2h17.2M3.4 14.8h17.2"></path></svg>
+        <span data-cms="site.city">Montevideo · Uruguay</span>
+      </div>
+      <a data-cms="site.email" data-cms-mode="mailto" href="mailto:hola@arenga.uy" style="color: rgba(244,242,238,0.7); transition: color 220ms ease;" style-hover="color: #ff5715;">hola@arenga.uy</a>
+      <span data-foot-legal="1" style="display: inline-flex; align-items: center; gap: 22px; flex-wrap: wrap;"><span data-cms="site.copyright" style="opacity: 0.7;">Arenga © 2026</span><span data-dev="1" style="position: relative; display: inline-flex; align-items: center;">
+        <button data-dev-toggle="1" aria-expanded="false" style="appearance: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; padding: 4px 0; font-family: inherit; font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: rgba(244,242,238,0.4); background: transparent; transition: color 220ms ease;" style-hover="color: rgba(244,242,238,0.8);">Dev Utilities<svg data-dev-caret="1" viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 320ms cubic-bezier(.2,.7,.2,1);"><path d="M6 15l6-6 6 6"></path></svg></button>
+        <span data-dev-panel="1" style="position: absolute; right: 0; bottom: calc(100% + 12px); z-index: 5; width: 236px; display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 16px; opacity: 0; pointer-events: none; transform: translate3d(0,8px,0); transition: opacity 260ms ease, transform 380ms cubic-bezier(.2,.7,.2,1); background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)), rgba(9,12,16,0.86); backdrop-filter: blur(14px) saturate(130%); -webkit-backdrop-filter: blur(14px) saturate(130%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.6), inset 0 -1.2px 0.5px rgba(255,255,255,0.28), 0 0 0 1px rgba(255,255,255,0.12), 0 26px 50px -24px rgba(0,0,0,0.9);">
+          <input data-dev-user="1" type="text" autocomplete="off" placeholder="Usuario" style="width: 100%; padding: 11px 13px; border-radius: 11px; border: none; outline: none; font-family: inherit; font-size: 13px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.35), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 220ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.5), 0 0 0 1px rgba(255,87,21,0.65);">
+          <input data-dev-pass="1" type="password" autocomplete="off" placeholder="Contraseña" style="width: 100%; padding: 11px 13px; border-radius: 11px; border: none; outline: none; font-family: inherit; font-size: 13px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.35), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 220ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.5), 0 0 0 1px rgba(255,87,21,0.65);">
+          <button data-dev-submit="1" style="appearance: none; border: none; cursor: pointer; margin-top: 2px; padding: 11px 14px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 500; color: #07090c; background: #ff5715; transition: transform 220ms cubic-bezier(.2,.7,.2,1);" style-hover="transform: translateY(-1px);">Entrar</button>
+          <span data-dev-msg="1" style="min-height: 14px; font-size: 11.5px; line-height: 1.35; color: rgba(244,242,238,0.5);"></span>
+        </span>
+      </span><span style="display: inline-flex; align-items: center; gap: 10px;"><span style="opacity: 0.7;">Designed and produced by</span><a href="https://potrero.com.uy/" target="_blank" rel="noopener" aria-label="Potrero" style="display: inline-flex; align-items: center; color: #f4f2ee; opacity: 0.85; transition: opacity 220ms ease, color 220ms ease;" style-hover="opacity: 1; color: #ff5715;"><svg viewBox="0 0 1822 343" style="height: 13px; width: auto; display: block;" aria-hidden="true"><use href="#potrero-wordmark"></use></svg></a></span></span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;thickness&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4,&quot;min&quot;:2,&quot;max&quot;:16,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Marca 3D&quot;},&quot;autoRotate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Marca 3D&quot;},&quot;clientsAuto&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:1,&quot;max&quot;:4,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Clientes&quot;},&quot;teamAuto&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Equipo&quot;},&quot;teamSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.3,&quot;max&quot;:2.5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Equipo&quot;},&quot;loader&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Loader&quot;},&quot;loaderSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.6,&quot;max&quot;:5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Loader&quot;},&quot;typewriter&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Tipografía&quot;},&quot;typeSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2.5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Tipografía&quot;}}">
+const MARK_D = "M45.5435 7.84641L45.4397 8.03612C43.7536 11.1461 40.4758 13.0867 36.9054 13.0867H32.5423L34.263 17.8138H40.114L36.4336 24.6059C35.9523 25.4954 35.0149 26.049 33.9956 26.049H32.9513L31.7968 22.6L30.8436 19.7575L30.1925 17.8138H30.1296L23.9262 0H12.932L10.1103 4.95415L5.41691 13.1862L2.72104 17.9133L0.0629141 22.5783L0 23.1567H6.44241L6.50532 23.0447C8.2386 19.885 11.5825 17.9164 15.2189 17.9164H19.582L17.8613 13.1893H11.938L13.0075 11.2456L16.4678 4.95415H17.5121C18.503 4.95415 19.3838 5.57614 19.7047 6.50291L21.9916 13.0898L23.6714 17.8169L26.5938 26.049L28.3522 31.0031H39.3465L52.4106 8.42486L52.4735 7.84641H45.5435Z";
+const MARK_W = 52.4735, MARK_H = 31.0031;
+function mix(a, b, t) { return [Math.round(a[0] + (b[0] - a[0]) * t), Math.round(a[1] + (b[1] - a[1]) * t), Math.round(a[2] + (b[2] - a[2]) * t)]; }
+function rgb(c) { return "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")"; }
+
+class Component extends DCLogic {
+  rootRef = React.createRef();
+  canvasRef = React.createRef();
+  stageRef = React.createRef();
+  loaderRef = React.createRef();
+  loaderInnerRef = React.createRef();
+  loaderBarRef = React.createRef();
+  loaderNumRef = React.createRef();
+
+  componentDidMount() {
+    if (window.ArengaContent) window.ArengaContent().then(c => { if (c && !this.dead) this.setState({ c }); });
+    this.yaw = -0.55; this.pitch = 0.34; this.vel = 0.0022; this.dragging = false; this.dirty = true;
+    this.build();
+    this.resize();
+    this.onMove = (e) => this.handleMove(e);
+    this.onUp = () => this.handleUp();
+    this.onResize = () => { this.resize(); this.dirty = true; this.cacheStack(); this.ringDirty = true; this.placeRing(); if (this.cfCards) this.placeClients(false); };
+    this.onVis = () => { if (!document.hidden) this.scheduleAuto(); };
+    // the canvas has no size until layout settles, and draw() bails while it is empty:
+    // watch the stage so the mark paints without waiting for a window resize
+    if (window.ResizeObserver && this.stageRef.current) {
+      this.stageRO = new ResizeObserver(() => { this.resize(); this.dirty = true; });
+      this.stageRO.observe(this.stageRef.current);
+    }
+    window.addEventListener("pointermove", this.onMove, { passive: true });
+    window.addEventListener("pointerup", this.onUp);
+    window.addEventListener("resize", this.onResize);
+    document.addEventListener("visibilitychange", this.onVis);
+    const boot = () => {
+      if (this.dead || this.engine || !this.rootRef.current) return;
+      this.engine = new window.ArengaEngine(this.rootRef.current, {
+        gate: true,
+        typewriter: this.props.typewriter !== false,
+        typeSpeed: Number(this.props.typeSpeed ?? 1),
+        onFrame: (dt, y, vh, scrolled, now) => this.onFrame(dt, y, vh, scrolled, now),
+        onMeasure: () => this.measureStack()
+      });
+      this.cacheStack();
+      this.cacheRing();
+      this.cacheClients();
+      this.startLoader();
+    };
+    if (window.ArengaEngine) boot(); else window.addEventListener("arenga-engine", boot, { once: true });
+  }
+
+  componentDidUpdate() {
+    // adding or removing people/clients/cases changes the card count: the cylinder, the stack and the
+    // coverflow all cache their geometry, so they have to be rebuilt when content arrives or changes
+    if (this.state.c !== this.__lastC && this.engine) {
+      this.__lastC = this.state.c;
+      this.cacheStack();
+      this.cacheRing();
+      this.cacheClients();
+      this.engine.cache();
+    }
+  }
+
+  componentWillUnmount() {
+    this.dead = true;
+    if (this.engine) this.engine.destroy();
+    if (this.stageRO) this.stageRO.disconnect();
+    window.removeEventListener("pointermove", this.onMove);
+    window.removeEventListener("pointerup", this.onUp);
+    window.removeEventListener("resize", this.onResize);
+    document.removeEventListener("visibilitychange", this.onVis);
+    if (this.onRingMove) { window.removeEventListener("pointermove", this.onRingMove); window.removeEventListener("pointerup", this.onRingUp); window.removeEventListener("pointercancel", this.onRingUp); }
+    if (this.onCfMove) { window.removeEventListener("pointermove", this.onCfMove); window.removeEventListener("pointerup", this.onCfUp); window.removeEventListener("pointercancel", this.onCfUp); }
+    clearTimeout(this.loadTimer); clearTimeout(this.loadSafety); clearTimeout(this.loadForce); clearTimeout(this.cfAutoT);
+    if (this.prevOverflow !== undefined) document.documentElement.style.overflow = this.prevOverflow;
+  }
+
+  onFrame(dt, y, vh, scrolled, now) {
+    const eng = this.engine;
+    eng.opts.typewriter = this.props.typewriter !== false;
+    eng.opts.typeSpeed = Number(this.props.typeSpeed ?? 1);
+    this.tickLoader(now, dt);
+    const mobile = eng.mobile;
+    if (!mobile && y < vh) {
+      if (!this.dragging) {
+        const target = this.props.autoRotate === false ? 0 : 0.0022;
+        this.vel += (target - this.vel) * 0.03;
+        if (!target && Math.abs(this.vel) < 0.00002) this.vel = 0;
+        if (this.vel) { this.yaw += this.vel; this.dirty = true; }
+      }
+      const thick = this.props.thickness;
+      if (this.dirty || thick !== this.lastThick) { this.lastThick = thick; this.dirty = false; this.draw(); }
+    }
+    if (scrolled || !this.heroInit) {
+      this.heroInit = true;
+      if (this.heroCopy) {
+        const p = Math.min(1, y / (vh * 0.8));
+        this.heroCopy.style.transform = "translate3d(0," + (y * 0.22).toFixed(1) + "px,0)";
+        this.heroCopy.style.opacity = String(Math.max(0, 1 - p * 1.15));
+      }
+      if (this.heroCanvas && !mobile) this.heroCanvas.style.transform = "translate3d(0," + (y * -0.08).toFixed(1) + "px,0)";
+    }
+    if (this.heroVideo && mobile && y < vh * 1.3) {
+      // the video card rests tilted, floats gently and flattens out as you scroll past it
+      const p = Math.min(1, Math.max(0, y / (vh * 0.9))), fl = Math.sin(now / 1500) * 1.5;
+      this.heroVideo.style.transform = "perspective(1200px) rotateX(" + (11 - p * 8 + fl).toFixed(2) + "deg) rotateY(" + (-9 + p * 6 - fl * 0.7).toFixed(2) + "deg)";
+    }
+    this.tickStack(dt, y, vh);
+    this.tickRing(dt, y, vh);
+  }
+
+  cacheStack() {
+    const r = this.rootRef.current;
+    if (!r) return;
+    this.stack = r.querySelector("[data-stack]");
+    this.stackCounter = r.querySelector("[data-stack-counter]");
+    this.stackCards = Array.from(r.querySelectorAll("[data-stack-card]")).map((el, i) => {
+      el.style.zIndex = String(100 - i);
+      return { el, link: el.querySelector("[data-stack-link]"), dim: el.querySelector("[data-stack-dim]"), cap: el.querySelector("[data-blur='stack']") };
+    });
+    this.heroCopy = r.querySelector("[data-hero-copy]");
+    this.heroCanvas = r.querySelector("[data-hero-canvas]");
+    this.heroVideo = r.querySelector("[data-hero-video]");
+    const vh = window.innerHeight || 0;
+    if (this.stack && vh > 0) {
+      const per = vh * 1.05;
+      this.stackPer = per; this.stackVh = vh;
+      this.stackH = Math.round(vh + per * Math.max(0, this.stackCards.length - 1) + vh * 0.35);
+      this.stack.style.height = this.stackH + "px";
+    }
+    if (!Number.isFinite(this.stackP)) this.stackP = 0;
+    this.stackDirty = true;
+    this.measureStack();
+    if (this.engine) this.engine.scheduleMeasure();
+  }
+
+  measureStack() { if (this.stack) this.stackTop = this.stack.getBoundingClientRect().top + (window.scrollY || 0); }
+
+  tickStack(dt, y, vh) {
+    if (!this.stack || !this.stackCards || !this.stackCards.length) return;
+    if (this.stackVh !== vh) { this.cacheStack(); return; }
+    const per = this.stackPer;
+    if (!(per > 0)) return;
+    const top = this.stackTop - y, n = this.stackCards.length;
+    if (top > vh + 100 || top + this.stackH < -100) {
+      if (this.stackFront !== -1) {
+        this.stackFront = -1;
+        this.stackCards.forEach(c => { const ctl = c.link && c.link.__videoCtl; if (ctl) ctl.pause(); });
+      }
+      return;
+    }
+    const raw = Math.min(n - 1, Math.max(0, -top / per));
+    const seg = Math.floor(raw), f = raw - seg;
+    // dwell on each folder, then an ease-in-out flip to the next
+    const w = Math.min(1, Math.max(0, (f - 0.12) / 0.76));
+    const eased = w < 0.5 ? 4 * w * w * w : 1 - Math.pow(-2 * w + 2, 3) / 2;
+    const target = Math.min(n - 1, seg + eased);
+    this.stackP += (target - this.stackP) * (1 - Math.exp(-dt / 130));
+    if (Math.abs(target - this.stackP) < 0.0004) this.stackP = target;
+    if (this.stackP === this.stackLast && !this.stackDirty) return;
+    this.stackLast = this.stackP; this.stackDirty = false;
+    for (let i = 0; i < n; i++) {
+      const c = this.stackCards[i];
+      const o = i - this.stackP;
+      // the active folder always sits on top, so no neighbour crops its shadow
+      c.el.style.zIndex = String(100 - Math.round(Math.abs(o) * 12));
+      let tf, op, dim;
+      if (o >= 0) {
+        tf = "translate3d(0," + (-o * 7).toFixed(2) + "px,0)";
+        op = 1; dim = Math.min(0.6, o * 0.24);
+      } else {
+        const k = Math.min(1, -o);
+        tf = "translate3d(0," + (k * 46).toFixed(2) + "%,0) rotateX(" + (k * 16).toFixed(2) + "deg) scale(" + (1 - k * 0.04).toFixed(4) + ")";
+        op = Math.max(0, 1 - k * 1.5); dim = Math.min(0.6, k * 0.7);
+      }
+      c.el.style.transform = tf;
+      c.el.style.opacity = op.toFixed(3);
+      c.el.style.visibility = op <= 0.001 ? "hidden" : "visible";
+      c.el.style.pointerEvents = Math.abs(o) < 0.5 ? "auto" : "none";
+      if (c.dim) c.dim.style.opacity = dim.toFixed(3);
+      if (c.cap && Math.abs(o) < 0.5 && top < vh * 0.55 && top + this.stackH > vh * 0.45) this.engine.setBlur(c.cap, true);
+    }
+    // only the folder in front plays; the rest stay paused on their poster
+    const front = Math.max(0, Math.min(n - 1, Math.round(this.stackP)));
+    if (front !== this.stackFront) {
+      this.stackFront = front;
+      for (let i = 0; i < n; i++) {
+        const ctl = this.stackCards[i].link && this.stackCards[i].link.__videoCtl;
+        if (!ctl) continue;
+        if (i === front) ctl.play(); else ctl.pause();
+      }
+    }
+    if (this.stackCounter) {
+      const cur = Math.min(n, Math.max(1, Math.round(this.stackP) + 1));
+      const txt = String(cur).padStart(2, "0") + " / " + String(n).padStart(2, "0");
+      if (this.stackCounter.textContent !== txt) this.stackCounter.textContent = txt;
+    }
+  }
+
+  // ---- team ring: cards sit on a cylinder that turns on its own, pauses under the mouse and spins with a drag
+  cacheRing() {
+    const r = this.rootRef.current;
+    this.ring = r.querySelector("[data-ring]");
+    this.ringTrack = r.querySelector("[data-ring-track]");
+    this.ringCards = Array.from(r.querySelectorAll("[data-ring-card]"));
+    if (!this.ring || !this.ringTrack || !this.ringCards.length) { this.ringCards = null; return; }
+    // the corner under the pointer sinks: the shared hover engine tilts the inner card (no transform prefix; the ring owns the outer one)
+    this.ringCards.forEach(card => { const inner = card.querySelector("[data-ring-inner]"); if (inner) { inner.__tfPre = ""; inner.__tfPost = ""; } });
+    if (!Number.isFinite(this.ringA)) { this.ringA = 0; this.ringVel = 0; }
+    this.ringStep = 360 / this.ringCards.length;
+    if (this.ring.dataset.ringBound !== "1") {
+      this.ring.dataset.ringBound = "1";
+      this.ring.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") this.ringHover = true; });
+      this.ring.addEventListener("pointerleave", () => { this.ringHover = false; });
+      this.ring.addEventListener("pointerdown", (e) => {
+        if (e.button) return;
+        this.ringDrag = true; this.ringLastX = e.clientX; this.ringLastT = performance.now(); this.ringMoved = 0; this.ringDragVel = 0;
+        this.ring.style.cursor = "grabbing";
+      });
+      this.onRingMove = (e) => {
+        if (!this.ringDrag) return;
+        const now = performance.now(), dx = e.clientX - this.ringLastX, dt = Math.max(1, now - this.ringLastT);
+        this.ringLastX = e.clientX; this.ringLastT = now;
+        this.ringA += dx * 0.16; this.ringMoved += Math.abs(dx);
+        this.ringDragVel = Math.max(-0.55, Math.min(0.55, (dx * 0.16) / dt));
+      };
+      this.onRingUp = () => {
+        if (!this.ringDrag) return;
+        this.ringDrag = false; this.ringVel = this.ringDragVel;
+        this.ring.style.cursor = "grab";
+        if (this.ringMoved > 6 && window.__arengaSuppressClick) window.__arengaSuppressClick(400);
+      };
+      window.addEventListener("pointermove", this.onRingMove, { passive: true });
+      window.addEventListener("pointerup", this.onRingUp);
+      window.addEventListener("pointercancel", this.onRingUp);
+    }
+    this.ringDirty = true;
+    this.placeRing();
+  }
+
+  tickRing(dt, y, vh) {
+    if (!this.ringCards || this.engine.mobile) return;
+    const rect = this.ring.getBoundingClientRect();
+    if (rect.bottom < -80 || rect.top > vh + 80) return;
+    const auto = this.props.teamAuto === false ? 0 : 0.0075 * (Number(this.props.teamSpeed ?? 1));
+    if (!this.ringDrag) {
+      const target = this.ringHover ? 0 : -auto;
+      this.ringVel += (target - this.ringVel) * (1 - Math.exp(-dt / 620));
+      this.ringA += this.ringVel * dt;
+    }
+    if (Math.abs(this.ringA - (this.ringLastA ?? 1e9)) < 0.002 && !this.ringDirty) return;
+    this.placeRing();
+  }
+
+  // laid out synchronously too, so the cylinder is right on first paint even if no frame has run yet
+  placeRing() {
+    if (!this.ringCards || !this.ringCards.length) return;
+    this.ringLastA = this.ringA; this.ringDirty = false;
+    const w = this.ringCards[0].offsetWidth || 196;
+    const n = this.ringCards.length;
+    // gaps between cards (factor > 1) are what lets you see the far side of the cylinder
+    const R = Math.round((w / 2) / Math.tan(Math.PI / n) * 1.5);
+    // push the cylinder back so its front face sits at z = 0: cards stay at their real size instead of being magnified
+    this.ringTrack.style.transform = "translate3d(0,0," + (-R) + "px)";
+    for (let i = 0; i < n; i++) {
+      let ang = ((this.ringA + i * this.ringStep) % 360 + 360) % 360;
+      if (ang > 180) ang -= 360;
+      const facing = Math.cos(ang * Math.PI / 180);
+      const el = this.ringCards[i];
+      el.style.transform = "rotateY(" + ang.toFixed(2) + "deg) translate3d(0,0," + R + "px) translate(-50%,-50%)";
+      // the whole cylinder stays visible: the far side just sits smaller and dimmer behind the gaps
+      el.style.opacity = (0.3 + 0.7 * ((facing + 1) / 2)).toFixed(3);
+      el.style.zIndex = String(50 + Math.round(facing * 40));
+      el.style.pointerEvents = facing > 0.55 ? "auto" : "none";
+    }
+  }
+
+  // ---- clients coverflow: auto-advances, opens on click, frameless until it sits in front
+  cacheClients() {
+    const r = this.rootRef.current;
+    this.cf = r.querySelector("[data-cf]");
+    const cards = Array.from(r.querySelectorAll("[data-cf-card]"));
+    if (!this.cf || !cards.length) { this.cfCards = null; return; }
+    if (!Number.isInteger(this.cfActive)) this.cfActive = 0;
+    this.cfCards = cards.map((el, i) => ({ el, i, logo: el.querySelector("[data-cf-logo]"), skin: el.querySelector("[data-cf-skin]"), meta: el.querySelector("[data-cf-meta]"), foot: el.querySelector("[data-cf-foot]"), slots: Array.from(el.querySelectorAll("image-slot")) }));
+    this.cfCards.forEach((c, i) => {
+      if (c.el.dataset.cfBound === "1") return;
+      c.el.dataset.cfBound = "1";
+      // clicking a side card brings it to the front; on the front card the click reaches the slot (browse / reframe) as usual
+      c.el.addEventListener("click", (e) => {
+        if (i === this.cfActive) return;
+        e.stopPropagation(); e.preventDefault();
+        this.selectClient(i);
+      }, true);
+    });
+    if (this.cf.dataset.cfBound !== "1") {
+      this.cf.dataset.cfBound = "1";
+      this.cf.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") this.cfHover = true; });
+      this.cf.addEventListener("pointerleave", () => { this.cfHover = false; });
+      // drag / horizontal wheel: the whole row slides with the pointer and snaps to the nearest brand on release
+      this.cf.addEventListener("pointerdown", (e) => {
+        if (e.button || e.target.closest("button") || e.target.closest("a")) return;
+        this.cfDrag = true; this.cfDragX0 = e.clientX; this.cfDragDX = 0; this.cfDragT = performance.now(); this.cfUserT = performance.now();
+        this.cf.style.cursor = "grabbing";
+      });
+      this.onCfMove = (e) => {
+        if (!this.cfDrag) return;
+        this.cfDragDX = e.clientX - this.cfDragX0;
+        this.cfDragLastT = performance.now();
+        this.placeClients(false, this.cfDragDX);
+      };
+      this.onCfUp = () => {
+        if (!this.cfDrag) return;
+        this.cfDrag = false; this.cf.style.cursor = "grab";
+        const step = this.cfStep || 300, n = this.cfCards.length;
+        const moved = Math.round(-this.cfDragDX / step);
+        if (Math.abs(this.cfDragDX) > 6 && window.__arengaSuppressClick) window.__arengaSuppressClick(400);
+        this.cfActive = ((this.cfActive + moved) % n + n) % n;
+        this.placeClients(true);
+      };
+      window.addEventListener("pointermove", this.onCfMove, { passive: true });
+      window.addEventListener("pointerup", this.onCfUp);
+      window.addEventListener("pointercancel", this.onCfUp);
+      this.cf.addEventListener("wheel", (e) => {
+        if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+        e.preventDefault();
+        const now = performance.now();
+        if (now - (this.cfWheelT || 0) < 420) return;
+        this.cfWheelT = now;
+        this.stepClient(e.deltaX > 0 ? 1 : -1);
+      }, { passive: false });
+    }
+    const prev = r.querySelector("[data-cf-prev]"), next = r.querySelector("[data-cf-next]");
+    if (prev && prev.dataset.cfBound !== "1") { prev.dataset.cfBound = "1"; prev.addEventListener("click", () => this.stepClient(-1)); }
+    if (next && next.dataset.cfBound !== "1") { next.dataset.cfBound = "1"; next.addEventListener("click", () => this.stepClient(1)); }
+    this.cfCounter = r.querySelector("[data-cf-counter]");
+    this.placeClients(false);
+    this.scheduleAuto();
+  }
+
+  scheduleAuto() {
+    clearTimeout(this.cfAutoT);
+    if (this.dead) return;
+    const s = Math.max(0.8, Number(this.props.clientsAuto ?? 2));
+    this.cfAutoT = setTimeout(() => this.autoStep(), s * 1000);
+  }
+
+  autoStep() {
+    if (this.dead || !this.cfCards) return;
+    const idle = !this.cfHover && (performance.now() - (this.cfUserT || 0) > 6000) && !document.hidden;
+    if (idle && this.cf) {
+      const r = this.cf.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < window.innerHeight) { this.cfActive = (this.cfActive + 1) % this.cfCards.length; this.placeClients(true); }
+    }
+    this.scheduleAuto();
+  }
+
+  stepClient(d) {
+    const n = this.cfCards ? this.cfCards.length : 0;
+    if (!n) return;
+    this.cfUserT = performance.now();
+    this.selectClient(((this.cfActive + d) % n + n) % n);
+  }
+
+  selectClient(i) {
+    if (!this.cfCards) return;
+    this.cfUserT = performance.now();
+    if (i === this.cfActive) return;
+    this.cfActive = i;
+    this.placeClients(true);
+  }
+
+  placeClients(animate, dragDX) {
+    const cf = this.cfCards;
+    if (!cf || !this.cf) return;
+    const dx = dragDX || 0;
+    const n = cf.length, a = this.cfActive;
+    const w = this.cf.clientWidth || 1400, mobile = w < 760;
+    const s = mobile ? Math.min(1, Math.max(0.7, w / 520)) : Math.min(1, Math.max(0.62, w / 1500));
+    const X = mobile ? [0, w * 0.6, w * 1.02, w * 1.36, w * 1.64] : [0, 372 * s, 680 * s, 920 * s, 1110 * s];
+    this.cfStep = X[1];
+    const S = [1, 0.84, 0.7, 0.6, 0.52], O = [1, 0.7, 0.4, 0.2, 0.08], B = [0, 0.6, 1.4, 2.2, 3];
+    // cards hang near the top of the box; the slack below is for the shadow and the absolute controls
+    const h = Math.round(430 * s + (mobile ? 162 : 152));
+    if (this.cfH !== h) { this.cfH = h; this.cf.style.height = h + "px"; }
+    const topPx = Math.round(215 * s + 60);
+    for (let i = 0; i < n; i++) if (cf[i].el.style.top !== topPx + "px") cf[i].el.style.top = topPx + "px";
+    const ez = "cubic-bezier(.2,.7,.2,1)";
+    for (let i = 0; i < n; i++) {
+      const c = cf[i];
+      let o = ((i - a) % n + n) % n;
+      if (o > n / 2) o -= n;
+      const k = Math.min(4, Math.abs(o)), sg = o < 0 ? -1 : 1, front = o === 0;
+      const sc = S[k] * s;
+      c.el.style.transition = animate ? ("transform 720ms " + ez + ", opacity 600ms ease, filter 600ms ease, box-shadow 500ms ease, background 500ms ease") : "none";
+      // while dragging the row slides as one; the hover engine appends its tilt between pre and post
+      c.el.__tfPre = "translate3d(" + (sg * X[k] + dx).toFixed(1) + "px,0,0) scale(" + sc.toFixed(4) + ")"; c.el.__tfPost = "";
+      c.el.style.transform = c.el.__tfPre + (c.el.__hoverTf || "") + c.el.__tfPost;
+      c.el.style.opacity = String(Math.abs(o) > 4 ? 0 : O[k]);
+      c.el.style.filter = B[k] ? "blur(" + B[k] + "px) saturate(0.7)" : "none";
+      c.el.style.zIndex = String(20 - k);
+      c.el.style.background = "transparent";
+      c.el.style.boxShadow = front ? "0 0 0 1.5px rgba(244,242,238,0.9), 0 44px 90px -30px rgba(0,0,0,0.9)" : "none";
+      if (c.logo) { c.logo.style.color = front ? "#f4f2ee" : "rgba(244,242,238,0.55)"; c.logo.style.transition = "transform 640ms " + ez; c.logo.style.transform = front ? "translate3d(0,-6px,0)" : "translate3d(0,0,0)"; }
+      const on = front ? "1" : "0";
+      if (c.skin) c.skin.style.opacity = on;
+      if (c.meta) c.meta.style.opacity = on;
+      if (c.foot) c.foot.style.opacity = on;
+      for (let j = 0; j < c.slots.length; j++) c.slots[j].style.pointerEvents = front ? "auto" : "none";
+    }
+    if (this.cfCounter) {
+      const txt = String(a + 1).padStart(2, "0") + " / " + String(n).padStart(2, "0");
+      if (this.cfCounter.textContent !== txt) this.cfCounter.textContent = txt;
+    }
+  }
+
+  // ---- loader (skipped when arriving through the page curtain)
+  startLoader() {
+    const el = this.loaderRef.current;
+    if (!el) return;
+    if (this.props.loader === false || window.__arengaArrived) {
+      el.style.display = "none"; this.loadDone = true;
+      setTimeout(() => { if (!this.dead) this.engine.release(); }, window.__arengaArrived ? 520 : 60);
+      this.landHash();
+      return;
+    }
+    this.loadDone = false; this.loadLeaving = false; this.loadShown = 0; this.loadT0 = 0; this.loadReady = false; this.loadLastV = -1;
+    el.style.display = ""; el.style.transition = "none"; el.style.transform = "translate3d(0,0,0)";
+    if (this.prevOverflow === undefined) this.prevOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    const fonts = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    const win = document.readyState === "complete" ? Promise.resolve() : new Promise(res => window.addEventListener("load", res, { once: true }));
+    const ready = () => { this.loadReady = true; };
+    Promise.all([fonts, win]).then(ready, ready);
+    clearTimeout(this.loadSafety);
+    this.loadSafety = setTimeout(ready, 6000);
+    // frames can be throttled (hidden tab); never leave the page gated behind the loader
+    clearTimeout(this.loadForce);
+    this.loadForce = setTimeout(() => { if (!this.dead && !this.loadDone && !this.loadLeaving) { this.loadLeaving = true; this.leaveLoader(); } }, 7500);
+  }
+
+  tickLoader(now, dt) {
+    if (this.loadDone || this.loadLeaving) return;
+    const el = this.loaderRef.current;
+    if (!el) return;
+    if (!this.loadT0) this.loadT0 = now;
+    const secs = Math.max(0.6, Number(this.props.loaderSeconds ?? 1));
+    const t = Math.min(1, (now - this.loadT0) / 1000 / secs);
+    let target = (1 - Math.pow(1 - t, 1.7)) * 100;
+    if (!this.loadReady) target = Math.min(target, 94);
+    this.loadShown += (target - this.loadShown) * (1 - Math.exp(-dt / 150));
+    if (target >= 99.99 && this.loadShown > 99.3) this.loadShown = 100;
+    const v = Math.round(this.loadShown);
+    if (v !== this.loadLastV && this.loaderNumRef.current) { this.loadLastV = v; this.loaderNumRef.current.textContent = String(v); }
+    if (this.loaderBarRef.current) this.loaderBarRef.current.style.transform = "scaleX(" + (this.loadShown / 100).toFixed(4) + ")";
+    if (this.loadShown >= 100) {
+      this.loadLeaving = true;
+      clearTimeout(this.loadTimer);
+      this.loadTimer = setTimeout(() => this.leaveLoader(), 380);
+    }
+  }
+
+  leaveLoader() {
+    const el = this.loaderRef.current;
+    if (!el) return;
+    const ease = "cubic-bezier(.8,0,.16,1)";
+    el.style.transition = "transform 1100ms " + ease;
+    el.style.transform = "translate3d(0,-101%,0)";
+    const inner = this.loaderInnerRef.current;
+    if (inner) { inner.style.transition = "transform 1100ms " + ease + ", opacity 620ms ease 120ms"; inner.style.transform = "translate3d(0,9vh,0)"; inner.style.opacity = "0"; }
+    document.documentElement.style.overflow = this.prevOverflow || "";
+    this.landHash();
+    clearTimeout(this.loadTimer);
+    this.loadTimer = setTimeout(() => { el.style.display = "none"; this.loadDone = true; }, 1200);
+    setTimeout(() => { if (!this.dead) this.engine.release(); }, 420);
+  }
+
+  landHash() {
+    const h = (window.location.hash || "").slice(1);
+    if (!h) return;
+    const el = document.getElementById(h);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + (window.scrollY || 0);
+    window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+    if (this.engine) this.engine.navLastY = undefined;
+  }
+
+  // ---- the solid mark: outline sampled once, extruded and shaded per frame on a 2D canvas
+  build() {
+    const NS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("width", "0"); svg.setAttribute("height", "0");
+    svg.style.cssText = "position:absolute;left:-9999px;width:0;height:0;overflow:hidden";
+    const p = document.createElementNS(NS, "path");
+    p.setAttribute("d", MARK_D);
+    svg.appendChild(p);
+    document.body.appendChild(svg);
+    const total = p.getTotalLength();
+    const n = 620, pts = [];
+    for (let i = 0; i < n; i++) {
+      const q = p.getPointAtLength((i / n) * total);
+      pts.push([q.x - MARK_W / 2, MARK_H / 2 - q.y]);
+    }
+    document.body.removeChild(svg);
+    this.outline = pts;
+    const raw = pts.map((a, i) => {
+      const b = pts[(i + 1) % pts.length];
+      const dx = b[0] - a[0], dy = b[1] - a[1];
+      const len = Math.hypot(dx, dy) || 1;
+      return [dy / len, -dx / len];
+    });
+    this.edgeNormals = raw.map((_, i) => {
+      let nx = 0, ny = 0;
+      for (let k = -2; k <= 2; k++) {
+        const w = 3 - Math.abs(k);
+        const r = raw[(i + k + raw.length) % raw.length];
+        nx += r[0] * w; ny += r[1] * w;
+      }
+      const l = Math.hypot(nx, ny) || 1;
+      return [nx / l, ny / l];
+    });
+  }
+
+  resize() {
+    const cv = this.canvasRef.current, st = this.stageRef.current;
+    if (!cv || !st) return;
+    const r = st.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.max(1, Math.round(r.width * dpr));
+    cv.height = Math.max(1, Math.round(r.height * dpr));
+    this.dpr = dpr; this.vw = r.width; this.vh = r.height;
+  }
+
+  onStageDown = (e) => {
+    this.dragging = true;
+    this.last = { x: e.clientX, y: e.clientY };
+    if (this.stageRef.current) this.stageRef.current.style.cursor = "grabbing";
+  };
+
+  blockDrag = (e) => { e.stopPropagation(); };
+
+  handleMove(e) {
+    if (!this.dragging) return;
+    const dx = e.clientX - this.last.x, dy = e.clientY - this.last.y;
+    this.last = { x: e.clientX, y: e.clientY };
+    this.vel = dx * 0.0022;
+    this.yaw += dx * 0.007;
+    this.pitch = Math.max(-1.1, Math.min(1.1, this.pitch + dy * 0.005));
+    this.dirty = true;
+  }
+
+  handleUp() {
+    this.dragging = false;
+    if (this.stageRef.current) this.stageRef.current.style.cursor = "grab";
+  }
+
+  draw() {
+    const cv = this.canvasRef.current;
+    if (!cv || !this.outline || !(this.vw > 2)) return;
+    const ctx = cv.getContext("2d");
+    const dpr = this.dpr || 1, W = this.vw, H = this.vh;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    const yaw = this.yaw, pitch = this.pitch;
+    const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const rot = (x, y, z) => {
+      const x1 = x * cy + z * sy, z1 = -x * sy + z * cy;
+      return [x1, y * cp - z1 * sp, y * sp + z1 * cp];
+    };
+    const base = [232, 230, 226], lo = [52, 55, 62], hi = [255, 255, 255];
+    const thick = Math.max(1, Number(this.props.thickness ?? 7));
+    const scale = Math.min(W * 0.5 / MARK_W, H * 0.66 / MARK_H);
+    const cxp = W * 0.68, cyp = H * 0.47;
+    const hz = (thick / 2) * scale;
+    const pts = this.outline, nrm = this.edgeNormals, n = pts.length;
+    const front = new Array(n), back = new Array(n);
+    for (let i = 0; i < n; i++) {
+      const x = pts[i][0] * scale, y = pts[i][1] * scale;
+      const f = rot(x, y, hz), b = rot(x, y, -hz);
+      front[i] = [cxp + f[0], cyp - f[1], f[2]];
+      back[i] = [cxp + b[0], cyp - b[1], b[2]];
+    }
+    const L = [-0.42, 0.58, 0.7];
+    const shadeOf = (nx, ny, nz) => {
+      const r = rot(nx, ny, nz);
+      const dot = r[0] * L[0] + r[1] * L[1] + r[2] * L[2];
+      return 0.22 + 0.36 * (0.5 + 0.5 * dot) + 0.42 * Math.pow(Math.max(0, dot), 1.6);
+    };
+    const colorAt = (sh) => rgb(sh < 0.62 ? mix(lo, base, sh / 0.62) : mix(base, hi, (sh - 0.62) / 0.38));
+    const faces = [];
+    for (let i = 0; i < n; i++) {
+      const j = (i + 1) % n;
+      const a = front[i], b = front[j], c = back[j], d = back[i];
+      const cross = (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+      if (cross <= 0) continue;
+      faces.push({ q: [a, b, c, d], z: (a[2] + b[2] + c[2] + d[2]) / 4, c: colorAt(shadeOf(nrm[i][0], nrm[i][1], 0)) });
+    }
+    faces.sort((a, b) => a.z - b.z);
+    const drawPoly = (poly, col, stroke) => {
+      ctx.fillStyle = col; ctx.strokeStyle = col; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(poly[0][0], poly[0][1]);
+      for (let k = 1; k < poly.length; k++) ctx.lineTo(poly[k][0], poly[k][1]);
+      ctx.closePath();
+      ctx.fill();
+      if (stroke) ctx.stroke();
+    };
+    const frontVisible = rot(0, 0, 1)[2] > 0;
+    drawPoly(frontVisible ? back : front, colorAt(0.2), false);
+    for (let i = 0; i < faces.length; i++) drawPoly(faces[i].q, faces[i].c, true);
+    const capPoly = frontVisible ? front : back;
+    drawPoly(capPoly, colorAt(shadeOf(0, 0, frontVisible ? 1 : -1)), false);
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(capPoly[0][0], capPoly[0][1]);
+    for (let k = 1; k < capPoly.length; k++) ctx.lineTo(capPoly[k][0], capPoly[k][1]);
+    ctx.closePath();
+    ctx.clip();
+    const gx = cxp - W * 0.18, gy = cyp - H * 0.28;
+    const grad = ctx.createLinearGradient(gx, gy, gx + W * 0.42, gy + H * 0.5);
+    grad.addColorStop(0, "rgba(255,255,255,0.22)");
+    grad.addColorStop(0.5, "rgba(255,255,255,0)");
+    grad.addColorStop(1, "rgba(40,44,52,0.18)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+  }
+
+  renderVals() {
+    const cc = this.state.c || {};
+    // the cylinder and the mobile marquee show liderazgo + equipo, taken from content.json when it is there
+    const fromCms = [].concat(Array.isArray(cc.leaders) ? cc.leaders : [], Array.isArray(cc.team) ? cc.team : [])
+      .filter(m => m && (m.name || m.photo))
+      .map((m, i) => ({ slot: "arenga-person-" + (i + 1), photo: m.photo || "", placeholder: "Retrato", name: m.name || "", role: m.role || "" }));
+    const team = fromCms;
+    // the stack follows cc.selected (a list of case titles from the panel); without it, the first three cases
+    const HOME_CASES = (() => {
+      const all = Array.isArray(cc.cases) ? cc.cases : [];
+      if (!all.length) return [];
+      const pick = Array.isArray(cc.selected) ? cc.selected : null;
+      if (!pick || !pick.length) return [all[0], all[1], all[3]].filter(Boolean);
+      const norm = (t) => String(t || "").trim().toLowerCase();
+      return pick.map(s => all.find(c => norm(c.title) === norm(s && s.title))).filter(Boolean);
+    })();
+    return {
+      rootRef: this.rootRef, stageRef: this.stageRef, canvasRef: this.canvasRef,
+      loaderRef: this.loaderRef, loaderInnerRef: this.loaderInnerRef, loaderBarRef: this.loaderBarRef, loaderNumRef: this.loaderNumRef,
+      onStageDown: this.onStageDown, blockDrag: this.blockDrag,
+      teamRing: team.concat(team.slice(0, 4)),
+      teamLoop: team.concat(team),
+      clients: (Array.isArray(cc.clients) ? cc.clients : []).map((b, i, all) => ({
+        slot: "arenga-client-" + (i + 1),
+        src: b.src || "",
+        placeholder: "Logo " + b.name,
+        name: b.name, sector: b.sector, tag: b.tag || "Cliente",
+        index: String(i + 1).padStart(2, "0") + " / " + String(all.length).padStart(2, "0")
+      })),
+      projects: HOME_CASES.map((x, i, all) => ({
+        index: String(i + 1).padStart(2, "0"),
+        of: String(all.length).padStart(2, "0"),
+        href: x.page || "#",
+        video: x.video || "",
+        slot: "arenga-case-" + String(x.title || i).toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        photo: x.cover || "",
+        placeholder: "Still \u2014 " + (x.title || ""),
+        kind: x.kind || "", title: x.title || "", year: ""
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
