@@ -4,9 +4,14 @@
    El mail sale por Cloudflare Email (binding send_email en wrangler.jsonc).
    Sin binding configurado el formulario avisa en pantalla en lugar de fallar mudo. */
 
+const CORS = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "POST, OPTIONS",
+  "access-control-allow-headers": "content-type"
+};
 const json = (o, status) => new Response(JSON.stringify(o), {
   status: status || 200,
-  headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }
+  headers: Object.assign({ "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }, CORS)
 });
 
 const clean = (v, max) => String(v == null ? "" : v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, "").trim().slice(0, max);
@@ -34,6 +39,7 @@ function mime(from, to, subject, replyTo, text) {
 }
 
 async function contact(request, env) {
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (request.method !== "POST") return json({ ok: false, error: "method_not_allowed" }, 405);
   let d;
   try { d = await request.json(); } catch (e) { return json({ ok: false, error: "bad_request" }, 400); }
