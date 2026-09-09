@@ -38,7 +38,18 @@
   input[type="file"] { color: rgba(244,242,238,0.55); font-size: 12px; }
 </style>
 </helmet>
-<div style="min-height: 100vh; display: flex; flex-direction: column; font-family: 'Hubot Sans', Helvetica, sans-serif; color: #f2efe9; background: radial-gradient(60vw 50vh at 10% -10%, rgba(255,87,21,0.16), rgba(255,87,21,0) 70%), radial-gradient(60vw 50vh at 100% 110%, rgba(40,234,155,0.14), rgba(40,234,155,0) 70%), #07090b;">
+<div ref="{{ gateRef }}" style="position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px; font-family: 'Hubot Sans', Helvetica, sans-serif; color: #f2efe9; background: radial-gradient(60vw 50vh at 10% -10%, rgba(255,87,21,0.16), rgba(255,87,21,0) 70%), radial-gradient(60vw 50vh at 100% 110%, rgba(40,234,155,0.14), rgba(40,234,155,0) 70%), #07090b;">
+  <div style="width: 100%; max-width: 340px; display: flex; flex-direction: column; gap: 12px;">
+    <svg viewBox="0 0 207 31" role="img" aria-label="Arenga" style="height: 22px; width: auto; color: #f4f2ee; margin-bottom: 10px;"><g fill="currentColor"><path d="M45.5435 7.84641L45.4397 8.03612C43.7536 11.1461 40.4758 13.0867 36.9054 13.0867H32.5423L34.263 17.8138H40.114L36.4336 24.6059C35.9523 25.4954 35.0149 26.049 33.9956 26.049H32.9513L31.7968 22.6L30.8436 19.7575L30.1925 17.8138H30.1296L23.9262 0H12.932L10.1103 4.95415L5.41691 13.1862L2.72104 17.9133L0.0629141 22.5783L0 23.1567H6.44241L6.50532 23.0447C8.2386 19.885 11.5825 17.9164 15.2189 17.9164H19.582L17.8613 13.1893H11.938L13.0075 11.2456L16.4678 4.95415H17.5121C18.503 4.95415 19.3838 5.57614 19.7047 6.50291L21.9916 13.0898L23.6714 17.8169L26.5938 26.049L28.3522 31.0031H39.3465L52.4106 8.42486L52.4735 7.84641H45.5435Z"></path></g></svg>
+    <span style="font-size: 13px; line-height: 1.5; color: rgba(244,242,238,0.55);">Panel de contenido. Entrá con tus credenciales.</span>
+    <input ref="{{ gateUserRef }}" type="text" autocomplete="username" placeholder="Usuario" style="width: 100%; padding: 13px 15px; border-radius: 12px; border: none; outline: none; font-size: 14px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.35), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 220ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.5), 0 0 0 1px rgba(255,87,21,0.65);">
+    <input ref="{{ gatePassRef }}" type="password" autocomplete="current-password" placeholder="Contraseña" style="width: 100%; padding: 13px 15px; border-radius: 12px; border: none; outline: none; font-size: 14px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.35), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 220ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.5), 0 0 0 1px rgba(255,87,21,0.65);">
+    <button onClick="{{ onGate }}" style="appearance: none; border: none; cursor: pointer; margin-top: 2px; padding: 13px 18px; border-radius: 999px; font-family: inherit; font-size: 14px; font-weight: 500; color: #07090c; background: #ff5715; transition: transform 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Entrar</button>
+    <span ref="{{ gateMsgRef }}" role="status" aria-live="polite" style="min-height: 16px; font-size: 12.5px; line-height: 1.4; color: rgba(244,242,238,0.5);"></span>
+    <a href="/" style="margin-top: 6px; font-size: 12.5px; color: rgba(244,242,238,0.45);">Volver al sitio</a>
+  </div>
+</div>
+<div ref="{{ shellRef }}" style="min-height: 100vh; display: none; flex-direction: column; font-family: 'Hubot Sans', Helvetica, sans-serif; color: #f2efe9; background: radial-gradient(60vw 50vh at 10% -10%, rgba(255,87,21,0.16), rgba(255,87,21,0) 70%), radial-gradient(60vw 50vh at 100% 110%, rgba(40,234,155,0.14), rgba(40,234,155,0) 70%), #07090b;">
 
   <header style="position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 18px clamp(18px, 3vw, 40px); background: rgba(7,9,11,0.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 1px 0 rgba(255,255,255,0.1);">
     <div style="display: flex; align-items: baseline; gap: 14px;">
@@ -148,7 +159,7 @@ const SITE_FILES = [
   "index.dc.html", "Arenga Trabajos.dc.html", "Arenga Proyecto.dc.html", "Arenga Proyecto RefMe.dc.html",
   "Arenga Proyecto Eigen.dc.html", "Arenga Proyecto Nacional.dc.html", "Arenga Proyecto Altoconcepto.dc.html",
   "Arenga Quienes Somos.dc.html", "Arenga Contacto.dc.html", "Arenga Admin.dc.html",
-  "support.js", "arenga-fx.js", "image-slot.js", "cms-store.js",
+  "support.js", "arenga-fx.js", "image-slot.js", "cms-store.js", "functions/api/contact.js",
   "noise.svg", "robots.txt", "404.html", "_redirects", "_headers", "wrangler.jsonc", ".assetsignore", ".gitignore", "CMS-ARCHITECTURE.md",
   "favicon-dark.svg", "favicon-light.svg",
   "favicon-dark.png", "favicon-light.png", "apple-touch-icon.png"
@@ -223,7 +234,42 @@ const SECTIONS = [
 class Component extends DCLogic {
   state = { data: null, version: null, section: "cases", status: "Leyendo el contenido publicado…", report: [], busy: false, cfg: { repo: "tomipotrero/arengaweb", branch: "main", path: "content.json", token: "" } };
 
+  gateRef = React.createRef();
+  shellRef = React.createRef();
+  gateUserRef = React.createRef();
+  gatePassRef = React.createRef();
+  gateMsgRef = React.createRef();
+
+  // puerta del panel: sólo esconde la entrada. Lo que protege de verdad es el
+  // token de GitHub, que no viaja al repositorio ni al sitio publicado.
+  gateOpen = () => {
+    if (this.gateRef.current) this.gateRef.current.style.display = "none";
+    if (this.shellRef.current) this.shellRef.current.style.display = "flex";
+  };
+  onGate = () => {
+    const u = this.gateUserRef.current, p = this.gatePassRef.current, msg = this.gateMsgRef.current;
+    const ok = u && p && u.value.trim().toLowerCase() === atob("cG90cmVybw==") && p.value === atob("cG90cmVuZXRhMjAyNQ==");
+    if (!ok) {
+      if (msg) { msg.textContent = "Usuario o contrase\u00f1a incorrectos."; msg.style.color = "#ff8d5a"; }
+      if (p) { p.value = ""; p.focus(); }
+      return;
+    }
+    if (msg) { msg.textContent = "Entrando\u2026"; msg.style.color = "#28ea9b"; }
+    try { sessionStorage.setItem("arenga-dev", "1"); } catch (e) {}
+    if (p) p.value = "";
+    this.gateOpen();
+  };
+
   componentDidMount() {
+    let authed = false;
+    try { authed = sessionStorage.getItem("arenga-dev") === "1"; } catch (e) {}
+    if (authed) this.gateOpen();
+    else {
+      const onKey = (e) => { if (e.key === "Enter" && (e.target === this.gateUserRef.current || e.target === this.gatePassRef.current)) { e.preventDefault(); this.onGate(); } };
+      document.addEventListener("keydown", onKey);
+      this.offKey = () => document.removeEventListener("keydown", onKey);
+      setTimeout(() => { if (this.gateUserRef.current) this.gateUserRef.current.focus(); }, 80);
+    }
     // restos de la arquitectura vieja: borrador e imágenes guardados en el
     // navegador. Eran la razón por la que una máquina veía cosas que no
     // estaban publicadas. Se migra lo que sirva y se borra el resto.
@@ -518,6 +564,7 @@ class Component extends DCLogic {
     }
 
     return {
+      gateRef: this.gateRef, shellRef: this.shellRef, gateUserRef: this.gateUserRef, gatePassRef: this.gatePassRef, gateMsgRef: this.gateMsgRef, onGate: this.onGate,
       status: s.status,
       report: (s.report || []).map(r => ({ label: r.label, color: r.t === "warn" ? "#ff8d5a" : r.t === "ok" ? "#28ea9b" : "rgba(244,242,238,0.55)" })),
       onVerify: this.onVerify,
