@@ -1,0 +1,42 @@
+# Canónica de cada página: la ruta limpia, no el archivo que la sirve.
+# Relativa a propósito: vale para el dominio final y para el de Pages sin tocar nada.
+/
+  Link: </>; rel="canonical"
+/trabajos
+  Link: </trabajos>; rel="canonical"
+/quienes-somos
+  Link: </quienes-somos>; rel="canonical"
+/contacto
+  Link: </contacto>; rel="canonical"
+/proyectos/megal
+  Link: </proyectos/megal>; rel="canonical"
+/proyectos/refme-pro
+  Link: </proyectos/refme-pro>; rel="canonical"
+/proyectos/eigencloud
+  Link: </proyectos/eigencloud>; rel="canonical"
+/proyectos/nacional
+  Link: </proyectos/nacional>; rel="canonical"
+/proyectos/altoconcepto
+  Link: </proyectos/altoconcepto>; rel="canonical"
+
+# El panel no se indexa
+/panel
+  X-Robots-Tag: noindex, nofollow
+
+# Caché: media/ lleva el hash del contenido en el nombre, así que es inmutable
+/media/*
+  Cache-Control: public, max-age=31536000, immutable
+/work/*
+  Cache-Control: public, max-age=604800
+/team/*
+  Cache-Control: public, max-age=604800
+/logos/*
+  Cache-Control: public, max-age=604800
+# el contenido tiene que poder cambiar al instante
+/content.json
+  Cache-Control: no-cache
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
