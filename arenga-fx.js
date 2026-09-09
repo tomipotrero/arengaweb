@@ -330,7 +330,57 @@
       if (mode !== "lines" && tn && tn.parentNode === el && el.childNodes.length === 1) tn.data = v;
       else setLines(el, v);
     });
-    // alt de cada imagen: sale del mismo CMS, así nunca queda desfasado del contenido
+    // ficha de la entidad para buscadores y motores de respuestas: se arma con los datos
+  // del CMS, así el dato estructurado no puede contradecir lo que dice la página
+  function ldBase(c) {
+    var o = (c.runtime && c.runtime.canonicalOrigin) || "";
+    if (o) return o.replace(/\/$/, "");
+    return /\.dc\.html$/i.test(location.pathname) ? "" : location.origin;
+  }
+  function buildLd(c) {
+    var nodes = document.querySelectorAll("script[data-cms-ld]");
+    if (!nodes.length) return;
+    var base = ldBase(c), site = c.site || {};
+    var social = ["instagram", "linkedin", "x"].map(function (k) { return site[k]; })
+      .filter(function (u) { return u && /^https?:\/\//i.test(u); });
+    var city = String(site.city || "").split("·").map(function (s) { return s.trim(); });
+    var org = {
+      "@type": "Organization",
+      name: "Arenga",
+      description: (c.about && c.about.text) || "",
+      knowsAbout: (c.caps || []).map(function (x) { return x && x.title; }).filter(Boolean)
+    };
+    if (base) { org["@id"] = base + "/#arenga"; org.url = base + "/"; }
+    if (site.email) org.email = site.email;
+    if (city[0]) org.address = { "@type": "PostalAddress", addressLocality: city[0], addressCountry: city[1] === "Uruguay" ? "UY" : city[1] || undefined };
+    if (social.length) org.sameAs = social;
+    var brands = (c.brands || []).filter(function (b) { return b && b.name; });
+    if (brands.length) org.parentOrganization = brands.map(function (b) { return { "@type": "Organization", name: b.name, url: b.url || undefined }; });
+    Array.prototype.forEach.call(nodes, function (el) {
+      var kind = el.getAttribute("data-cms-ld") || "", data = null;
+      if (kind === "org") {
+        data = Object.assign({ "@context": "https://schema.org" }, org);
+        if (el.hasAttribute("data-cms-ld-people")) {
+          var people = [].concat(c.leaders || [], c.team || []).filter(function (p) { return p && p.name; });
+          if (people.length) data.employee = people.map(function (p) { return { "@type": "Person", name: p.name, jobTitle: p.role || undefined }; });
+        }
+      } else if (kind.indexOf("case:") === 0) {
+        var cs = (c.cases || [])[Number(kind.slice(5))];
+        if (!cs) return;
+        data = {
+          "@context": "https://schema.org", "@type": "CreativeWork",
+          name: cs.title, description: cs.intro || "",
+          creator: base ? { "@id": base + "/#arenga" } : { "@type": "Organization", name: "Arenga" },
+          keywords: cs.services || undefined
+        };
+        if (cs.client) data.about = { "@type": "Organization", name: cs.client };
+        if (base && cs.page) data.url = base + cs.page;
+      }
+      if (data) el.textContent = JSON.stringify(data);
+    });
+  }
+
+  // alt de cada imagen: sale del mismo CMS, así nunca queda desfasado del contenido
     Array.prototype.forEach.call(document.querySelectorAll("[data-cms-alt]"), function (el) {
       var path = el.getAttribute("data-cms-alt"), v = dig(c, path);
       if (v == null || v === "") return;
@@ -340,6 +390,7 @@
       if (el.getAttribute("alt") !== alt) el.setAttribute("alt", alt);
     });
     devLinks();
+    buildLd(c);
     ENGINES.forEach(function (e) {
       if (reType) { e.typeRecs = e.typeRecs.filter(function (r) { return r.el.__typeRec === r; }); e.initType(e.root); }
       if (reBlur) { e.blurEls = e.blurEls.filter(function (x) { return x.__blur; }); e.initBlur(e.root); e.blurFallback(); }
