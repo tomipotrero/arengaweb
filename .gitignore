@@ -1,0 +1,11 @@
+# credenciales del panel: token de GitHub — nunca al repositorio
+admin.state.json
+
+# material de trabajo que no forma parte del sitio publicado
+uploads/
+audit/
+drive-inventory.md
+
+# restos de la arquitectura vieja de imágenes (ya no se usa)
+.image-slots.state.json
+.thumbnail
