@@ -168,10 +168,11 @@
           <input ref="{{ emailRef }}" type="email" placeholder="Tu email" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
         </div>
         <input ref="{{ companyRef }}" type="text" placeholder="Marca o empresa" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
+        <input ref="{{ hpRef }}" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="No completar" style="position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;">
         <textarea ref="{{ msgRef }}" rows="5" placeholder="Contanos del proyecto" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; resize: vertical; font-family: inherit; font-size: 15px; line-height: 1.6; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);"></textarea>
         <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 6px;">
-          <button onClick="{{ sendMail }}" style="padding: 15px 28px; border-radius: 999px; border: none; font-family: inherit; font-size: 15px; font-weight: 500; color: #07090c; background: #ff5715; cursor: pointer; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Enviar mensaje</button>
-          <span style="font-size: 13px; color: rgba(244,242,238,0.5);">Se abre en tu cliente de mail</span>
+          <button ref="{{ btnRef }}" onClick="{{ sendForm }}" style="padding: 15px 28px; border-radius: 999px; border: none; font-family: inherit; font-size: 15px; font-weight: 500; color: #07090c; background: #ff5715; cursor: pointer; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Enviar mensaje</button>
+          <span ref="{{ statusRef }}" role="status" aria-live="polite" style="font-size: 13px; line-height: 1.4; color: rgba(244,242,238,0.5);">Te respondemos por mail</span>
         </div>
       </div>
     </div>
@@ -180,15 +181,7 @@
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><ellipse cx="12" cy="12" rx="4" ry="9"></ellipse><path d="M3.4 9.2h17.2M3.4 14.8h17.2"></path></svg>
         <span data-cms="site.city">Montevideo · Uruguay</span>
       </div>
-      <span data-foot-legal="1" style="display: inline-flex; align-items: center; gap: 22px; flex-wrap: wrap;"><span data-cms="site.copyright" style="opacity: 0.7;">Arenga © 2026</span><span data-dev="1" style="position: relative; display: inline-flex; align-items: center;">
-        <button data-dev-toggle="1" aria-expanded="false" style="appearance: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; padding: 4px 0; font-family: inherit; font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: rgba(244,242,238,0.4); background: transparent; transition: color 220ms ease;" style-hover="color: rgba(244,242,238,0.8);">Dev Utilities<svg data-dev-caret="1" viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 320ms cubic-bezier(.2,.7,.2,1);"><path d="M6 15l6-6 6 6"></path></svg></button>
-        <span data-dev-panel="1" style="position: absolute; right: 0; bottom: calc(100% + 12px); z-index: 5; width: 236px; display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 16px; opacity: 0; pointer-events: none; transform: translate3d(0,8px,0); transition: opacity 260ms ease, transform 380ms cubic-bezier(.2,.7,.2,1); background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)), rgba(9,12,16,0.86); backdrop-filter: blur(14px) saturate(130%); -webkit-backdrop-filter: blur(14px) saturate(130%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.6), inset 0 -1.2px 0.5px rgba(255,255,255,0.28), 0 0 0 1px rgba(255,255,255,0.12), 0 26px 50px -24px rgba(0,0,0,0.9);">
-          <input data-dev-user="1" type="text" autocomplete="off" placeholder="Usuario" style="width: 100%; padding: 11px 13px; border-radius: 11px; border: none; outline: none; font-family: inherit; font-size: 13px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.35), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 220ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.5), 0 0 0 1px rgba(255,87,21,0.65);">
-          <input data-dev-pass="1" type="password" autocomplete="off" placeholder="Contraseña" style="width: 100%; padding: 11px 13px; border-radius: 11px; border: none; outline: none; font-family: inherit; font-size: 13px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.35), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 220ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.5), 0 0 0 1px rgba(255,87,21,0.65);">
-          <button data-dev-submit="1" style="appearance: none; border: none; cursor: pointer; margin-top: 2px; padding: 11px 14px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 500; color: #07090c; background: #ff5715; transition: transform 220ms cubic-bezier(.2,.7,.2,1);" style-hover="transform: translateY(-1px);">Entrar</button>
-          <span data-dev-msg="1" style="min-height: 14px; font-size: 11.5px; line-height: 1.35; color: rgba(244,242,238,0.5);"></span>
-        </span>
-      </span><span style="display: inline-flex; align-items: center; gap: 10px;"><span style="opacity: 0.7;">Designed and produced by</span><a href="https://potrero.com.uy/" target="_blank" rel="noopener" aria-label="Potrero" style="display: inline-flex; align-items: center; color: #f4f2ee; opacity: 0.85; transition: opacity 220ms ease, color 220ms ease;" style-hover="opacity: 1; color: #ff5715;"><svg viewBox="0 0 1822 343" style="height: 13px; width: auto; display: block;" aria-hidden="true"><use href="#potrero-wordmark"></use></svg></a></span></span>
+      <span data-foot-legal="1" style="display: inline-flex; align-items: center; gap: 22px; flex-wrap: wrap;"><span data-cms="site.copyright" style="opacity: 0.7;">Arenga © 2026</span><span style="display: inline-flex; align-items: center; gap: 10px;"><span style="opacity: 0.7;">Designed and produced by</span><a href="https://potrero.com.uy/" target="_blank" rel="noopener" aria-label="Potrero" style="display: inline-flex; align-items: center; color: #f4f2ee; opacity: 0.85; transition: opacity 220ms ease, color 220ms ease;" style-hover="opacity: 1; color: #ff5715;"><svg viewBox="0 0 1822 343" style="height: 13px; width: auto; display: block;" aria-hidden="true"><use href="#potrero-wordmark"></use></svg></a></span></span>
     </div>
   </footer>
 </div>
@@ -200,13 +193,43 @@ class Component extends DCLogic {
   emailRef = React.createRef();
   companyRef = React.createRef();
   msgRef = React.createRef();
+  hpRef = React.createRef();
+  btnRef = React.createRef();
+  statusRef = React.createRef();
 
-  sendMail = () => {
+  // el mensaje viaja al servicio del sitio; nunca abre el cliente de mail
+  sendForm = async () => {
+    if (this.sending) return;
     const v = (r) => (r.current ? r.current.value.trim() : "");
-    const n = v(this.nameRef), e = v(this.emailRef), c = v(this.companyRef), m = v(this.msgRef);
-    const subject = "Proyecto \u2014 " + (c || n || "nuevo contacto");
-    const body = (m || "") + "\n\n" + [n, c, e].filter(Boolean).join("\n");
-    window.location.href = "mailto:hola@arenga.uy?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    const btn = this.btnRef.current, st = this.statusRef.current;
+    const say = (t, c) => { if (st) { st.textContent = t; st.style.color = c || "rgba(244,242,238,0.5)"; } };
+    const fail = "No pudimos enviarlo. Prob\u00e1 de nuevo en un momento o escribinos a hola@arenga.uy.";
+    const name = v(this.nameRef), email = v(this.emailRef), company = v(this.companyRef), message = v(this.msgRef);
+    if (!message) { say("Contanos algo del proyecto antes de enviar.", "#ff8d5a"); if (this.msgRef.current) this.msgRef.current.focus(); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) { say("Dejanos un email v\u00e1lido para poder responderte.", "#ff8d5a"); if (this.emailRef.current) this.emailRef.current.focus(); return; }
+    this.sending = true;
+    if (btn) { btn.disabled = true; btn.style.opacity = "0.62"; btn.textContent = "Enviando\u2026"; }
+    say("");
+    try {
+      const r = await fetch(window.ARENGA_FORM_ENDPOINT || "/api/contact", {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name, email, company, message, website: v(this.hpRef), page: location.pathname })
+      });
+      const out = await r.json().catch(() => ({}));
+      if (r.ok && out.ok) {
+        [this.nameRef, this.emailRef, this.companyRef, this.msgRef].forEach(x => { if (x.current) x.current.value = ""; });
+        if (btn) btn.textContent = "Mensaje enviado";
+        say("Recibido. Te escribimos a " + email + ".", "#28ea9b");
+      } else {
+        if (btn) btn.textContent = "Enviar mensaje";
+        say(out.error === "not_configured" ? "El env\u00edo todav\u00eda no est\u00e1 configurado. Escribinos a hola@arenga.uy." : fail, "#ff8d5a");
+      }
+    } catch (e) {
+      if (btn) btn.textContent = "Enviar mensaje";
+      say(fail, "#ff8d5a");
+    }
+    this.sending = false;
+    if (btn) { btn.disabled = false; btn.style.opacity = "1"; }
   };
 
   componentDidMount() {
@@ -228,7 +251,8 @@ class Component extends DCLogic {
     const rows = Array.isArray(cms.cases) ? cms.cases : [];
     const previews = rows.map((r, i) => ({ index: String(i + 1).padStart(2, "0"), title: r.title, kind: r.kind, year: r.stat, href: r.page || "#", photo: r.cover || "", slot: "arenga-case-" + (i + 1), placeholder: "Still \u2014 " + r.title }));
     return {
-      rootRef: this.rootRef, nameRef: this.nameRef, emailRef: this.emailRef, companyRef: this.companyRef, msgRef: this.msgRef, sendMail: this.sendMail,
+      rootRef: this.rootRef, nameRef: this.nameRef, emailRef: this.emailRef, companyRef: this.companyRef, msgRef: this.msgRef,
+      hpRef: this.hpRef, btnRef: this.btnRef, statusRef: this.statusRef, sendForm: this.sendForm,
       previews: previews.concat(previews, previews)
     };
   }
