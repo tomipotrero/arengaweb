@@ -191,12 +191,12 @@ const SECTIONS = [
   { key: "clients", label: "Clientes", title: "Clientes del carrusel", help: "Marcas del carrusel del home. El logo se ve mejor en SVG o PNG con fondo transparente.", list: true, add: "Agregar cliente",
     name: (it, i) => it.name || ("Cliente " + (i + 1)),
     fields: [{ k: "name", label: "Nombre" }, { k: "sector", label: "Rubro" }, { k: "tag", label: "Etiqueta", hint: "Caso o Cliente" }, { k: "slug", label: "Identificador", hint: "club-nacional" }, { k: "src", label: "Logo", image: true, span: "1 / -1" }] },
-  { key: "selected", label: "Selected work", title: "Selected work del home", help: "Qué casos aparecen en la pila del home y en qué orden. El nombre tiene que coincidir con el título del caso; agregá o quitá tarjetas para cambiar la cantidad.", list: true, add: "Agregar caso al home",
+  { key: "selected", label: "Selección de trabajos", title: "Selección de trabajos del home", help: "Qué casos aparecen en la pila del home y en qué orden. El nombre tiene que coincidir con el título del caso; agregá o quitá tarjetas para cambiar la cantidad.", list: true, add: "Agregar caso al home",
     name: (it, i) => it.title || ("Caso " + (i + 1)),
     fields: [{ k: "title", label: "Caso", from: "cases", span: "1 / -1" }] },
   { key: "home", label: "Textos del home", title: "Textos del home", help: "Titulares y bajadas de la portada.", fields: [
       { k: "heroTitle", label: "Título del hero", hint: "Un renglón por línea: Somos / Arenga.", area: true, span: "1 / -1" }, { k: "heroText", label: "Texto del hero", area: true, span: "1 / -1" },
-      { k: "workTitle", label: "Título de Selected work" }, { k: "workText", label: "Bajada de Selected work" },
+      { k: "workTitle", label: "Título de la selección" }, { k: "workText", label: "Bajada de la selección" },
       { k: "clientsTitle", label: "Título de clientes" }, { k: "clientsText", label: "Bajada de clientes" },
       { k: "teamTitle", label: "Título del equipo" }, { k: "teamText", label: "Bajada del equipo" }
     ] },
