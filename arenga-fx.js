@@ -376,50 +376,6 @@
   window.ArengaContent = loadContent;
   window.ArengaApplyContent = applyContent;
 
-  /* ---- footer "Dev Utilities": collapsible gate into the content panel ----
-     A client-side check only hides the entrance; the panel's real protection is the GitHub token. */
-  var DEV_U = atob("cG90cmVybw=="), DEV_P = atob("cG90cmVuZXRhMjAyNQ=="), ADMIN = "/panel";
-  function devSet(wrap, open) {
-    var panel = wrap.querySelector("[data-dev-panel]"), btn = wrap.querySelector("[data-dev-toggle]"), caret = wrap.querySelector("[data-dev-caret]");
-    wrap.setAttribute("data-open", open ? "1" : "0");
-    if (btn) btn.setAttribute("aria-expanded", open ? "true" : "false");
-    if (caret) caret.style.transform = open ? "rotate(180deg)" : "rotate(0deg)";
-    if (!panel) return;
-    panel.style.opacity = open ? "1" : "0";
-    panel.style.pointerEvents = open ? "auto" : "none";
-    panel.style.transform = open ? "translate3d(0,0,0)" : "translate3d(0,8px,0)";
-    if (open) { var u = wrap.querySelector("[data-dev-user]"); if (u) setTimeout(function () { u.focus(); }, 60); }
-  }
-  function devTry(wrap) {
-    var u = wrap.querySelector("[data-dev-user]"), p = wrap.querySelector("[data-dev-pass]"), msg = wrap.querySelector("[data-dev-msg]");
-    var ok = u && p && u.value.trim().toLowerCase() === DEV_U && p.value === DEV_P;
-    if (msg) { msg.textContent = ok ? "Entrando…" : "Usuario o contraseña incorrectos."; msg.style.color = ok ? "#28ea9b" : "#ff5715"; }
-    if (!ok) { if (p) { p.value = ""; p.focus(); } return; }
-    try { sessionStorage.setItem("arenga-dev", "1"); } catch (e) {}
-    if (p) p.value = "";
-    setTimeout(function () { var t = devHref(ADMIN); if (typeof leaveTo === "function") leaveTo(t); else location.href = t; }, 260);
-  }
-  document.addEventListener("click", function (e) {
-    var t = e.target && e.target.closest ? e.target.closest("[data-dev-toggle],[data-dev-submit]") : null;
-    if (t) {
-      e.preventDefault();
-      var wrap = t.closest("[data-dev]");
-      if (!wrap) return;
-      if (t.hasAttribute("data-dev-submit")) devTry(wrap);
-      else devSet(wrap, wrap.getAttribute("data-open") !== "1");
-      return;
-    }
-    // clicking anywhere else closes an open gate
-    Array.prototype.forEach.call(document.querySelectorAll('[data-dev][data-open="1"]'), function (w) {
-      if (!e.target || !e.target.closest || !e.target.closest("[data-dev]")) devSet(w, false);
-    });
-  });
-  document.addEventListener("keydown", function (e) {
-    var wrap = e.target && e.target.closest ? e.target.closest("[data-dev]") : null;
-    if (e.key === "Escape") { Array.prototype.forEach.call(document.querySelectorAll('[data-dev][data-open="1"]'), function (w) { devSet(w, false); }); return; }
-    if (e.key === "Enter" && wrap && e.target.matches("[data-dev-user],[data-dev-pass]")) { e.preventDefault(); devTry(wrap); }
-  });
-
   /* ---- wide frames + vertical photos: <image-slot> emulates cover with its own transform, so a
      portrait gets centre-cropped and loses the head. Pin its crop to the top of the image instead.
      Runs on any source (file, data URL, late load) and leaves a hand-reframed slot alone. ---- */
