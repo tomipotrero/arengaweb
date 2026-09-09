@@ -26,10 +26,11 @@ Sitio (las 9 páginas)
 
 ## Vista previa vs. sitio publicado
 
-La copia del proyecto es una **caché de trabajo**, no la fuente. En la vista previa (`window.omelette`, `file://`, `localhost`, o cuando `runtime.canonicalOrigin` no coincide con el origen actual) `arenga-fx.js`:
+La copia del proyecto es una **caché de trabajo y el artefacto de despliegue**, no la fuente. En la vista previa (`window.omelette`, `file://`, `localhost`, o cuando `runtime.canonicalOrigin` no coincide con el origen actual) `arenga-fx.js`:
 
-- compara `content.json` local con el publicado — **una** llamada por carga, sin polling — y muestra un sello abajo a la izquierda: *igual al repo* o *⚠ distinto del repo*;
-- resuelve desde el repositorio las imágenes que el CMS referencia y esta copia todavía no tiene, en memoria y sólo por esa carga.
+- lee `content.json` **del repositorio** — una llamada por carga, sin polling — y renderiza eso: publicar desde el panel alcanza para que se vea acá, en otra computadora y en otra sesión, sin sincronizar nada a mano;
+- resuelve desde el repositorio las imágenes que el contenido publicado referencia y esta copia todavía no tiene, en memoria y sólo por esa carga;
+- muestra un sello abajo a la izquierda con la procedencia (*contenido publicado · repo @ sha*), o avisa si tuvo que caer a la copia local porque el repositorio no contestó.
 
 En el sitio publicado nada de esto corre: `content.json` y las imágenes vienen del mismo origen.
 
