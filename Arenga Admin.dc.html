@@ -130,7 +130,7 @@
         </section>
       </sc-for>
 
-      <p style="margin: 6px 0 40px; font-size: 12.5px; line-height: 1.6; color: rgba(244,242,238,0.45);">content.json es la única fuente: las nueve páginas lo leen en cada carga y no guardan nada en el navegador. Publicar sube el contenido y las imágenes al repositorio, verifica que el repositorio devuelva exactamente lo publicado y borra de media/ las imágenes que quedaron sin uso. Hasta que toques Publicar, los cambios son un borrador de este navegador y el sitio sigue mostrando lo publicado.</p>
+      <p style="margin: 6px 0 40px; font-size: 12.5px; line-height: 1.6; color: rgba(244,242,238,0.45);">content.json en el repositorio es la única fuente: el sitio y la vista previa lo leen en cada carga y no guardan nada en el navegador. Publicar sube el contenido y las imágenes, verifica que el repositorio devuelva exactamente lo publicado y borra de media/ las imágenes que quedaron sin uso; desde ese momento se ve en cualquier navegador y en cualquier computadora. Hasta que toques Publicar, los cambios son un borrador de este navegador.</p>
     </main>
   </div>
 </div>
@@ -312,7 +312,7 @@ class Component extends DCLogic {
       const audit = await svc.audit(data || this.state.data || {});
       if (this.dead) return;
       const report = [];
-      report.push({ t: cmp.inSync ? "ok" : "warn", label: cmp.inSync ? "content.json del proyecto = el publicado" : "content.json del proyecto ≠ el publicado (publicá para igualarlos)" });
+      report.push({ t: cmp.inSync ? "ok" : "info", label: cmp.inSync ? "La copia del proyecto es igual a lo publicado" : "La copia del proyecto quedó atrás — el sitio y la vista previa igual muestran lo publicado" });
       report.push({ t: audit.missingRemote.length ? "warn" : "ok", label: audit.missingRemote.length ? audit.missingRemote.length + " imágenes del CMS no están en el repositorio: " + audit.missingRemote.slice(0, 4).join(", ") : audit.refs.length + " imágenes del CMS, todas en el repositorio" });
       if (audit.missingLocal.length) report.push({ t: "info", label: audit.missingLocal.length + " imágenes están en el repositorio pero no en esta copia del proyecto: el sitio las lee del repositorio" });
       if (audit.orphans.length) report.push({ t: "info", label: audit.orphans.length + " imágenes sin uso en media/ — se borran solas en el próximo Publicar" });
