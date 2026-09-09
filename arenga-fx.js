@@ -330,6 +330,15 @@
       if (mode !== "lines" && tn && tn.parentNode === el && el.childNodes.length === 1) tn.data = v;
       else setLines(el, v);
     });
+    // alt de cada imagen: sale del mismo CMS, así nunca queda desfasado del contenido
+    Array.prototype.forEach.call(document.querySelectorAll("[data-cms-alt]"), function (el) {
+      var path = el.getAttribute("data-cms-alt"), v = dig(c, path);
+      if (v == null || v === "") return;
+      var own = el.getAttribute("data-cms") || "";
+      var still = own.match(/\.stills\.(\d+)$/);
+      var alt = still ? v + " — imagen " + (Number(still[1]) + 2) : (/^brands\./.test(path) ? "Logo de " + v : v);
+      if (el.getAttribute("alt") !== alt) el.setAttribute("alt", alt);
+    });
     ENGINES.forEach(function (e) {
       if (reType) { e.typeRecs = e.typeRecs.filter(function (r) { return r.el.__typeRec === r; }); e.initType(e.root); }
       if (reBlur) { e.blurEls = e.blurEls.filter(function (x) { return x.__blur; }); e.initBlur(e.root); e.blurFallback(); }
