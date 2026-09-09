@@ -8,3 +8,5 @@ admin.state.json
 *.md
 audit
 scraps
+worker.js
+functions
