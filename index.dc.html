@@ -63,6 +63,13 @@
   /* el marco punteado y el cartel de "soltá una imagen" son ayudas de edición:
      en el sitio publicado sólo se ve la foto (o el fondo mientras carga) */
   image-slot::part(ring), image-slot::part(empty) { display: none; }
+  /* el dedo sobre una foto tiene que hacer scroll: el bloqueo del componente
+     existe para reencuadrar al editar, no para leer el sitio */
+  image-slot::part(image) { touch-action: pan-y; }
+  /* Safari no recorta overflow:hidden cuando la tarjeta está transformada y
+     las esquinas salen cuadradas: cada capa lleva su propio radio */
+  [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
+  image-slot::part(frame) { border-radius: inherit; }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } }
   /* móvil: la marca 3D ocupa la mitad de abajo del hero; el swipe vertical sigue haciendo scroll */
   @media (max-width: 760px) { [data-m-stage] { touch-action: pan-y !important; } [data-hero-wrap] { justify-content: flex-start !important; } }  @media (min-width: 761px) { [data-m-only] { display: none !important; } }
