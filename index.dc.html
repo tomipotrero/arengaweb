@@ -60,6 +60,9 @@
   a:hover { color: #28ea9b; }
   input::placeholder, textarea::placeholder { color: rgba(244,242,238,0.45); }
   image-slot[fit="contain"]::part(frame) { background: transparent; }
+  /* el marco punteado y el cartel de "soltá una imagen" son ayudas de edición:
+     en el sitio publicado sólo se ve la foto (o el fondo mientras carga) */
+  image-slot::part(ring), image-slot::part(empty) { display: none; }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } }
   /* móvil: la marca 3D ocupa la mitad de abajo del hero; el swipe vertical sigue haciendo scroll */
   @media (max-width: 760px) { [data-m-stage] { touch-action: pan-y !important; } [data-hero-wrap] { justify-content: flex-start !important; } }  @media (min-width: 761px) { [data-m-only] { display: none !important; } }
@@ -143,7 +146,7 @@
     <div data-hero-wrap="1" style="position: relative; z-index: 15; min-height: max(100vh, 760px); display: flex; flex-direction: column; justify-content: center; gap: 34px; padding: clamp(110px, 16vh, 150px) clamp(30px, 5.2vw, 104px) clamp(48px, 9vh, 120px); pointer-events: none;">
       <div data-hero-copy="1" data-m-full="1" style="max-width: min(900px, 64%); display: flex; flex-direction: column; gap: clamp(22px, 3vh, 34px); will-change: transform, opacity;">
         <h1 data-cms="home.heroTitle" data-cms-mode="lines" data-blur="hero" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(76px, 11.4vw, 196px); font-weight: 400; line-height: 0.88; letter-spacing: -0.045em; color: #f4f2ee;">Somos<br>Arenga.</h1>
-        <p data-cms="home.heroText" data-type="1" style="margin: 0; max-width: 38ch; font-size: clamp(17px, 1.25vw, 21px); line-height: 1.55; color: rgba(242,239,233,0.74);">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
+        <p data-cms="home.heroText" style="margin: 0; max-width: 38ch; font-size: clamp(17px, 1.25vw, 21px); line-height: 1.55; color: rgba(242,239,233,0.74);">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
         <a data-m-hide="1" href="#work" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14.5px; font-weight: 500; color: rgba(244,242,238,0.78); text-decoration: none; transition: color 240ms ease;" style-hover="color: #f4f2ee;">
           <span data-bob="1" style="flex: none; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; color: #28ea9b; animation: arenga-bob 2.4s cubic-bezier(.45,0,.55,1) infinite;">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v13M6 12l6 6 6-6"></path></svg>
@@ -321,6 +324,11 @@ class Component extends DCLogic {
 
   componentDidMount() {
     if (window.ArengaContent) window.ArengaContent().then(c => { if (c && !this.dead) this.setState({ c }); });
+    // el ancho decide qué portada usan las tarjetas de trabajos (vertical en teléfono)
+    this.mqm = window.matchMedia("(max-width: 760px)");
+    this.onMq = () => { if (!this.dead) this.forceUpdate(); };
+    if (this.mqm.addEventListener) this.mqm.addEventListener("change", this.onMq);
+    else this.mqm.addListener(this.onMq);
     this.yaw = -0.55; this.pitch = 0.34; this.vel = 0.0022; this.dragging = false; this.dirty = true;
     this.build();
     this.resize();
@@ -949,6 +957,7 @@ class Component extends DCLogic {
 
   renderVals() {
     const cc = this.state.c || {};
+    const narrow = !!(this.mqm ? this.mqm.matches : (window.matchMedia && window.matchMedia("(max-width: 760px)").matches));
     // the cylinder and the mobile marquee show liderazgo + equipo, taken from content.json when it is there
     const fromCms = [].concat(Array.isArray(cc.leaders) ? cc.leaders : [], Array.isArray(cc.team) ? cc.team : [])
       .filter(m => m && (m.name || m.photo))
@@ -982,7 +991,7 @@ class Component extends DCLogic {
         href: x.page || "#",
         video: x.video || "",
         slot: "arenga-case-" + String(x.title || i).toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        photo: x.cover || "",
+        photo: (narrow && x.coverMobile) || x.cover || "",
         placeholder: "Still \u2014 " + (x.title || ""),
         kind: x.kind || "", title: x.title || "", year: ""
       }))
