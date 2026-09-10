@@ -3,3 +3,5 @@ Allow: /
 Disallow: /panel
 Disallow: /Arenga%20Admin.dc.html
 Disallow: /admin.state.json
+
+Sitemap: https://arenga.uy/sitemap.xml
