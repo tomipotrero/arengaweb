@@ -80,6 +80,8 @@
     [data-hero-wrap] { padding-left: 18px !important; padding-right: 18px !important; }
     [data-hero-copy] h1 { font-size: clamp(72px, 24vw, 150px) !important; white-space: normal !important; line-height: 0.9 !important; letter-spacing: -0.055em !important; }
     [data-hero-copy] p { font-size: 19.5px !important; max-width: 26ch !important; }
+    /* el titular entra en dos líneas exactas: la última palabra baja sola */
+    [data-hero-copy] h1 span:last-of-type { display: block !important; }
     [data-hero-copy] a[data-m-hide] { display: inline-flex !important; margin-top: auto !important; padding-top: clamp(34px, 14vh, 130px) !important; }
     [data-hero-copy] [data-m-only] { display: none !important; }
   }  @media (min-width: 761px) { [data-m-only] { display: none !important; } }
@@ -144,7 +146,7 @@
     </div>
   </div>
 
-  <section ref="{{ heroStageRef }}" style="position: relative; height: 420vh;">
+  <section ref="{{ heroStageRef }}" style="position: relative; height: 320vh;">
    <div ref="{{ heroPinRef }}" style="position: sticky; top: 0; height: 100vh; overflow: hidden;">
     <div style="position: absolute; inset: 0;">
       <canvas ref="{{ canvasRef }}" data-hero-canvas="1" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y;"></canvas>
@@ -993,6 +995,11 @@ class Component extends DCLogic {
     this.fp = { x: -1e4, y: -1e4, px: -1e4, py: -1e4, on: false };
     this.fwaves = []; this.ft = 0; this.flift = 0; this.fsv = 0; this.fform = 0; this.fang = 0;
     this.fLastScroll = window.scrollY || 0;
+    // tabla de senos: el campo de flujo pedía cinco trigonométricas por
+    // partícula y por cuadro (más de cuarenta mil por cuadro en pantalla
+    // grande). Con tabla son lecturas de memoria.
+    this.sinT = new Float32Array(2048);
+    for (let i = 0; i < 2048; i++) this.sinT[i] = Math.sin((i / 2048) * 6.283185307179586);
     const move = (e) => {
       const r = cv.getBoundingClientRect();
       this.fp.x = e.clientX - r.left; this.fp.y = e.clientY - r.top; this.fp.on = true;
@@ -1109,8 +1116,18 @@ class Component extends DCLogic {
   tickField(dt, now) {
     const ctx = this.fctx, w = this.fw, h = this.fh;
     if (!ctx || !w || !this.fn) { this.fieldResize(); return; }
-    const pin = this.heroPinRef.current;
-    if (pin) { const pr = pin.getBoundingClientRect(); if (pr.bottom < -20 || pr.top > window.innerHeight + 20) return; }
+    /* geometría del capítulo en caché: medir la caja en cada cuadro fuerza al
+       navegador a recalcular el layout de una página con 59 imágenes. Se
+       remide dos veces por segundo, que alcanza de sobra. */
+    const stg = this.heroStageRef.current;
+    if (!stg) return;
+    if (!this.fgeoT || now - this.fgeoT > 480) {
+      this.fgeoT = now;
+      this.fstTop = stg.getBoundingClientRect().top + (window.scrollY || 0);
+      this.fstH = stg.offsetHeight;
+    }
+    const sy = window.scrollY || 0;
+    if (sy < this.fstTop - h - 40 || sy > this.fstTop + this.fstH + 40) return;
     const cl = (v) => v < 0 ? 0 : (v > 1 ? 1 : v);
     const rp = (v, a, b) => { const t = cl((v - a) / (b - a)); return t * t * (3 - 2 * t); };
     /* presupuesto de cuadro: se mide el tiempo real y si la máquina no llega,
@@ -1129,15 +1146,28 @@ class Component extends DCLogic {
     this.ft += dt * 0.004;
     const t = this.ft;
 
-    const st = this.heroStageRef.current;
-    let prog = 0;
-    if (st) { const r = st.getBoundingClientRect(); prog = cl(-r.top / Math.max(1, st.offsetHeight - h)); }
-    const formT = rp(prog, 0.24, 0.44) * (1 - rp(prog, 0.62, 0.95));
+    const prog = cl((sy - this.fstTop) / Math.max(1, this.fstH - h));
+    /* al volver al principio el campo tiene que estar disperso: si sólo se
+       apaga la atracción, las partículas quedan donde estaban y se ve el logo
+       fantasma de fondo. Al cruzar hacia arriba se revienta el grupo de una. */
+    if (prog < 0.08) {
+      if (this.fwasFormed) {
+        this.fwasFormed = false;
+        for (let i = 0; i < this.fn; i++) {
+          const a2 = Math.random() * 6.283, s2 = 1.4 + Math.random() * 2.6;
+          this.fvx[i] += Math.cos(a2) * s2; this.fvy[i] += Math.sin(a2) * s2;
+          const e2 = this.fen[i] + 0.5; this.fen[i] = e2 > 1 ? 1 : e2;
+        }
+      }
+      this.fform = 0;
+    } else if (this.fform > 0.45) this.fwasFormed = true;
+
+    const formT = rp(prog, 0.13, 0.26) * (1 - rp(prog, 0.74, 0.96));
     // al scrollear rápido el objetivo salta entero: si la constante es siempre
     // lenta el campo queda desfasado del scroll y se ve trabado
     const gap = Math.abs(formT - this.fform);
-    this.fform += (formT - this.fform) * (1 - Math.exp(-dt / (gap > 0.45 ? 9 : 34)));
-    const form = this.fform, exit = rp(prog, 0.6, 1);
+    this.fform += (formT - this.fform) * (1 - Math.exp(-dt / (gap > 0.45 ? 7 : 19)));
+    const form = this.fform, exit = rp(prog, 0.74, 1);
     // volver arriba de golpe repuebla el campo de una: si no, quedan afuera
     if (prog < 0.06 && this.fgone) {
       const g0 = this.fgone;
@@ -1175,6 +1205,9 @@ class Component extends DCLogic {
     const speed = Math.min(60, Math.hypot(pvx, pvy));
     this.fp.px += pvx * 0.3; this.fp.py += pvy * 0.3;
     const cx = w * 0.5, T = this.fT, free = 1 - form;
+    const ST = this.sinT, KT = 325.9493234522017;
+    const SN = (v) => ST[((v * KT) | 0) & 2047];
+    const CS = (v) => ST[(((v * KT) | 0) + 512) & 2047];
 
     for (let i = this.fwaves.length - 1; i >= 0; i--) {
       const wv = this.fwaves[i];
@@ -1209,9 +1242,9 @@ class Component extends DCLogic {
         en[i] = 0.2;
       }
       let x = xs[i], y = ys[i];
-      const a = Math.sin(y * 0.0042 + t * 1.7 + q * 0.28) * 1.9 + Math.cos(x * 0.0037 - t * 1.2) * 1.9 + Math.sin((x + y) * 0.0016 + t + q * 0.2);
-      vx[i] += Math.cos(a) * 0.075 * free * dt;
-      vy[i] += Math.sin(a) * 0.075 * free * dt;
+      const a = SN(y * 0.0042 + t * 1.7 + q * 0.28) * 1.9 + CS(x * 0.0037 - t * 1.2) * 1.9 + SN((x + y) * 0.0016 + t + q * 0.2);
+      vx[i] += CS(a) * 0.075 * free * dt;
+      vy[i] += SN(a) * 0.075 * free * dt;
 
       if (hb) {
         const nx = x < hb.l ? hb.l : (x > hb.r ? hb.r : x);
@@ -1228,8 +1261,8 @@ class Component extends DCLogic {
 
       let near = 0;
       if (form > 0.002 && tn) {
-        vx[i] += (tx[jj] - x) * 0.055 * form * dt;
-        vy[i] += (ty[jj] - y) * 0.055 * form * dt;
+        vx[i] += (tx[jj] - x) * 0.078 * form * dt;
+        vy[i] += (ty[jj] - y) * 0.078 * form * dt;
         near = tk[jj];
         const e = en[i] + form * 0.05 * dt; en[i] = e > 1 ? 1 : e;
       }
@@ -1254,7 +1287,7 @@ class Component extends DCLogic {
       }
       for (let k = 0; k < this.fwaves.length; k++) {
         const wv = this.fwaves[k];
-        const dx = x - wv.x, dy = y - wv.y, d = Math.hypot(dx, dy) || 1, band = Math.abs(d - wv.r);
+        const dx = x - wv.x, dy = y - wv.y, d = Math.sqrt(dx * dx + dy * dy) || 1, band = d > wv.r ? d - wv.r : wv.r - d;
         if (band < 34) {
           const fw = (1 - band / 34) * wv.life;
           vx[i] += (dx / d) * fw * 3 * free * dt;
@@ -1283,7 +1316,7 @@ class Component extends DCLogic {
       const len = 2.2 + e * 2.2 + lift * 1.5 + ex * 3.4;
       const p2 = (e > 0.3 || near > 1.02) ? hot[tnI] : paths[tnI];
       let axl = ux * len, ayl = uy * len;
-      if (axl * axl + ayl * ayl < 0.7) { axl = Math.cos(q) * 0.9; ayl = Math.sin(q) * 0.9; }
+      if (axl * axl + ayl * ayl < 0.7) { axl = CS(q) * 0.9; ayl = SN(q) * 0.9; }
       p2.moveTo(x - axl, y - ayl); p2.lineTo(x, y);
     }
 
