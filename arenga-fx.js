@@ -864,6 +864,13 @@
         const fullBtn = card.querySelector("[data-video-full]");
         const ic = (k) => card.querySelector("[data-video-icon='" + k + "']");
         const onI = ic("on"), offI = ic("off"), playI = ic("play");
+        // en teléfono las tarjetas de trabajos muestran la foto, no el reel:
+        // el video vertical recortado se ve mal y cuesta datos
+        if (card.dataset.videoManual === "1" && window.matchMedia && window.matchMedia("(max-width: 760px)").matches) {
+          if (v) v.style.display = "none";
+          if (btn) btn.style.display = "none";
+          return;
+        }
         const setIcons = () => {
           const paused = !v || v.paused;
           if (playI) playI.style.display = paused ? "inline-flex" : "none";
