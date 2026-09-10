@@ -70,6 +70,9 @@
      las esquinas salen cuadradas: cada capa lleva su propio radio */
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
   image-slot::part(frame) { border-radius: inherit; }
+  /* en el teléfono la barra del navegador entra y sale y 100vh cambia a mitad
+     del scroll: svh es el alto chico y estable, y la tarjeta nunca queda tapada */
+  @supports (height: 100svh) { [data-stack-sticky] { height: 100svh; } }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } }
   /* móvil: la marca 3D ocupa la mitad de abajo del hero; el swipe vertical sigue haciendo scroll */
   @media (max-width: 760px) { [data-m-stage] { touch-action: pan-y !important; } [data-hero-wrap] { justify-content: flex-start !important; } }  @media (min-width: 761px) { [data-m-only] { display: none !important; } }
@@ -425,6 +428,17 @@ class Component extends DCLogic {
     this.tickRing(dt, y, vh);
   }
 
+  /* alto de referencia estable: en iOS window.innerHeight sube y baja con la
+     barra del navegador, y remedir a mitad del scroll hace saltar la página.
+     Se guarda el más chico visto para cada ancho, que es lo que vale 100svh. */
+  stableVh() {
+    const w = window.innerWidth, h = window.innerHeight || 0;
+    if (!h) return this.svH || 0;
+    if (this.svW !== w) { this.svW = w; this.svH = h; }
+    else if (h < this.svH) this.svH = h;
+    return this.svH;
+  }
+
   cacheStack() {
     const r = this.rootRef.current;
     if (!r) return;
@@ -436,7 +450,7 @@ class Component extends DCLogic {
     });
     this.heroCopy = r.querySelector("[data-hero-copy]");
     this.heroCanvas = r.querySelector("[data-hero-canvas]");
-    const vh = window.innerHeight || 0;
+    const vh = this.stableVh();
     if (this.stack && vh > 0) {
       const per = vh * 1.05;
       this.stackPer = per; this.stackVh = vh;
@@ -451,8 +465,9 @@ class Component extends DCLogic {
 
   measureStack() { if (this.stack) this.stackTop = this.stack.getBoundingClientRect().top + (window.scrollY || 0); }
 
-  tickStack(dt, y, vh) {
+  tickStack(dt, y, vhRaw) {
     if (!this.stack || !this.stackCards || !this.stackCards.length) return;
+    const vh = this.stableVh();
     if (this.stackVh !== vh) { this.cacheStack(); return; }
     const per = this.stackPer;
     if (!(per > 0)) return;
