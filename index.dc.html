@@ -157,7 +157,7 @@
     <div data-hero-wrap="1" style="position: absolute; inset: 0; z-index: 15; display: flex; flex-direction: column; justify-content: center; gap: 34px; padding: clamp(110px, 16vh, 150px) clamp(30px, 5.2vw, 104px) clamp(48px, 9vh, 120px); pointer-events: none;">
       <div data-hero-copy="1" data-m-full="1" style="max-width: min(900px, 100%); margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(20px, 2.6vh, 28px); will-change: transform, opacity;">
         <h1 data-cms="home.heroTitle" data-cms-mode="lines" data-blur="hero" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(34px, 6.4vw, 116px); white-space: nowrap; font-weight: 400; line-height: 0.95; letter-spacing: -0.045em; color: #f4f2ee; text-shadow: 0 1px 2px rgba(5,7,8,0.9), 0 6px 30px rgba(5,7,8,0.65);">Somos<br>Arenga.</h1>
-        <p data-cms="home.heroText" style="margin: 0; max-width: 38ch; font-size: clamp(17px, 1.25vw, 21px); line-height: 1.55; color: #eae6de; text-shadow: 0 1px 2px rgba(5,7,8,0.92), 0 4px 20px rgba(5,7,8,0.75);">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
+        <p data-cms="home.heroText" data-blur="hero" style="margin: 0; max-width: 38ch; font-size: clamp(17px, 1.25vw, 21px); line-height: 1.55; color: #eae6de; text-shadow: 0 1px 2px rgba(5,7,8,0.92), 0 4px 20px rgba(5,7,8,0.75);">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
         <a data-m-hide="1" href="#work" style="margin-top: clamp(28px, 9vh, 96px); pointer-events: auto; display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14.5px; font-weight: 500; color: rgba(244,242,238,0.78); text-decoration: none; transition: color 240ms ease;" style-hover="color: #f4f2ee;">
           <span data-bob="1" style="flex: none; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; color: #28ea9b; animation: arenga-bob 2.4s cubic-bezier(.45,0,.55,1) infinite;">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v13M6 12l6 6 6-6"></path></svg>
@@ -1152,7 +1152,7 @@ class Component extends DCLogic {
     // halo del titular: el bloque de texto aparta el campo, así se abre solo un
     // claro alrededor de las palabras en vez de taparlo con una sombra
     let hb = null;
-    if (form < 0.6 && this.heroCopy) {
+    if (false && this.heroCopy) {
       const cr = this.canvasRef.current.getBoundingClientRect(), b = this.heroCopy.getBoundingClientRect();
       if (b.width > 0) hb = { l: b.left - cr.left - 24, t: b.top - cr.top - 20, r: b.right - cr.left + 24, bo: b.bottom - cr.top + 20, k: 1 - form / 0.6 };
     }
