@@ -1097,14 +1097,26 @@ class Component extends DCLogic {
     let prog = 0;
     if (st) { const r = st.getBoundingClientRect(); prog = cl(-r.top / Math.max(1, st.offsetHeight - h)); }
     const formT = rp(prog, 0.24, 0.44) * (1 - rp(prog, 0.62, 0.95));
-    this.fform += (formT - this.fform) * (1 - Math.exp(-dt / 34));
+    // al scrollear rápido el objetivo salta entero: si la constante es siempre
+    // lenta el campo queda desfasado del scroll y se ve trabado
+    const gap = Math.abs(formT - this.fform);
+    this.fform += (formT - this.fform) * (1 - Math.exp(-dt / (gap > 0.45 ? 9 : 34)));
     const form = this.fform, exit = rp(prog, 0.6, 1);
+    // volver arriba de golpe repuebla el campo de una: si no, quedan afuera
+    if (prog < 0.06 && this.fgone) {
+      const g0 = this.fgone;
+      for (let i = 0; i < this.fn; i++) if (g0[i]) {
+        g0[i] = 0;
+        this.fx[i] = Math.random() * w; this.fy[i] = h + 20 + Math.random() * h * 0.6;
+        this.fvx[i] = 0; this.fvy[i] = -1.6 - Math.random();
+      }
+    }
 
     ctx.globalCompositeOperation = "destination-out";
     ctx.fillStyle = "rgba(0,0,0," + (0.5 + form * 0.34) + ")";
     ctx.fillRect(0, 0, w, h);
 
-    const lifted = Math.min(1, Math.abs(this.fsv) / 30) * 2.5 * (1 - form);
+    const lifted = Math.min(1, Math.abs(this.fsv) / 30) * 1.4 * (1 - form);
     this.flift += (lifted - this.flift) * (1 - Math.exp(-dt / 16));
     this.fsv *= 0.86;
     const lift = this.flift;
@@ -1137,6 +1149,14 @@ class Component extends DCLogic {
     const paths = [], hot = [];
     for (let k = 0; k < T; k++) { paths.push(new Path2D()); hot.push(new Path2D()); }
 
+    // halo del titular: el bloque de texto aparta el campo, así se abre solo un
+    // claro alrededor de las palabras en vez de taparlo con una sombra
+    let hb = null;
+    if (form < 0.6 && this.heroCopy) {
+      const cr = this.canvasRef.current.getBoundingClientRect(), b = this.heroCopy.getBoundingClientRect();
+      if (b.width > 0) hb = { l: b.left - cr.left - 24, t: b.top - cr.top - 20, r: b.right - cr.left + 24, bo: b.bottom - cr.top + 20, k: 1 - form / 0.6 };
+    }
+
     for (let i = 0; i < this.fn; i++) {
       const q = ph[i];
       const jj = tn ? (((i * tn) / this.fn) | 0) : -1;
@@ -1156,6 +1176,19 @@ class Component extends DCLogic {
       const a = Math.sin(y * 0.0042 + t * 1.7 + q * 0.28) * 1.9 + Math.cos(x * 0.0037 - t * 1.2) * 1.9 + Math.sin((x + y) * 0.0016 + t + q * 0.2);
       vx[i] += Math.cos(a) * 0.075 * free * dt;
       vy[i] += Math.sin(a) * 0.075 * free * dt;
+
+      if (hb) {
+        const nx = x < hb.l ? hb.l : (x > hb.r ? hb.r : x);
+        const ny = y < hb.t ? hb.t : (y > hb.bo ? hb.bo : y);
+        if (nx === x && ny === y) {
+          const dl = x - hb.l, dr = hb.r - x, dtp = y - hb.t, db = hb.bo - y, m = Math.min(dl, dr, dtp, db);
+          if (m === dl) vx[i] -= 0.5 * hb.k * dt; else if (m === dr) vx[i] += 0.5 * hb.k * dt;
+          else if (m === dtp) vy[i] -= 0.5 * hb.k * dt; else vy[i] += 0.5 * hb.k * dt;
+        } else {
+          const dx = x - nx, dy = y - ny, d2 = dx * dx + dy * dy;
+          if (d2 < 5200) { const d = Math.sqrt(d2) || 1, f2 = 1 - d / 72; vx[i] += (dx / d) * f2 * f2 * 0.5 * hb.k * dt; vy[i] += (dy / d) * f2 * f2 * 0.5 * hb.k * dt; }
+        }
+      }
 
       let near = 0;
       if (form > 0.002 && tn) {
