@@ -77,8 +77,8 @@
   /* móvil: la marca 3D ocupa la mitad de abajo del hero; el swipe vertical sigue haciendo scroll */
   @media (max-width: 760px) { [data-m-stage] { touch-action: pan-y !important; } [data-hero-wrap] { justify-content: center !important; padding-top: 96px !important; padding-bottom: 34px !important; } }
   @media (max-width: 760px) {
-    [data-hero-copy] h1 { font-size: clamp(46px, 14.5vw, 82px) !important; white-space: normal !important; line-height: 0.98 !important; }
-    [data-hero-copy] p { font-size: 18px !important; max-width: 28ch !important; }
+    [data-hero-copy] h1 { font-size: clamp(58px, 19vw, 112px) !important; white-space: normal !important; line-height: 0.92 !important; letter-spacing: -0.05em !important; }
+    [data-hero-copy] p { font-size: 19px !important; max-width: 26ch !important; }
     [data-hero-copy] a[data-m-hide] { display: inline-flex !important; margin-top: auto !important; padding-top: clamp(34px, 14vh, 130px) !important; }
     [data-hero-copy] [data-m-only] { display: none !important; }
   }  @media (min-width: 761px) { [data-m-only] { display: none !important; } }
@@ -350,7 +350,6 @@ class Component extends DCLogic {
     if (this.mqm.addEventListener) this.mqm.addEventListener("change", this.onMq);
     else this.mqm.addListener(this.onMq);
     this.yaw = -0.55; this.pitch = 0.34; this.vel = 0.0022; this.dragging = false; this.dirty = true;
-    this.build();
     this.initField();
     this.resize();
     this.onMove = (e) => this.handleMove(e);
@@ -420,8 +419,10 @@ class Component extends DCLogic {
       this.heroInit = true;
       if (this.heroCopy) {
         const p = Math.min(1, y / (vh * 0.8));
-        this.heroCopy.style.transform = "translate3d(0," + (y * 0.22).toFixed(1) + "px,0)";
+
         this.heroCopy.style.opacity = String(Math.max(0, 1 - p * 1.15));
+        // se va como entró: desenfocándose, no sólo bajando la opacidad
+        this.heroCopy.style.filter = p > 0.001 ? "blur(" + (p * p * 16).toFixed(2) + "px)" : "";
       }
 
     }
@@ -1012,6 +1013,13 @@ class Component extends DCLogic {
     // el hero ahora mide 420vh: la pila de trabajos tiene que remedir su tope
     // una vez que el alto quedó firme, o queda calculando contra el layout viejo
     setTimeout(() => { if (!this.dead) this.cacheStack(); }, 400);
+    // el canvas vive dentro del bloque fijo y al montar puede medir 0: se
+    // remide cuando la caja existe de verdad, sin depender del ciclo
+    if (window.ResizeObserver) {
+      this.fro = new ResizeObserver(() => { if (!this.dead) this.fieldResize(); });
+      this.fro.observe(cv);
+    }
+    window.addEventListener("resize", this.onFResize = () => { if (!this.dead) this.fieldResize(); }, { passive: true });
     // ciclo propio: el motor del sitio sólo dibuja cuando hay scroll, y el
     // campo tiene que fluir siempre o se ve a tirones
     const loop = (now) => {
@@ -1040,7 +1048,7 @@ class Component extends DCLogic {
     this.fcold = list.map((x, i) => { const c = hex(x); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (i === 0 ? 0.22 : 0.6) + ")"; });
     this.fhot = list.map((x, i) => { const c = hex(x); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (i === 0 ? 0.5 : 0.95) + ")"; });
     this.fT = list.length;
-    const base = Math.min(this.coarse ? 3600 : 9000, (w * h) / (this.coarse ? 210 : 95));
+    const base = Math.min(this.coarse ? 5400 : 9000, (w * h) / (this.coarse ? 155 : 95));
     const n = Math.max(400, Math.round(base * (this.reduce ? 0.4 : 1)));
     this.fn = n;
     this.fx = new Float32Array(n); this.fy = new Float32Array(n);
@@ -1067,7 +1075,7 @@ class Component extends DCLogic {
     const vb = narrowScreen ? "0 0 53 31" : "0 0 207 31";
     const AR = narrowScreen ? 31 / 53 : 31 / 207;
     const lw = narrowScreen
-      ? Math.max(150, Math.min(w * 0.56, (h * 0.42) / AR))
+      ? Math.max(200, Math.min(w * 0.88, (h * 0.6) / AR))
       : Math.max(240, Math.min(1180, w * 0.82, (h * 0.5) / AR));
     const oc = document.createElement("canvas");
     oc.width = Math.round(lw); oc.height = Math.max(2, Math.round(lw * AR));
