@@ -9,14 +9,14 @@
     "html_handling": "none"
   },
   "vars": {
-    "CONTACT_TO": "guillermobruni.r@gmail.com",
+    "CONTACT_TO": "tomi@potrero.com.uy",
     "CONTACT_FROM": "web@arenga.uy"
   }
   /* Cuando arenga.uy quede activo en Cloudflare y la casilla de destino esté
      verificada en Email Routing, agregar acá para que el formulario mande:
 
      "send_email": [
-       { "name": "EMAIL", "destination_address": "guillermobruni.r@gmail.com" }
+       { "name": "EMAIL", "destination_address": "tomi@potrero.com.uy" }
      ]
 
      El worker ya lee el binding EMAIL; sin él responde "not_configured". */
