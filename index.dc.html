@@ -77,8 +77,9 @@
   /* móvil: la marca 3D ocupa la mitad de abajo del hero; el swipe vertical sigue haciendo scroll */
   @media (max-width: 760px) { [data-m-stage] { touch-action: pan-y !important; } [data-hero-wrap] { justify-content: center !important; padding-top: 96px !important; padding-bottom: 34px !important; } }
   @media (max-width: 760px) {
-    [data-hero-copy] h1 { font-size: clamp(58px, 19vw, 112px) !important; white-space: normal !important; line-height: 0.92 !important; letter-spacing: -0.05em !important; }
-    [data-hero-copy] p { font-size: 19px !important; max-width: 26ch !important; }
+    [data-hero-wrap] { padding-left: 18px !important; padding-right: 18px !important; }
+    [data-hero-copy] h1 { font-size: clamp(72px, 24vw, 150px) !important; white-space: normal !important; line-height: 0.9 !important; letter-spacing: -0.055em !important; }
+    [data-hero-copy] p { font-size: 19.5px !important; max-width: 26ch !important; }
     [data-hero-copy] a[data-m-hide] { display: inline-flex !important; margin-top: auto !important; padding-top: clamp(34px, 14vh, 130px) !important; }
     [data-hero-copy] [data-m-only] { display: none !important; }
   }  @media (min-width: 761px) { [data-m-only] { display: none !important; } }
@@ -1038,7 +1039,7 @@ class Component extends DCLogic {
     const w = cv.clientWidth, h = cv.clientHeight;
     if (!(w > 0 && h > 0)) return;
     if (this.fw === w && Math.abs((this.fh || 0) - h) < 200) return;
-    const dpr = Math.min(1.5, window.devicePixelRatio || 1);
+    const dpr = Math.min(1.25, window.devicePixelRatio || 1);
     cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
     this.fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     this.fw = w; this.fh = h;
@@ -1050,7 +1051,7 @@ class Component extends DCLogic {
     this.fT = list.length;
     const base = Math.min(this.coarse ? 5400 : 9000, (w * h) / (this.coarse ? 155 : 95));
     const n = Math.max(400, Math.round(base * (this.reduce ? 0.4 : 1)));
-    this.fn = n;
+    this.fn = n; this.fnA = n; this.fms = 0;
     this.fx = new Float32Array(n); this.fy = new Float32Array(n);
     this.fvx = new Float32Array(n); this.fvy = new Float32Array(n);
     this.fen = new Float32Array(n); this.ftone = new Uint8Array(n);
@@ -1075,7 +1076,7 @@ class Component extends DCLogic {
     const vb = narrowScreen ? "0 0 53 31" : "0 0 207 31";
     const AR = narrowScreen ? 31 / 53 : 31 / 207;
     const lw = narrowScreen
-      ? Math.max(200, Math.min(w * 0.88, (h * 0.6) / AR))
+      ? Math.max(240, Math.min(w * 1.02, (h * 0.72) / AR))
       : Math.max(240, Math.min(1180, w * 0.82, (h * 0.5) / AR));
     const oc = document.createElement("canvas");
     oc.width = Math.round(lw); oc.height = Math.max(2, Math.round(lw * AR));
@@ -1112,6 +1113,19 @@ class Component extends DCLogic {
     if (pin) { const pr = pin.getBoundingClientRect(); if (pr.bottom < -20 || pr.top > window.innerHeight + 20) return; }
     const cl = (v) => v < 0 ? 0 : (v > 1 ? 1 : v);
     const rp = (v, a, b) => { const t = cl((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+    /* presupuesto de cuadro: se mide el tiempo real y si la máquina no llega,
+       el campo baja su población hasta un tercio y la recupera sola cuando
+       sobra margen. Es preferible un campo más ralo que una página trabada. */
+    this.fms = this.fms ? this.fms * 0.9 + dt * 16.67 * 0.1 : dt * 16.67;
+    this.fnA = this.fnA || this.fn;
+    this.fchk = (this.fchk || 0) + 1;
+    if (this.fchk > 24) {
+      this.fchk = 0;
+      const floor = Math.round(this.fn * 0.3);
+      if (this.fms > 23 && this.fnA > floor) { this.fnA = Math.max(floor, Math.round(this.fnA * 0.78)); this.fms = 16.7; }
+      else if (this.fms < 13.5 && this.fnA < this.fn) { this.fnA = Math.min(this.fn, Math.round(this.fnA * 1.07) + 40); }
+    }
+    const n = this.fnA;
     this.ft += dt * 0.004;
     const t = this.ft;
 
@@ -1127,7 +1141,7 @@ class Component extends DCLogic {
     // volver arriba de golpe repuebla el campo de una: si no, quedan afuera
     if (prog < 0.06 && this.fgone) {
       const g0 = this.fgone;
-      for (let i = 0; i < this.fn; i++) if (g0[i]) {
+      for (let i = 0; i < n; i++) if (g0[i]) {
         g0[i] = 0;
         this.fx[i] = Math.random() * w; this.fy[i] = h + 20 + Math.random() * h * 0.6;
         this.fvx[i] = 0; this.fvy[i] = -1.6 - Math.random();
@@ -1179,9 +1193,9 @@ class Component extends DCLogic {
       if (b.width > 0) hb = { l: b.left - cr.left - 24, t: b.top - cr.top - 20, r: b.right - cr.left + 24, bo: b.bottom - cr.top + 20, k: 1 - form / 0.6 };
     }
 
-    for (let i = 0; i < this.fn; i++) {
+    for (let i = 0; i < n; i++) {
       const q = ph[i];
-      const jj = tn ? (((i * tn) / this.fn) | 0) : -1;
+      const jj = tn ? (((i * tn) / n) | 0) : -1;
       // el turno de cada partícula lo da la distancia de SU punto al eje: la
       // desintegración empieza por los dos costados y avanza al centro
       const edge = jj >= 0 ? Math.min(1, Math.abs(mx[jj]) / (this.fHalf || 1)) : q * 0.159155;
