@@ -1152,18 +1152,7 @@ class Component extends DCLogic {
        animación se ve entera. Volver hacia arriba es inmediato, para no pelear
        con el gesto. Y mientras no terminó, la página se queda en el capítulo:
        sin esto, un flick te deposita en Trabajos sin haber visto nada. */
-    if (this.fprog === undefined) this.fprog = rawProg;
-    const dp = rawProg - this.fprog;
-    if (dp < 0) this.fprog = rawProg;
-    else this.fprog += Math.min(dp, 0.0075 * dt);
-    const prog = this.fprog;
-    if (!this.coarse && prog > 0.1 && prog < 0.97) {
-      const end = this.fstTop + this.fstH - h;
-      if (sy > end + 2) {
-        this.fhold = (this.fhold || 0) + dt * 16.67;
-        if (this.fhold < 3200) window.scrollTo(0, end);
-      }
-    } else this.fhold = 0;
+    const prog = rawProg;
     /* al volver al principio el campo tiene que estar disperso: si sólo se
        apaga la atracción, las partículas quedan donde estaban y se ve el logo
        fantasma de fondo. Al cruzar hacia arriba se revienta el grupo de una. */
