@@ -617,9 +617,16 @@
       this.typeRecs.forEach(rec => { if (rec.want) { rec.target = rec.total; if (this.typeIO) this.typeIO.unobserve(rec.el); } });
       this.blurEls.forEach(el => { if (el.__blur && el.__blur.want) this.setBlur(el, true); });
       /* el hero espera a que la cortina termine de subir: revelándolo junto con
-         el gate, las palabras ya estaban nítidas cuando la pantalla se ve */
-      const heroBlur = this.blurEls.filter(el => el.dataset.blur === "hero");
-      if (heroBlur.length) setTimeout(() => heroBlur.forEach(el => this.setBlur(el, true)), 460);
+         el gate, las palabras ya estaban nítidas cuando la pantalla se ve.
+         Se vuelve a consultar el DOM al disparar y se fuerza el reintento: los
+         spans pueden haberse rehecho por la hidratación del CMS en el medio. */
+      const revealHero = () => {
+        this.blurEls.forEach(el => {
+          if (el.isConnected && el.dataset.blur === "hero" && el.__blur) { el.__blur.on = false; this.setBlur(el, true); }
+        });
+      };
+      setTimeout(revealHero, 460);
+      setTimeout(revealHero, 1500);
     }
     /* new nodes (streamed list items, hot template edits) get the same bindings; all binders skip what they already own */
     rebind() {
