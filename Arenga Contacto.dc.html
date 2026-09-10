@@ -57,6 +57,11 @@
   a { color: #ff5715; text-decoration: none; }
   a:hover { color: #28ea9b; }
   image-slot::part(ring), image-slot::part(empty) { display: none; }
+  image-slot::part(image) { touch-action: pan-y; }
+  /* Safari no recorta overflow:hidden cuando la tarjeta está transformada y
+     las esquinas salen cuadradas: cada capa lleva su propio radio */
+  [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
+  image-slot::part(frame) { border-radius: inherit; }
   input::placeholder, textarea::placeholder { color: rgba(244,242,238,0.45); }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } }
   @media (min-width: 761px) { [data-m-only] { display: none !important; } }
