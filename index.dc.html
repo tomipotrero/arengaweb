@@ -75,7 +75,13 @@
   @supports (height: 100svh) { [data-stack-sticky] { height: 100svh; } }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } }
   /* móvil: la marca 3D ocupa la mitad de abajo del hero; el swipe vertical sigue haciendo scroll */
-  @media (max-width: 760px) { [data-m-stage] { touch-action: pan-y !important; } [data-hero-wrap] { justify-content: flex-start !important; } }  @media (min-width: 761px) { [data-m-only] { display: none !important; } }
+  @media (max-width: 760px) { [data-m-stage] { touch-action: pan-y !important; } [data-hero-wrap] { justify-content: center !important; padding-top: 96px !important; padding-bottom: 34px !important; } }
+  @media (max-width: 760px) {
+    [data-hero-copy] h1 { font-size: clamp(46px, 14.5vw, 82px) !important; white-space: normal !important; line-height: 0.98 !important; }
+    [data-hero-copy] p { font-size: 18px !important; max-width: 28ch !important; }
+    [data-hero-copy] a[data-m-hide] { display: inline-flex !important; margin-top: auto !important; padding-top: clamp(34px, 14vh, 130px) !important; }
+    [data-hero-copy] [data-m-only] { display: none !important; }
+  }  @media (min-width: 761px) { [data-m-only] { display: none !important; } }
   @media (max-width: 1100px) { [data-foot-legal] { width: 100%; justify-content: space-between; } }
 </style>
 </helmet>
@@ -1053,12 +1059,20 @@ class Component extends DCLogic {
   sampleField(w, h) {
     const sym = document.getElementById("arenga-wordmark");
     if (!sym) return;
-    const AR = 31 / 207;
-    const lw = Math.max(240, Math.min(1180, w * 0.82, (h * 0.5) / AR));
+    // en teléfono se arma sólo el isotipo: el logotipo entero entra tan chico
+    // que las partículas no llegan a dibujar las letras
+    const narrowScreen = w <= 760;
+    const inner = sym.innerHTML.replace(/currentColor/g, "#ffffff");
+    const iso = narrowScreen ? (inner.match(/<path[^>]*>(?:<\/path>)?/) || [""])[0] : inner;
+    const vb = narrowScreen ? "0 0 53 31" : "0 0 207 31";
+    const AR = narrowScreen ? 31 / 53 : 31 / 207;
+    const lw = narrowScreen
+      ? Math.max(150, Math.min(w * 0.56, (h * 0.42) / AR))
+      : Math.max(240, Math.min(1180, w * 0.82, (h * 0.5) / AR));
     const oc = document.createElement("canvas");
     oc.width = Math.round(lw); oc.height = Math.max(2, Math.round(lw * AR));
     const g = oc.getContext("2d");
-    const src = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207 31" width="828" height="124"><g fill="#ffffff">' + sym.innerHTML.replace(/currentColor/g, "#ffffff") + "</g></svg>";
+    const src = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb + '" width="828" height="' + Math.round(828 * AR) + '"><g fill="#ffffff">' + iso + "</g></svg>";
     const img = new Image();
     img.onload = () => {
       if (this.dead) return;
