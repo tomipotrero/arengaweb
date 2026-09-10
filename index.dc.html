@@ -142,7 +142,7 @@
     <div style="position: absolute; inset: 0;">
       <canvas ref="{{ canvasRef }}" data-hero-canvas="1" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y;"></canvas>
     </div>
-    <div data-m-hide="1" style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(98deg, rgba(5,7,8,0.6) 0%, rgba(5,7,8,0.24) 42%, rgba(5,7,8,0) 68%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 22%, #000 46%, #000 62%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 22%, #000 46%, #000 62%, rgba(0,0,0,0) 100%);"></div>
+
 
     <header style="position: absolute; top: 26px; left: clamp(30px, 5.2vw, 104px); right: clamp(30px, 5.2vw, 104px); display: flex; align-items: center; justify-content: space-between; gap: 20px; z-index: 20;">
       <a onPointerDown="{{ blockDrag }}" href="/" aria-label="Arenga" style="display: flex; align-items: center; color: #f4f2ee;"><svg viewBox="0 0 207 31" style="height: 21px; width: auto;"><use href="#arenga-wordmark"></use></svg></a>
@@ -155,10 +155,10 @@
     </header>
 
     <div data-hero-wrap="1" style="position: absolute; inset: 0; z-index: 15; display: flex; flex-direction: column; justify-content: center; gap: 34px; padding: clamp(110px, 16vh, 150px) clamp(30px, 5.2vw, 104px) clamp(48px, 9vh, 120px); pointer-events: none;">
-      <div data-hero-copy="1" data-m-full="1" style="max-width: min(900px, 64%); display: flex; flex-direction: column; gap: clamp(22px, 3vh, 34px); will-change: transform, opacity;">
-        <h1 data-cms="home.heroTitle" data-cms-mode="lines" data-blur="hero" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(76px, 11.4vw, 196px); font-weight: 400; line-height: 0.88; letter-spacing: -0.045em; color: #f4f2ee;">Somos<br>Arenga.</h1>
-        <p data-cms="home.heroText" style="margin: 0; max-width: 38ch; font-size: clamp(17px, 1.25vw, 21px); line-height: 1.55; color: rgba(242,239,233,0.74);">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
-        <a data-m-hide="1" href="#work" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14.5px; font-weight: 500; color: rgba(244,242,238,0.78); text-decoration: none; transition: color 240ms ease;" style-hover="color: #f4f2ee;">
+      <div data-hero-copy="1" data-m-full="1" style="max-width: min(900px, 100%); margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(20px, 2.6vh, 28px); will-change: transform, opacity;">
+        <h1 data-cms="home.heroTitle" data-cms-mode="lines" data-blur="hero" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(76px, 11.4vw, 196px); font-weight: 400; line-height: 0.88; letter-spacing: -0.045em; color: #f4f2ee; text-shadow: 0 1px 2px rgba(5,7,8,0.9), 0 6px 30px rgba(5,7,8,0.65);">Somos<br>Arenga.</h1>
+        <p data-cms="home.heroText" style="margin: 0; max-width: 38ch; font-size: clamp(17px, 1.25vw, 21px); line-height: 1.55; color: #eae6de; text-shadow: 0 1px 2px rgba(5,7,8,0.92), 0 4px 20px rgba(5,7,8,0.75);">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
+        <a data-m-hide="1" href="#work" style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14.5px; font-weight: 500; color: rgba(244,242,238,0.78); text-decoration: none; transition: color 240ms ease;" style-hover="color: #f4f2ee;">
           <span data-bob="1" style="flex: none; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; color: #28ea9b; animation: arenga-bob 2.4s cubic-bezier(.45,0,.55,1) infinite;">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v13M6 12l6 6 6-6"></path></svg>
           </span>
@@ -410,7 +410,6 @@ class Component extends DCLogic {
     eng.opts.typeSpeed = Number(this.props.typeSpeed ?? 1);
     this.tickLoader(now, dt);
     const mobile = eng.mobile;
-    this.tickField(dt, now);
     if (scrolled || !this.heroInit) {
       this.heroInit = true;
       if (this.heroCopy) {
@@ -1007,6 +1006,16 @@ class Component extends DCLogic {
     // el hero ahora mide 420vh: la pila de trabajos tiene que remedir su tope
     // una vez que el alto quedó firme, o queda calculando contra el layout viejo
     setTimeout(() => { if (!this.dead) this.cacheStack(); }, 400);
+    // ciclo propio: el motor del sitio sólo dibuja cuando hay scroll, y el
+    // campo tiene que fluir siempre o se ve a tirones
+    const loop = (now) => {
+      if (this.dead) return;
+      this.fraf = requestAnimationFrame(loop);
+      const dt = Math.min(2.4, this.flast ? (now - this.flast) / 16.67 : 1);
+      this.flast = now;
+      this.tickField(dt, now);
+    };
+    this.fraf = requestAnimationFrame(loop);
   }
 
   fieldResize() {
