@@ -7,5 +7,17 @@
     "binding": "ASSETS",
     "not_found_handling": "404-page",
     "html_handling": "none"
+  },
+  "vars": {
+    "CONTACT_TO": "guillermobruni.r@gmail.com",
+    "CONTACT_FROM": "web@arenga.uy"
   }
+  /* Cuando arenga.uy quede activo en Cloudflare y la casilla de destino esté
+     verificada en Email Routing, agregar acá para que el formulario mande:
+
+     "send_email": [
+       { "name": "EMAIL", "destination_address": "guillermobruni.r@gmail.com" }
+     ]
+
+     El worker ya lee el binding EMAIL; sin él responde "not_configured". */
 }
