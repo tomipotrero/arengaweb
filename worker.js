@@ -94,6 +94,10 @@ async function contact(request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.hostname === "www.arenga.uy") {
+      url.hostname = "arenga.uy";
+      return Response.redirect(url.toString(), 301);
+    }
     if (url.pathname === "/api/contact") return contact(request, env);
     return env.ASSETS.fetch(request);
   }
