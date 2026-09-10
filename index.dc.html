@@ -137,9 +137,10 @@
     </div>
   </div>
 
-  <section style="position: relative; min-height: max(100vh, 760px); overflow: hidden;">
-    <div data-m-stage="1" data-stage="1" ref="{{ stageRef }}" onPointerDown="{{ onStageDown }}" style="position: absolute; inset: 0; cursor: grab; touch-action: none;">
-      <canvas ref="{{ canvasRef }}" data-hero-canvas="1" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; will-change: transform;"></canvas>
+  <section ref="{{ heroStageRef }}" style="position: relative; height: 420vh;">
+   <div ref="{{ heroPinRef }}" style="position: sticky; top: 0; height: 100vh; overflow: hidden;">
+    <div style="position: absolute; inset: 0;">
+      <canvas ref="{{ canvasRef }}" data-hero-canvas="1" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y;"></canvas>
     </div>
     <div data-m-hide="1" style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(98deg, rgba(5,7,8,0.6) 0%, rgba(5,7,8,0.24) 42%, rgba(5,7,8,0) 68%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 22%, #000 46%, #000 62%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 22%, #000 46%, #000 62%, rgba(0,0,0,0) 100%);"></div>
 
@@ -153,7 +154,7 @@
       </nav>
     </header>
 
-    <div data-hero-wrap="1" style="position: relative; z-index: 15; min-height: max(100vh, 760px); display: flex; flex-direction: column; justify-content: center; gap: 34px; padding: clamp(110px, 16vh, 150px) clamp(30px, 5.2vw, 104px) clamp(48px, 9vh, 120px); pointer-events: none;">
+    <div data-hero-wrap="1" style="position: absolute; inset: 0; z-index: 15; display: flex; flex-direction: column; justify-content: center; gap: 34px; padding: clamp(110px, 16vh, 150px) clamp(30px, 5.2vw, 104px) clamp(48px, 9vh, 120px); pointer-events: none;">
       <div data-hero-copy="1" data-m-full="1" style="max-width: min(900px, 64%); display: flex; flex-direction: column; gap: clamp(22px, 3vh, 34px); will-change: transform, opacity;">
         <h1 data-cms="home.heroTitle" data-cms-mode="lines" data-blur="hero" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(76px, 11.4vw, 196px); font-weight: 400; line-height: 0.88; letter-spacing: -0.045em; color: #f4f2ee;">Somos<br>Arenga.</h1>
         <p data-cms="home.heroText" style="margin: 0; max-width: 38ch; font-size: clamp(17px, 1.25vw, 21px); line-height: 1.55; color: rgba(242,239,233,0.74);">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
@@ -165,10 +166,11 @@
         </a>
         <div data-m-only="1" style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(244,242,238,0.5);">
           <span style="width: 6px; height: 6px; border-radius: 999px; background: #28ea9b; box-shadow: 0 0 12px rgba(40,234,155,0.8);"></span>
-          <span>Deslizá para girarla</span>
+          <span>Deslizá el campo · seguí scrolleando</span>
         </div>
       </div>
     </div>
+   </div>
   </section>
 
   <section style="position: relative; padding: 96px clamp(30px, 5.2vw, 104px) 90px;">
@@ -331,6 +333,8 @@ class Component extends DCLogic {
   loaderInnerRef = React.createRef();
   loaderBarRef = React.createRef();
   loaderNumRef = React.createRef();
+  heroStageRef = React.createRef();
+  heroPinRef = React.createRef();
 
   componentDidMount() {
     if (window.ArengaContent) window.ArengaContent().then(c => { if (c && !this.dead) this.setState({ c }); });
@@ -341,6 +345,7 @@ class Component extends DCLogic {
     else this.mqm.addListener(this.onMq);
     this.yaw = -0.55; this.pitch = 0.34; this.vel = 0.0022; this.dragging = false; this.dirty = true;
     this.build();
+    this.initField();
     this.resize();
     this.onMove = (e) => this.handleMove(e);
     this.onUp = () => this.handleUp();
@@ -405,16 +410,7 @@ class Component extends DCLogic {
     eng.opts.typeSpeed = Number(this.props.typeSpeed ?? 1);
     this.tickLoader(now, dt);
     const mobile = eng.mobile;
-    if (y < vh) {
-      if (!this.dragging) {
-        const target = this.props.autoRotate === false ? 0 : 0.0022;
-        this.vel += (target - this.vel) * 0.03;
-        if (!target && Math.abs(this.vel) < 0.00002) this.vel = 0;
-        if (this.vel) { this.yaw += this.vel; this.dirty = true; }
-      }
-      const thick = this.props.thickness;
-      if (this.dirty || thick !== this.lastThick) { this.lastThick = thick; this.dirty = false; this.draw(); }
-    }
+    this.tickField(dt, now);
     if (scrolled || !this.heroInit) {
       this.heroInit = true;
       if (this.heroCopy) {
@@ -422,7 +418,7 @@ class Component extends DCLogic {
         this.heroCopy.style.transform = "translate3d(0," + (y * 0.22).toFixed(1) + "px,0)";
         this.heroCopy.style.opacity = String(Math.max(0, 1 - p * 1.15));
       }
-      if (this.heroCanvas && !mobile) this.heroCanvas.style.transform = "translate3d(0," + (y * -0.08).toFixed(1) + "px,0)";
+
     }
     this.tickStack(dt, y, vh);
     this.tickRing(dt, y, vh);
@@ -977,6 +973,251 @@ class Component extends DCLogic {
     ctx.restore();
   }
 
+  /* ---------------- campo de partículas del hero ----------------
+     Reemplaza la marca 3D. El capítulo va fijo 420vh: el campo flota, arma el
+     logotipo girando apenas, y al seguir bajando se desintegra desde los dos
+     costados hacia el centro y sube fuera de la página. */
+  initField() {
+    const cv = this.canvasRef.current;
+    if (!cv) return;
+    this.fctx = cv.getContext("2d");
+    this.coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+    this.reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    this.fp = { x: -1e4, y: -1e4, px: -1e4, py: -1e4, on: false };
+    this.fwaves = []; this.ft = 0; this.flift = 0; this.fsv = 0; this.fform = 0; this.fang = 0;
+    this.fLastScroll = window.scrollY || 0;
+    const move = (e) => {
+      const r = cv.getBoundingClientRect();
+      this.fp.x = e.clientX - r.left; this.fp.y = e.clientY - r.top; this.fp.on = true;
+      if (this.fp.px < -1e3) { this.fp.px = this.fp.x; this.fp.py = this.fp.y; }
+    };
+    const off = () => { this.fp.on = false; };
+    cv.addEventListener("pointermove", move, { passive: true });
+    cv.addEventListener("pointerleave", off, { passive: true });
+    cv.addEventListener("pointerup", off, { passive: true });
+    cv.addEventListener("pointerdown", (e) => {
+      const r = cv.getBoundingClientRect();
+      this.fwaves.push({ x: e.clientX - r.left, y: e.clientY - r.top, r: 0, life: 1 });
+      if (this.fwaves.length > 4) this.fwaves.shift();
+      move(e);
+    }, { passive: true });
+    this.onFScroll = () => { const y = window.scrollY || 0; this.fsv = y - this.fLastScroll; this.fLastScroll = y; };
+    window.addEventListener("scroll", this.onFScroll, { passive: true });
+    this.fieldResize();
+    // el hero ahora mide 420vh: la pila de trabajos tiene que remedir su tope
+    // una vez que el alto quedó firme, o queda calculando contra el layout viejo
+    setTimeout(() => { if (!this.dead) this.cacheStack(); }, 400);
+  }
+
+  fieldResize() {
+    const cv = this.canvasRef.current;
+    if (!cv || this.dead) return;
+    const w = cv.clientWidth, h = cv.clientHeight;
+    if (!(w > 0 && h > 0)) return;
+    if (this.fw === w && Math.abs((this.fh || 0) - h) < 200) return;
+    const dpr = Math.min(1.5, window.devicePixelRatio || 1);
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    this.fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.fw = w; this.fh = h;
+    // paleta verde de la marca; el hueso pesa uno de cada cinco
+    const list = ["#f2efe9", "#28ea9b", "#4de1c4", "#8ef07a", "#0fbf86"];
+    const hex = (x) => { const n = parseInt(x.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+    this.fcold = list.map((x, i) => { const c = hex(x); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (i === 0 ? 0.22 : 0.6) + ")"; });
+    this.fhot = list.map((x, i) => { const c = hex(x); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (i === 0 ? 0.5 : 0.95) + ")"; });
+    this.fT = list.length;
+    const base = Math.min(this.coarse ? 3600 : 9000, (w * h) / (this.coarse ? 210 : 95));
+    const n = Math.max(400, Math.round(base * (this.reduce ? 0.4 : 1)));
+    this.fn = n;
+    this.fx = new Float32Array(n); this.fy = new Float32Array(n);
+    this.fvx = new Float32Array(n); this.fvy = new Float32Array(n);
+    this.fen = new Float32Array(n); this.ftone = new Uint8Array(n);
+    this.fph = new Float32Array(n); this.fgone = new Uint8Array(n);
+    for (let i = 0; i < n; i++) {
+      this.fx[i] = Math.random() * w; this.fy[i] = Math.random() * h;
+      this.fph[i] = Math.random() * 6.283;
+      this.ftone[i] = Math.random() < 0.2 ? 0 : 1 + Math.floor(Math.random() * (this.fT - 1));
+    }
+    this.sampleField(w, h);
+  }
+
+  // destinos: se rasteriza el logotipo del propio documento y se muestrea
+  sampleField(w, h) {
+    const sym = document.getElementById("arenga-wordmark");
+    if (!sym) return;
+    const AR = 31 / 207;
+    const lw = Math.max(240, Math.min(1180, w * 0.82, (h * 0.5) / AR));
+    const oc = document.createElement("canvas");
+    oc.width = Math.round(lw); oc.height = Math.max(2, Math.round(lw * AR));
+    const g = oc.getContext("2d");
+    const src = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 207 31" width="828" height="124"><g fill="#ffffff">' + sym.innerHTML.replace(/currentColor/g, "#ffffff") + "</g></svg>";
+    const img = new Image();
+    img.onload = () => {
+      if (this.dead) return;
+      g.drawImage(img, 0, 0, oc.width, oc.height);
+      const d = g.getImageData(0, 0, oc.width, oc.height).data;
+      const step = Math.max(2, Math.round(lw / 300));
+      const ax = [], ay = [], az = [];
+      const depth = lw * 0.008;
+      for (let yy = 0; yy < oc.height; yy += step) {
+        for (let xx = 0; xx < oc.width; xx += step) {
+          if (d[(yy * oc.width + xx) * 4 + 3] > 110) {
+            ax.push(xx - oc.width / 2); ay.push(yy - oc.height / 2);
+            az.push((Math.random() - 0.5) * depth);
+          }
+        }
+      }
+      if (!ax.length) return;
+      this.fmx = Float32Array.from(ax); this.fmy = Float32Array.from(ay); this.fmz = Float32Array.from(az);
+      this.ftx = new Float32Array(ax.length); this.fty = new Float32Array(ax.length); this.ftk = new Float32Array(ax.length);
+      this.fHalf = oc.width / 2;
+    };
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(src);
+  }
+
+  tickField(dt, now) {
+    const ctx = this.fctx, w = this.fw, h = this.fh;
+    if (!ctx || !w || !this.fn) { this.fieldResize(); return; }
+    const pin = this.heroPinRef.current;
+    if (pin) { const pr = pin.getBoundingClientRect(); if (pr.bottom < -20 || pr.top > window.innerHeight + 20) return; }
+    const cl = (v) => v < 0 ? 0 : (v > 1 ? 1 : v);
+    const rp = (v, a, b) => { const t = cl((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+    this.ft += dt * 0.004;
+    const t = this.ft;
+
+    const st = this.heroStageRef.current;
+    let prog = 0;
+    if (st) { const r = st.getBoundingClientRect(); prog = cl(-r.top / Math.max(1, st.offsetHeight - h)); }
+    const formT = rp(prog, 0.24, 0.44) * (1 - rp(prog, 0.62, 0.95));
+    this.fform += (formT - this.fform) * (1 - Math.exp(-dt / 34));
+    const form = this.fform, exit = rp(prog, 0.6, 1);
+
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = "rgba(0,0,0," + (0.5 + form * 0.34) + ")";
+    ctx.fillRect(0, 0, w, h);
+
+    const lifted = Math.min(1, Math.abs(this.fsv) / 30) * 2.5 * (1 - form);
+    this.flift += (lifted - this.flift) * (1 - Math.exp(-dt / 16));
+    this.fsv *= 0.86;
+    const lift = this.flift;
+
+    this.fang = Math.sin(t * 0.9) * 0.16;
+    const mx = this.fmx, my = this.fmy, mz = this.fmz, tx = this.ftx, ty = this.fty, tk = this.ftk;
+    const tn = mx ? mx.length : 0;
+    if (tn && form > 0.002) {
+      const ca = Math.cos(this.fang), sa = Math.sin(this.fang), f = 900, cxp = w * 0.5, cyp = h * 0.5;
+      for (let j = 0; j < tn; j++) {
+        const X = mx[j] * ca + mz[j] * sa, Z = -mx[j] * sa + mz[j] * ca, k = f / (f + Z);
+        tx[j] = cxp + X * k; ty[j] = cyp + my[j] * k; tk[j] = k;
+      }
+    }
+
+    const xs = this.fx, ys = this.fy, vx = this.fvx, vy = this.fvy, en = this.fen, tone = this.ftone, ph = this.fph, gone = this.fgone;
+    const px = this.fp.x, py = this.fp.y, on = this.fp.on && form < 0.8;
+    const R = Math.min(300, Math.max(150, Math.min(w, h) * 0.34)), R2 = R * R;
+    const pvx = this.fp.x - this.fp.px, pvy = this.fp.y - this.fp.py;
+    const speed = Math.min(60, Math.hypot(pvx, pvy));
+    this.fp.px += pvx * 0.3; this.fp.py += pvy * 0.3;
+    const cx = w * 0.5, T = this.fT, free = 1 - form;
+
+    for (let i = this.fwaves.length - 1; i >= 0; i--) {
+      const wv = this.fwaves[i];
+      wv.r += dt * 15; wv.life -= dt * 0.014;
+      if (wv.life <= 0) this.fwaves.splice(i, 1);
+    }
+
+    const paths = [], hot = [];
+    for (let k = 0; k < T; k++) { paths.push(new Path2D()); hot.push(new Path2D()); }
+
+    for (let i = 0; i < this.fn; i++) {
+      const q = ph[i];
+      const jj = tn ? (((i * tn) / this.fn) | 0) : -1;
+      // el turno de cada partícula lo da la distancia de SU punto al eje: la
+      // desintegración empieza por los dos costados y avanza al centro
+      const edge = jj >= 0 ? Math.min(1, Math.abs(mx[jj]) / (this.fHalf || 1)) : q * 0.159155;
+      const ex = cl((exit - (1 - edge) * 0.55) / 0.45);
+      if (gone[i]) {
+        if (exit > 0.14 + (1 - edge) * 0.55) continue;
+        gone[i] = 0;
+        xs[i] = -w * 0.18 + Math.random() * w * 1.36;
+        ys[i] = h + 50 + Math.random() * h * 0.9;
+        vx[i] = (Math.random() - 0.5) * 0.5; vy[i] = -2 - Math.random() * 1.4;
+        en[i] = 0.2;
+      }
+      let x = xs[i], y = ys[i];
+      const a = Math.sin(y * 0.0042 + t * 1.7 + q * 0.28) * 1.9 + Math.cos(x * 0.0037 - t * 1.2) * 1.9 + Math.sin((x + y) * 0.0016 + t + q * 0.2);
+      vx[i] += Math.cos(a) * 0.075 * free * dt;
+      vy[i] += Math.sin(a) * 0.075 * free * dt;
+
+      let near = 0;
+      if (form > 0.002 && tn) {
+        vx[i] += (tx[jj] - x) * 0.055 * form * dt;
+        vy[i] += (ty[jj] - y) * 0.055 * form * dt;
+        near = tk[jj];
+        const e = en[i] + form * 0.05 * dt; en[i] = e > 1 ? 1 : e;
+      }
+      if (ex > 0.002) {
+        vy[i] -= ex * ex * ex * 2.6 * dt;
+        vx[i] += (cx - x) * 0.0006 * ex * dt;
+        const e = en[i] + ex * 0.05 * dt; en[i] = e > 1 ? 1 : e;
+      }
+      if (lift > 0.005) {
+        vy[i] -= lift * 0.6 * dt;
+        vx[i] += (cx - x) * 0.0011 * lift * dt;
+        const e = en[i] + lift * 0.05 * dt; en[i] = e > 1 ? 1 : e;
+      }
+      if (on) {
+        const dx = x - px, dy = y - py, d2 = dx * dx + dy * dy;
+        if (d2 < R2) {
+          const d = Math.sqrt(d2) || 1, ff = (1 - d / R) * (1 - d / R);
+          vx[i] += ((dx / d) * ff * 0.34 + (-dy / d) * ff * (0.22 + speed * 0.012)) * 2.2 * free * dt;
+          vy[i] += ((dy / d) * ff * 0.34 + (dx / d) * ff * (0.22 + speed * 0.012)) * 2.2 * free * dt;
+          const e = en[i] + ff * 0.09 * dt; en[i] = e > 1 ? 1 : e;
+        }
+      }
+      for (let k = 0; k < this.fwaves.length; k++) {
+        const wv = this.fwaves[k];
+        const dx = x - wv.x, dy = y - wv.y, d = Math.hypot(dx, dy) || 1, band = Math.abs(d - wv.r);
+        if (band < 34) {
+          const fw = (1 - band / 34) * wv.life;
+          vx[i] += (dx / d) * fw * 3 * free * dt;
+          vy[i] += (dy / d) * fw * 3 * free * dt;
+          const e = en[i] + fw * 0.3; en[i] = e > 1 ? 1 : e;
+        }
+      }
+
+      const fr = 1 - (0.075 + form * 0.2) * dt;
+      let ux = vx[i] * fr, uy = vy[i] * fr;
+      const sp2 = ux * ux + uy * uy, cap = 3.4 + lift * 2.2 + ex * 7 + (y > h ? 3 : 0);
+      if (sp2 > cap * cap) { const k2 = cap / Math.sqrt(sp2); ux *= k2; uy *= k2; }
+      vx[i] = ux; vy[i] = uy;
+      x += ux * dt; y += uy * dt;
+      if (ex > 0.05) {
+        if (y < -10) { gone[i] = 1; xs[i] = x; ys[i] = y; continue; }
+      } else if (form < 0.4 && exit < 0.02) {
+        if (x < -4) x += w + 8; else if (x > w + 4) x -= w + 8;
+        if (y < -4) { y += h + 8; x = Math.random() * w; } else if (y > h + 4) y -= h + 8;
+      }
+      xs[i] = x; ys[i] = y;
+
+      const e = en[i];
+      en[i] = e * (1 - 0.035 * dt);
+      const tnI = tone[i] < T ? tone[i] : 0;
+      const len = 2.2 + e * 2.2 + lift * 1.5 + ex * 3.4;
+      const p2 = (e > 0.3 || near > 1.02) ? hot[tnI] : paths[tnI];
+      let axl = ux * len, ayl = uy * len;
+      if (axl * axl + ayl * ayl < 0.7) { axl = Math.cos(q) * 0.9; ayl = Math.sin(q) * 0.9; }
+      p2.moveTo(x - axl, y - ayl); p2.lineTo(x, y);
+    }
+
+    ctx.lineCap = "round";
+    ctx.globalCompositeOperation = "source-over";
+    ctx.lineWidth = 1.2;
+    for (let k = 0; k < T; k++) { ctx.strokeStyle = this.fcold[k]; ctx.stroke(paths[k]); }
+    ctx.globalCompositeOperation = "lighter";
+    ctx.lineWidth = 1.5;
+    for (let k = 0; k < T; k++) { ctx.strokeStyle = this.fhot[k]; ctx.stroke(hot[k]); }
+  }
+
   renderVals() {
     const cc = this.state.c || {};
     const narrow = !!(this.mqm ? this.mqm.matches : (window.matchMedia && window.matchMedia("(max-width: 760px)").matches));
@@ -999,6 +1240,8 @@ class Component extends DCLogic {
       loaderRef: this.loaderRef, loaderInnerRef: this.loaderInnerRef, loaderBarRef: this.loaderBarRef, loaderNumRef: this.loaderNumRef,
       onStageDown: this.onStageDown, blockDrag: this.blockDrag,
       teamRing: team.concat(team.slice(0, 4)),
+      heroStageRef: this.heroStageRef,
+      heroPinRef: this.heroPinRef,
       teamLoop: team.concat(team),
       clients: (Array.isArray(cc.clients) ? cc.clients : []).map((b, i, all) => ({
         slot: "arenga-client-" + (i + 1),
