@@ -185,7 +185,8 @@
         "work/megal-06.webp",
         "work/megal-02.webp"
       ],
-      "page": "/proyectos/megal"
+      "page": "/proyectos/megal",
+      "coverMobile": "work/megal-08.webp"
     },
     {
       "title": "RefMe Pro",
@@ -215,7 +216,8 @@
         "media/refme-neural-1-00-00-00-11-imagen-fija00-3bb37ca81c.webp",
         "media/refme-gng-neural-00-00-23-01-imagen-fija-afe0beba05.webp"
       ],
-      "page": "/proyectos/refme-pro"
+      "page": "/proyectos/refme-pro",
+      "coverMobile": ""
     },
     {
       "title": "EigenCloud",
@@ -245,7 +247,8 @@
         "work/eigen-04.webp",
         "media/eigen-ticker-cec195f056.webp"
       ],
-      "page": "/proyectos/eigencloud"
+      "page": "/proyectos/eigencloud",
+      "coverMobile": "work/eigen-03.webp"
     },
     {
       "title": "Club Nacional de Football",
@@ -275,7 +278,8 @@
         "work/bandera-nacional.webp",
         "work/gardel.webp"
       ],
-      "page": "/proyectos/nacional"
+      "page": "/proyectos/nacional",
+      "coverMobile": ""
     },
     {
       "title": "Altoconcepto",
@@ -305,7 +309,8 @@
         "work/aya0687.webp",
         "work/aya0851.webp"
       ],
-      "page": "/proyectos/altoconcepto"
+      "page": "/proyectos/altoconcepto",
+      "coverMobile": "work/aya0828.webp"
     }
   ],
   "selected": [
