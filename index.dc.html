@@ -66,6 +66,9 @@
   /* el dedo sobre una foto tiene que hacer scroll: el bloqueo del componente
      existe para reencuadrar al editar, no para leer el sitio */
   image-slot::part(image) { touch-action: pan-y; }
+  /* sin rebote elástico: al pasarse del final, iOS corría la página y dejaba
+     una banda sin pintar abajo, que se veía como un corte bajo el pie */
+  html, body { overscroll-behavior-y: none; background-color: #07090b; }
   /* Safari no recorta overflow:hidden cuando la tarjeta está transformada y
      las esquinas salen cuadradas: cada capa lleva su propio radio */
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
