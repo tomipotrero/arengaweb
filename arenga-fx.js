@@ -557,10 +557,31 @@
       this.mq = window.matchMedia ? window.matchMedia("(max-width: 760px)") : null;
       this.bgs = []; this.reveals = []; this.marquees = []; this.blurEls = []; this.typeRecs = [];
       this.lastY = -1; this.lastT = 0; this.wake = 4; this.dead = false; this.measureT = 0;
-      this.onResize = () => { this.scheduleMeasure(); clearTimeout(this.typeT); this.typeT = setTimeout(() => this.remeasureType(), 140); };
+      this.coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+      this.rw = window.innerWidth; this.rh = window.innerHeight;
+      // en el teléfono la barra del navegador entra y sale mientras se scrollea y
+      // dispara "resize" con el mismo ancho: volver a medir ahí fuerza un reflow a
+      // mitad del gesto y se siente como una trancada. Sólo importa el ancho.
+      this.onResize = () => {
+        var w = window.innerWidth, h = window.innerHeight, sameW = w === this.rw;
+        this.rw = w;
+        if (sameW && this.coarse && Math.abs(h - this.rh) < 200) { this.rh = h; return; }
+        this.rh = h;
+        this.scheduleMeasure(); clearTimeout(this.typeT); this.typeT = setTimeout(() => this.remeasureType(), 140);
+      };
       window.addEventListener("resize", this.onResize);
+      window.addEventListener("orientationchange", () => { this.rw = -1; this.onResize(); });
       if (this.mq && this.mq.addEventListener) this.mq.addEventListener("change", this.onResize);
-      if (window.ResizeObserver) { this.ro = new ResizeObserver(() => this.scheduleMeasure()); this.ro.observe(root); }
+      if (window.ResizeObserver) {
+        this.roW = 0;
+        this.ro = new ResizeObserver(function (es) {
+          var w = es && es[0] ? Math.round(es[0].contentRect.width) : -1;
+          if (this.coarse && w === this.roW) return; // mismo ancho: es la barra del navegador
+          this.roW = w;
+          this.scheduleMeasure();
+        }.bind(this));
+        this.ro.observe(root);
+      }
       if (window.MutationObserver) {
         this.mo = new MutationObserver(() => { clearTimeout(this.rebindT); this.rebindT = setTimeout(() => this.rebind(), 80); });
         this.mo.observe(root, { childList: true, subtree: true });
