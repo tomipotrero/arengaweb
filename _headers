@@ -1,23 +1,23 @@
 # Canónica de cada página: la ruta limpia, no el archivo que la sirve.
-# Relativa a propósito: vale para el dominio final y para el de Pages sin tocar nada.
+# Absoluta al dominio final: la copia en workers.dev apunta acá y no compite en el índice.
 /
-  Link: </>; rel="canonical"
+  Link: <https://arenga.uy/>; rel="canonical"
 /trabajos
-  Link: </trabajos>; rel="canonical"
+  Link: <https://arenga.uy/trabajos>; rel="canonical"
 /quienes-somos
-  Link: </quienes-somos>; rel="canonical"
+  Link: <https://arenga.uy/quienes-somos>; rel="canonical"
 /contacto
-  Link: </contacto>; rel="canonical"
+  Link: <https://arenga.uy/contacto>; rel="canonical"
 /proyectos/megal
-  Link: </proyectos/megal>; rel="canonical"
+  Link: <https://arenga.uy/proyectos/megal>; rel="canonical"
 /proyectos/refme-pro
-  Link: </proyectos/refme-pro>; rel="canonical"
+  Link: <https://arenga.uy/proyectos/refme-pro>; rel="canonical"
 /proyectos/eigencloud
-  Link: </proyectos/eigencloud>; rel="canonical"
+  Link: <https://arenga.uy/proyectos/eigencloud>; rel="canonical"
 /proyectos/nacional
-  Link: </proyectos/nacional>; rel="canonical"
+  Link: <https://arenga.uy/proyectos/nacional>; rel="canonical"
 /proyectos/altoconcepto
-  Link: </proyectos/altoconcepto>; rel="canonical"
+  Link: <https://arenga.uy/proyectos/altoconcepto>; rel="canonical"
 
 # El panel no se indexa
 /panel
