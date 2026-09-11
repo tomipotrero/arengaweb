@@ -88,7 +88,7 @@
     "    float edge = min(1.0, abs(a_tgt.x));",
     "    float rel = clamp(((1.0 - u_form) - (1.0 - edge) * 0.52) / 0.48, 0.0, 1.0);",
     "    form = u_form * (1.0 - rel * rel * (3.0 - 2.0 * rel)) * step(2.0, u_box.z);",
-    "    float bw = min(u_res.x * 0.46, min(780.0, u_box.z));",
+    "    float bw = min(u_res.x * 0.8, min(1500.0, u_box.z));",
     "    vec2 T = vec2(u_res.x * 0.5, u_box.x) + a_tgt * bw * 0.5;",
     "    T += vec2(sin(u_time * 2.1 + ph), cos(u_time * 1.7 + ph)) * 1.3;",
     "    P = mix(P, T, form);",
