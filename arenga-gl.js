@@ -146,11 +146,12 @@
     "void main() { gl_FragColor = vec4(v_c * v_a, v_a); }"
   ].join("\n");
 
-  /* Estado del diagnóstico, en el ámbito del módulo. Antes vivía en
-     window.ArengaGL.diag, y como el objeto se reasigna cada vez que el módulo
-     se evalúa, why() leía un objeto viejo y respondía que nunca había
-     arrancado. Ahora start() muta este mismo objeto y why() lo lee del cierre. */
-  var diag = { motor: "webgl", arrancado: false, poblacion: 0, cuadroMs: 0, abandono: false, motivo: "" };
+  /* Estado del diagnóstico en un global estable. No basta con sacarlo de
+     window.ArengaGL: el módulo se evalúa más de una vez (recarga en caliente,
+     remontaje) y cada instancia se creaba el suyo, así que why() leía el de la
+     instancia que nunca corrió. Compartido, cualquier start() marca el mismo
+     objeto que cualquier why() lee. */
+  var diag = window.__arengaGLDiag || (window.__arengaGLDiag = { motor: "webgl", arrancado: false, poblacion: 0, cuadroMs: 0, abandono: false, motivo: "" });
 
   function compile(gl, type, src) {
     var s = gl.createShader(type);
