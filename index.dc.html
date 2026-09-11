@@ -1101,7 +1101,7 @@ class Component extends DCLogic {
     const h = this.fieldWrap.getBoundingClientRect().height;
     if (!h) return;
     // tiene la pantalla entera: cuando se arma, la copia ya no está
-    this.gl.setLogoBox(h * 0.66, h * 0.34);
+    this.gl.setLogoBox(h * 0.5, h * 0.34);
   }
 
   tickLite(y, vh) {
