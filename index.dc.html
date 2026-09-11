@@ -1146,8 +1146,10 @@ class Component extends DCLogic {
       /* Cuatro tiempos sobre el largo del capítulo: se va la copia, se arma el
          logotipo, se sostiene, se deshace. Las fracciones están calculadas para
          que ninguno ocurra en menos de media pantalla de scroll. */
-      this.gl.setForm(Math.min(1, Math.max(0, (p - 0.27) / 0.33)));
-      this.gl.setRelease(Math.min(1, Math.max(0, (p - 0.76) / 0.24)));
+      // el tramo formado ocupa ahora un 28% del capítulo (unas 0,8 pantallas
+      // de scroll), así un scroll rápido igual cae dentro del logotipo armado
+      this.gl.setForm(Math.min(1, Math.max(0, (p - 0.24) / 0.28)));
+      this.gl.setRelease(Math.min(1, Math.max(0, (p - 0.8) / 0.2)));
       this.measureLogoBox();
       // el campo entra cuando la cortina terminó de subir, no al cargar
       if (!this.entered && this.engine && !this.engine.gate) { this.entered = true; this.gl.enter(); }
