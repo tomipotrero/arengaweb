@@ -996,6 +996,13 @@ class Component extends DCLogic {
     this.coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
     this.reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     this.fp = { x: -1e4, y: -1e4, px: -1e4, py: -1e4, on: false };
+    this.applyFieldScale = () => {
+      const c2 = this.canvasRef.current;
+      if (!c2 || !this.fw) return;
+      c2.width = Math.max(1, Math.round(this.fw * this.fsc));
+      c2.height = Math.max(1, Math.round(this.fh * this.fsc));
+      this.fctx.setTransform(this.fsc, 0, 0, this.fsc, 0, 0);
+    };
     this.fwaves = []; this.ft = 0; this.flift = 0; this.fsv = 0; this.fform = 0; this.fang = 0;
     this.fLastScroll = window.scrollY || 0;
     // tabla de senos: el campo de flujo pedía cinco trigonométricas por
@@ -1049,15 +1056,18 @@ class Component extends DCLogic {
     const w = cv.clientWidth, h = cv.clientHeight;
     if (!(w > 0 && h > 0)) return;
     if (this.fw === w && Math.abs((this.fh || 0) - h) < 200) return;
-    const dpr = Math.min(1.25, window.devicePixelRatio || 1);
-    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
-    this.fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    /* Se dibuja por debajo de la resolución de pantalla y el navegador lo
+       estira. El costo dominante del efecto no son las partículas sino repintar
+       el lienzo entero cada cuadro: a 0,55 son tres veces menos píxeles. Las
+       estelas son difusas, así que la pérdida de nitidez no se nota. */
     this.fw = w; this.fh = h;
+    this.fsc = this.coarse ? 0.5 : 0.55;
+    this.applyFieldScale();
     // paleta verde de la marca; el hueso pesa uno de cada cinco
     const list = ["#f2efe9", "#28ea9b", "#4de1c4", "#8ef07a", "#0fbf86"];
     const hex = (x) => { const n = parseInt(x.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
     this.fcold = list.map((x, i) => { const c = hex(x); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (i === 0 ? 0.22 : 0.6) + ")"; });
-    this.fhot = list.map((x, i) => { const c = hex(x); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (i === 0 ? 0.5 : 0.95) + ")"; });
+    this.fhot = list.map((x, i) => { const c = hex(x); return "rgb(" + Math.min(255, c[0] + 60) + "," + Math.min(255, c[1] + 45) + "," + Math.min(255, c[2] + 50) + ")"; });
     this.fT = list.length;
     const base = Math.min(this.coarse ? 2600 : 4200, (w * h) / (this.coarse ? 320 : 210));
     const n = Math.max(400, Math.round(base * (this.reduce ? 0.4 : 1)));
@@ -1145,8 +1155,11 @@ class Component extends DCLogic {
     if (this.fchk > 24) {
       this.fchk = 0;
       const floor = Math.round(this.fn * 0.3);
-      if (this.fms > 23 && this.fnA > floor) { this.fnA = Math.max(floor, Math.round(this.fnA * 0.78)); this.fms = 16.7; }
-      else if (this.fms < 13.5 && this.fnA < this.fn) { this.fnA = Math.min(this.fn, Math.round(this.fnA * 1.07) + 40); }
+      if (this.fms > 23) {
+        // primero se baja la resolución: es donde está el costo de verdad
+        if (this.fsc > 0.3) { this.fsc = Math.max(0.3, this.fsc - 0.08); this.applyFieldScale(); this.fms = 16.7; }
+        else if (this.fnA > floor) { this.fnA = Math.max(floor, Math.round(this.fnA * 0.78)); this.fms = 16.7; }
+      } else if (this.fms < 13.5 && this.fnA < this.fn) { this.fnA = Math.min(this.fn, Math.round(this.fnA * 1.07) + 40); }
     }
     const n = this.fnA;
     this.ft += dt * 0.004;
@@ -1332,12 +1345,14 @@ class Component extends DCLogic {
       p2.moveTo(x - axl, y - ayl); p2.lineTo(x, y);
     }
 
+    /* Una sola pasada: el modo "lighter" obliga al navegador a leer el píxel
+       que ya está antes de escribir, y duplicaba el trabajo de composición.
+       Las partículas encendidas se distinguen por color y grosor. */
     ctx.lineCap = "round";
     ctx.globalCompositeOperation = "source-over";
-    ctx.lineWidth = 1.2;
+    ctx.lineWidth = 1.6;
     for (let k = 0; k < T; k++) { ctx.strokeStyle = this.fcold[k]; ctx.stroke(paths[k]); }
-    ctx.globalCompositeOperation = "lighter";
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 2.1;
     for (let k = 0; k < T; k++) { ctx.strokeStyle = this.fhot[k]; ctx.stroke(hot[k]); }
   }
 
