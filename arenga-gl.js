@@ -32,6 +32,7 @@
     "uniform vec2  u_par;",
     "uniform float u_form;",
     "uniform float u_rel;",
+    "uniform float u_gain;",
     "uniform vec3  u_box;",
     "varying float v_a;",
     "varying vec3  v_c;",
@@ -85,6 +86,8 @@
        y subidos como dato fijo: la placa sólo interpola entre el flujo y su
        punto. Se desarma desde los costados hacia el centro, no todo junto. */
     "  float form = 0.0;",
+    "  float isLogo = a_tgt.x < 2.0 ? 1.0 : 0.0;",
+    "  float spacing = 1.0;",
     "  if (a_tgt.x < 2.0) {",
     "    float edge = min(1.0, abs(a_tgt.x));",
     // llegada: cada partícula entra en su momento, repartido al azar, así el
@@ -97,6 +100,9 @@
     "    rel = rel * rel * rel * (rel * (rel * 6.0 - 15.0) + 10.0);",
     "    form = arr * (1.0 - rel) * step(2.0, u_box.z);",
     "    float bw = min(u_res.x * 0.8, min(1500.0, u_box.z));",
+    // los destinos vienen de una rejilla de 520 de ancho: al escalar quedan
+    // separados, así que el trazo tiene que medir esa separación para cerrar
+    "    spacing = bw / 520.0;",
     "    vec2 T = vec2(u_res.x * 0.5, u_box.x) + a_tgt * bw * 0.5;",
     "    T += vec2(sin(u_time * 2.1 + ph), cos(u_time * 1.7 + ph)) * mix(1.3, 0.3, form);",
     "    P = mix(P, T, form);",
@@ -107,8 +113,11 @@
     "  P.y += (1.0 - en) * u_res.y * mix(0.5, 1.2, z);",
     // la estela va DETRÁS y se apaga hacia la cola: así se lee como movimiento
     "  float sp = length(V);",
-    "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z) * mix(1.0, 0.06, form);",
+    "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z);",
+    "  len = mix(len, spacing * 1.75, form);",
+    "  vec2 fdir = normalize(vec2(hash(a_i * 23.1) - 0.5, hash(a_i * 29.7) - 0.5) + vec2(0.0007, 0.0011));",
     "  vec2 dv = normalize(V + vec2(0.0001, 0.0001));",
+    "  dv = mix(dv, fdir, form);",
     "  vec2 Q = P - dv * len * a_end;",
     "  vec2 clip = (Q / u_res) * 2.0 - 1.0;",
     "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
@@ -122,7 +131,8 @@
     "  vec2 e = P / u_res;",
     "  float edge = smoothstep(0.0, 0.1, e.x) * smoothstep(1.0, 0.9, e.x) * smoothstep(0.0, 0.1, e.y) * smoothstep(1.0, 0.88, e.y);",
     "  float tail = mix(1.0, 0.06, a_end);",
-    "  v_a = (0.13 + boost * 0.55 + form * 1.15) * mix(mix(0.35, 1.25, z), 1.0, form) * edge * tail * en * (1.0 - u_prog * 0.8);",
+    // las partículas sueltas se apagan cuando el logotipo toma la pantalla
+    "  v_a = (0.13 + boost * 0.55 + form * 1.15) * mix(mix(0.35, 1.25, z), 1.0, form) * mix(1.0 - u_form * 0.88, 1.0, isLogo) * u_gain * edge * tail * en * (1.0 - u_prog * 0.8);",
     "}"
   ].join("\n");
 
@@ -185,7 +195,7 @@
     var atBuf = buf(at, "a_tgt", 2);
 
     var U = {};
-    ["u_time", "u_res", "u_mouse", "u_mouseOn", "u_prog", "u_amp", "u_in", "u_wave", "u_waveT", "u_par", "u_form", "u_rel", "u_box"].forEach(function (k) {
+    ["u_time", "u_res", "u_mouse", "u_mouseOn", "u_prog", "u_amp", "u_in", "u_wave", "u_waveT", "u_par", "u_form", "u_rel", "u_gain", "u_box"].forEach(function (k) {
       U[k] = gl.getUniformLocation(prog, k);
     });
 
@@ -213,7 +223,7 @@
     function resize() {
       var w = canvas.clientWidth, h = canvas.clientHeight;
       if (!(w > 0 && h > 0)) return;
-      var dpr = Math.min(opts.dpr || 1, window.devicePixelRatio || 1);
+      var dpr = Math.min(opts.dpr || 1.5, window.devicePixelRatio || 1);
       if (st.w === w && st.h === h && st.dpr === dpr) return;
       st.w = w; st.h = h; st.dpr = dpr;
       canvas.width = Math.round(w * dpr);
@@ -288,6 +298,9 @@
       rel += (relT2 - rel) * 0.055;
       gl.uniform1f(U.u_form, form);
       gl.uniform1f(U.u_rel, rel);
+      // el trazo mide siempre un píxel de placa: a más resolución es más fino
+      // en píxeles de página, y hay que devolverle el brillo que pierde
+      gl.uniform1f(U.u_gain, st.dpr);
       gl.uniform3f(U.u_box, boxY || st.h * 0.73, boxAR, boxW);
       gl.drawArrays(gl.LINES, 0, drawn * 2);
     }
