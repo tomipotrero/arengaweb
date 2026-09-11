@@ -19,6 +19,7 @@
   var VERT = [
     "attribute float a_i;",
     "attribute float a_end;",
+    "attribute vec2  a_tgt;",
     "uniform float u_time;",
     "uniform vec2  u_res;",
     "uniform vec2  u_mouse;",
@@ -29,6 +30,7 @@
     "uniform vec2  u_wave;",
     "uniform float u_waveT;",
     "uniform vec2  u_par;",
+    "uniform float u_form;",
     "varying float v_a;",
     "varying vec3  v_c;",
     "float hash(float n) { return fract(sin(n) * 43758.5453123); }",
@@ -77,13 +79,26 @@
     // el capítulo se va hacia arriba y converge al centro
     "  P.y -= u_prog * u_prog * u_res.y * 1.05;",
     "  P.x += (u_res.x * 0.5 - P.x) * u_prog * 0.32;",
+    /* Logotipo. Los destinos vienen en a_tgt, calculados una sola vez al cargar
+       y subidos como dato fijo: la placa sólo interpola entre el flujo y su
+       punto. Se desarma desde los costados hacia el centro, no todo junto. */
+    "  float form = 0.0;",
+    "  if (a_tgt.x < 2.0) {",
+    "    float edge = min(1.0, abs(a_tgt.x));",
+    "    float rel = clamp(((1.0 - u_form) - (1.0 - edge) * 0.52) / 0.48, 0.0, 1.0);",
+    "    form = u_form * (1.0 - rel * rel * (3.0 - 2.0 * rel));",
+    "    float bw = min(u_res.x * 0.46, min(780.0, u_res.y * 1.05));",
+    "    vec2 T = vec2(u_res.x * 0.5, u_res.y * 0.73) + a_tgt * bw * 0.5;",
+    "    T += vec2(sin(u_time * 2.1 + ph), cos(u_time * 1.7 + ph)) * 1.3;",
+    "    P = mix(P, T, form);",
+    "  }",
     // entrada: el campo se condensa desde abajo, cada partícula a su turno
     "  float en = clamp((u_in - hash(a_i * 13.0) * 0.42) / 0.58, 0.0, 1.0);",
     "  en = en * en * (3.0 - 2.0 * en);",
     "  P.y += (1.0 - en) * u_res.y * mix(0.5, 1.2, z);",
     // la estela va DETRÁS y se apaga hacia la cola: así se lee como movimiento
     "  float sp = length(V);",
-    "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z);",
+    "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z) * mix(1.0, 0.22, form);",
     "  vec2 dv = normalize(V + vec2(0.0001, 0.0001));",
     "  vec2 Q = P - dv * len * a_end;",
     "  vec2 clip = (Q / u_res) * 2.0 - 1.0;",
@@ -98,7 +113,7 @@
     "  vec2 e = P / u_res;",
     "  float edge = smoothstep(0.0, 0.1, e.x) * smoothstep(1.0, 0.9, e.x) * smoothstep(0.0, 0.1, e.y) * smoothstep(1.0, 0.88, e.y);",
     "  float tail = mix(1.0, 0.06, a_end);",
-    "  v_a = (0.13 + boost * 0.55) * mix(0.35, 1.25, z) * edge * tail * en * (1.0 - u_prog * 0.8);",
+    "  v_a = (0.13 + boost * 0.55 + form * 0.5) * mix(0.35, 1.25, z) * edge * tail * en * (1.0 - u_prog * 0.8);",
     "}"
   ].join("\n");
 
@@ -145,19 +160,23 @@
       ai[i * 2] = i + 1; ai[i * 2 + 1] = i + 1;
       ae[i * 2] = 0; ae[i * 2 + 1] = 1;
     }
-    function buf(data, loc) {
+    function buf(data, loc, size) {
       var b = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, b);
       gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
       var l = gl.getAttribLocation(prog, loc);
       gl.enableVertexAttribArray(l);
-      gl.vertexAttribPointer(l, 1, gl.FLOAT, false, 0, 0);
+      gl.vertexAttribPointer(l, size || 1, gl.FLOAT, false, 0, 0);
       return b;
     }
     buf(ai, "a_i"); buf(ae, "a_end");
+    // destinos del logotipo; 9 = esta partícula no forma parte de él
+    var at = new Float32Array(n * 4);
+    for (var j = 0; j < n * 2; j++) { at[j * 2] = 9; at[j * 2 + 1] = 9; }
+    var atBuf = buf(at, "a_tgt", 2);
 
     var U = {};
-    ["u_time", "u_res", "u_mouse", "u_mouseOn", "u_prog", "u_amp", "u_in", "u_wave", "u_waveT", "u_par"].forEach(function (k) {
+    ["u_time", "u_res", "u_mouse", "u_mouseOn", "u_prog", "u_amp", "u_in", "u_wave", "u_waveT", "u_par", "u_form"].forEach(function (k) {
       U[k] = gl.getUniformLocation(prog, k);
     });
 
@@ -169,7 +188,7 @@
     var st = { w: 0, h: 0, dpr: 1, prog: 0, mx: -1e4, my: -1e4, on: 0, amp: opts.amp || 0.085, raf: 0, dead: false, t0: performance.now() };
     // entrada, onda del clic y paralaje: tres uniformes, ningún costo por cuadro
     var inT = 0, waveT = 0, wx = 0, wy = 0;
-    var parX = 0, parY = 0, parTX = 0, parTY = 0;
+    var parX = 0, parY = 0, parTX = 0, parTY = 0, form = 0;
     /* Regulador. WebGL no garantiza aceleración: si no hay placa disponible el
        navegador lo emula en el procesador y sale peor que el lienzo. Por eso se
        arranca con una fracción de la población y se sube sólo si hay margen
@@ -251,6 +270,7 @@
       }
       gl.uniform2f(U.u_wave, wx, wy);
       gl.uniform1f(U.u_waveT, wt);
+      gl.uniform1f(U.u_form, form);
       gl.drawArrays(gl.LINES, 0, drawn * 2);
     }
     st.raf = requestAnimationFrame(frame);
@@ -264,6 +284,41 @@
         else { parTX = 0; parTY = 0; }
       },
       enter: function () { if (!inT) inT = performance.now(); },
+      setForm: function (f) { form = f < 0 ? 0 : (f > 1 ? 1 : f); },
+      /* Rasteriza el SVG una sola vez, muestrea los píxeles opacos y sube los
+         destinos como dato fijo. A partir de ahí el logotipo no cuesta nada:
+         es una interpolación más dentro del sombreador. */
+      setLogo: function (svg, frac) {
+        if (!svg) return;
+        var img = new Image();
+        img.onload = function () {
+          if (st.dead) return;
+          var W = 560, H = Math.max(2, Math.round(560 * (img.height / img.width)));
+          var oc = document.createElement("canvas");
+          oc.width = W; oc.height = H;
+          var g2 = oc.getContext("2d");
+          g2.drawImage(img, 0, 0, W, H);
+          var d = g2.getImageData(0, 0, W, H).data;
+          var pts = [];
+          for (var yy = 0; yy < H; yy += 2) {
+            for (var xx = 0; xx < W; xx += 2) {
+              if (d[(yy * W + xx) * 4 + 3] > 120) pts.push((xx / W - 0.5) * 2, ((yy / H - 0.5) * 2) * (H / W));
+            }
+          }
+          if (!pts.length) return;
+          var want = Math.round(n * (frac || 0.42));
+          var m = pts.length / 2;
+          for (var k2 = 0; k2 < want; k2++) {
+            var s = ((k2 * 2654435761) % m + m) % m;
+            var tx = pts[s * 2], ty = pts[s * 2 + 1];
+            at[k2 * 4] = tx; at[k2 * 4 + 1] = ty;
+            at[k2 * 4 + 2] = tx; at[k2 * 4 + 3] = ty;
+          }
+          gl.bindBuffer(gl.ARRAY_BUFFER, atBuf);
+          gl.bufferData(gl.ARRAY_BUFFER, at, gl.STATIC_DRAW);
+        };
+        img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+      },
       pulse: function (x, y) { wx = x; wy = y; waveT = performance.now(); },
       resize: resize,
       destroy: function () {
