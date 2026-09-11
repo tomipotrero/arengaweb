@@ -194,9 +194,13 @@ const SECTIONS = [
   { key: "team", label: "Equipo", title: "Equipo", help: "El resto del equipo, en el mismo orden en que aparece.", list: true, add: "Agregar persona",
     name: (it, i) => it.name || ("Persona " + (i + 1)),
     fields: [{ k: "name", label: "Nombre" }, { k: "role", label: "Rol" }, { k: "photo", label: "Retrato", image: true, span: "1 / -1" }] },
-  { key: "caps", label: "Capacidades", title: "Capacidades", help: "El acordeón de Quiénes somos.", list: true, add: "Agregar capacidad",
+  { key: "caps", label: "Capacidades", title: "Capacidades", help: "El acordeón de Quiénes somos y las secciones de Servicios.", list: true, add: "Agregar capacidad",
     name: (it, i) => (it.n ? it.n + " · " : "") + (it.title || ("Capacidad " + (i + 1))),
-    fields: [{ k: "n", label: "Número" }, { k: "title", label: "Título" }, { k: "copy", label: "Texto", area: true, span: "1 / -1" }] },
+    fields: [{ k: "n", label: "Número" }, { k: "title", label: "Título" }, { k: "copy", label: "Texto", area: true, span: "1 / -1" },
+      { k: "does.0", label: "Entregable 1" }, { k: "does.1", label: "Entregable 2" },
+      { k: "does.2", label: "Entregable 3" }, { k: "does.3", label: "Entregable 4" },
+      { k: "caseTitle", label: "Caso de ejemplo", hint: "si queda vacío no se muestra el enlace" },
+      { k: "casePage", label: "Dirección del caso", hint: "/proyectos/megal" }] },
   { key: "steps", label: "Cómo trabajamos", title: "Cómo trabajamos cada marca", help: "Los cuatro pasos, con sus tres líneas cada uno.", list: true, add: "Agregar paso",
     name: (it, i) => (it.n ? it.n + " · " : "") + (it.title || ("Paso " + (i + 1))),
     fields: [{ k: "n", label: "Número" }, { k: "title", label: "Título" }, { k: "b1", label: "Línea 1", area: true, span: "1 / -1" }, { k: "b2", label: "Línea 2", area: true, span: "1 / -1" }, { k: "b3", label: "Línea 3", area: true, span: "1 / -1" }] },
@@ -211,6 +215,10 @@ const SECTIONS = [
       { k: "workTitle", label: "Título de la selección" }, { k: "workText", label: "Bajada de la selección" },
       { k: "clientsTitle", label: "Título de clientes" }, { k: "clientsText", label: "Bajada de clientes" },
       { k: "teamTitle", label: "Título del equipo" }, { k: "teamText", label: "Bajada del equipo" }
+    ] },
+  { key: "services", label: "Textos de Servicios", title: "Textos de Servicios", help: "La portada de /servicios y su cierre.", fields: [
+      { k: "title", label: "Título", span: "1 / -1" }, { k: "text", label: "Bajada", area: true, span: "1 / -1" },
+      { k: "closeTitle", label: "Título del cierre" }, { k: "closeText", label: "Texto del cierre" }
     ] },
   { key: "about", label: "Textos de Quiénes somos", title: "Textos de Quiénes somos", help: "El titular y el párrafo de apertura.", fields: [
       { k: "title", label: "Título", span: "1 / -1" }, { k: "text", label: "Párrafo", area: true, span: "1 / -1" }
