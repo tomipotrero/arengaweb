@@ -523,7 +523,7 @@
         // (photographer + Unsplash), built per-render in _render().
         '<span class="credit" part="credit"></span>' +
         '<div class="spill" popover="manual" data-dc-edit-transparent>' +
-        '  <img class="ghost" alt="" draggable="false">' +
+        '  <img class="ghost" alt="" draggable="false" loading="lazy" decoding="async">' +
         '  <div class="handle" data-c="nw"></div><div class="handle" data-c="ne"></div>' +
         '  <div class="handle" data-c="sw"></div><div class="handle" data-c="se"></div>' +
         '</div>' +
