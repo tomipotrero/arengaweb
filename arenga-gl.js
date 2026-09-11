@@ -237,7 +237,10 @@
        entra, se abandona y la página se queda con el fondo de masas de color. */
     var floor = Math.max(1200, Math.round(n * 0.1));
     var drawn = Math.min(n, Math.max(floor, Math.round(n * 0.22)));
-    var ms = 0, chk = 0, last = 0, gaveUp = false;
+    var ms = 0, chk = 0, last = 0, gaveUp = false, warm = false;
+    // diagnóstico: en la consola, window.ArengaGL.why()
+    var diag = { motor: "webgl", poblacion: 0, cuadroMs: 0, abandono: false, motivo: "" };
+    window.ArengaGL.diag = diag;
 
     function resize() {
       var w = canvas.clientWidth, h = canvas.clientHeight;
@@ -264,6 +267,13 @@
       if (!visible || document.hidden) { last = 0; return; }
       resize();
       if (!st.w) return;
+      /* Periodo de gracia. El regulador medía desde el primer cuadro, y durante
+         la carga la página está ocupada hidratando, montando 59 fotos y
+         resolviendo fuentes: esos cuadros pasan de 45 ms sin que la máquina
+         tenga nada de malo. Medía eso y abandonaba para siempre. Ahora no se
+         juzga hasta que el arranque terminó, y el promedio se reinicia ahí. */
+      if (now - st.t0 < 2600) { last = now; return; }
+      if (!warm) { warm = true; ms = 0; last = now; chk = 0; return; }
       if (last) {
         var d = now - last;
         if (d < 400) ms = ms ? ms * 0.88 + d * 0.12 : d;
@@ -274,6 +284,7 @@
         if (ms > 45 && !gaveUp) {
           // claramente sin aceleración: no vale la pena insistir
           gaveUp = true; st.dead = true;
+          diag.abandono = true; diag.motivo = "cuadro de " + Math.round(ms) + " ms tras el arranque: sin aceleración por hardware";
           cancelAnimationFrame(st.raf);
           if (io) io.disconnect();
           if (opts.onFallback) opts.onFallback();
@@ -283,12 +294,14 @@
           if (drawn > floor) { drawn = Math.max(floor, Math.round(drawn * 0.6)); ms = 16.7; }
           else if (!gaveUp) {
             gaveUp = true; st.dead = true;
+            diag.abandono = true; diag.motivo = "ni con la población mínima baja de " + Math.round(ms) + " ms por cuadro";
             cancelAnimationFrame(st.raf);
             if (io) io.disconnect();
             if (opts.onFallback) opts.onFallback();
             return;
           }
         } else if (ms > 0 && ms < 14.5 && drawn < n) drawn = Math.min(n, Math.round(drawn * 1.3) + 600);
+        diag.poblacion = drawn; diag.cuadroMs = Math.round(ms);
       }
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform1f(U.u_time, (now - st.t0) * 0.00042);
@@ -415,5 +428,23 @@
     };
   }
 
-  window.ArengaGL = { start: start };
+  window.ArengaGL = {
+    start: start,
+    /* En la consola de la máquina afectada: ArengaGL.why()
+       Dice cuál de las cinco puertas cerró el campo de partículas. */
+    why: function () {
+      var d = window.ArengaGL.diag;
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) return "El sistema pide menos movimiento (Reducir movimiento en macOS / Mostrar animaciones en Windows). El campo no arranca a propósito.";
+      var cv = document.querySelector("[data-gl]");
+      if (!cv) return "No hay lienzo en la página.";
+      if (!window.WebGLRenderingContext) return "El navegador no soporta WebGL.";
+      var ok = false;
+      try { ok = !!(cv.getContext("webgl") || cv.getContext("experimental-webgl")); } catch (e) {}
+      if (!ok) return "El navegador no pudo crear un contexto WebGL: aceleración por hardware desactivada, o la placa está en la lista de bloqueo.";
+      if (!d) return "El módulo no llegó a arrancar (¿arenga-gl.js no cargó?).";
+      if (d.abandono) return "Arrancó y se abandonó: " + d.motivo;
+      return "Andando. Población " + d.poblacion + " partículas, " + d.cuadroMs + " ms por cuadro.";
+    }
+  };
 })();
