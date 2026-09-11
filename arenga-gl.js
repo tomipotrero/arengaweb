@@ -90,7 +90,7 @@
     "    form = u_form * (1.0 - rel * rel * (3.0 - 2.0 * rel)) * step(2.0, u_box.z);",
     "    float bw = min(u_res.x * 0.8, min(1500.0, u_box.z));",
     "    vec2 T = vec2(u_res.x * 0.5, u_box.x) + a_tgt * bw * 0.5;",
-    "    T += vec2(sin(u_time * 2.1 + ph), cos(u_time * 1.7 + ph)) * 1.3;",
+    "    T += vec2(sin(u_time * 2.1 + ph), cos(u_time * 1.7 + ph)) * mix(1.3, 0.3, form);",
     "    P = mix(P, T, form);",
     "  }",
     // entrada: el campo se condensa desde abajo, cada partícula a su turno
@@ -99,7 +99,7 @@
     "  P.y += (1.0 - en) * u_res.y * mix(0.5, 1.2, z);",
     // la estela va DETRÁS y se apaga hacia la cola: así se lee como movimiento
     "  float sp = length(V);",
-    "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z) * mix(1.0, 0.22, form);",
+    "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z) * mix(1.0, 0.06, form);",
     "  vec2 dv = normalize(V + vec2(0.0001, 0.0001));",
     "  vec2 Q = P - dv * len * a_end;",
     "  vec2 clip = (Q / u_res) * 2.0 - 1.0;",
@@ -114,7 +114,7 @@
     "  vec2 e = P / u_res;",
     "  float edge = smoothstep(0.0, 0.1, e.x) * smoothstep(1.0, 0.9, e.x) * smoothstep(0.0, 0.1, e.y) * smoothstep(1.0, 0.88, e.y);",
     "  float tail = mix(1.0, 0.06, a_end);",
-    "  v_a = (0.13 + boost * 0.55 + form * 0.5) * mix(0.35, 1.25, z) * edge * tail * en * (1.0 - u_prog * 0.8);",
+    "  v_a = (0.13 + boost * 0.55 + form * 1.15) * mix(mix(0.35, 1.25, z), 1.0, form) * edge * tail * en * (1.0 - u_prog * 0.8);",
     "}"
   ].join("\n");
 
@@ -306,15 +306,15 @@
         var img = new Image();
         img.onload = function () {
           if (st.dead) return;
-          var W = 560, H = Math.max(2, Math.round(560 * (img.height / img.width)));
+          var W = 520, H = Math.max(2, Math.round(520 * (img.height / img.width)));
           var oc = document.createElement("canvas");
           oc.width = W; oc.height = H;
           var g2 = oc.getContext("2d");
           g2.drawImage(img, 0, 0, W, H);
           var d = g2.getImageData(0, 0, W, H).data;
           var pts = [];
-          for (var yy = 0; yy < H; yy += 2) {
-            for (var xx = 0; xx < W; xx += 2) {
+          for (var yy = 0; yy < H; yy += 1) {
+            for (var xx = 0; xx < W; xx += 1) {
               if (d[(yy * W + xx) * 4 + 3] > 120) pts.push((xx / W - 0.5) * 2, ((yy / H - 0.5) * 2) * (H / W));
             }
           }
