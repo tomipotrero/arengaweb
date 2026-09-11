@@ -334,8 +334,15 @@
       gl.uniform1f(U.u_waveT, wt);
       // se persigue el objetivo en vez de saltar a él: scrollear rápido no
       // arma ni desarma el logotipo de golpe
-      form += (formT2 - form) * 0.055;
-      rel += (relT2 - rel) * 0.055;
+      /* Se persigue el objetivo, pero a velocidad variable: si la diferencia es
+         grande —un scroll de golpe— alcanza rápido, y cuando ya está cerca
+         vuelve al ritmo lento. Con una sola constante lenta, scrollear rápido
+         dejaba el logotipo a medio armar; con una sola rápida, el scroll normal
+         se veía brusco. */
+      var gap = Math.abs(formT2 - form);
+      form += (formT2 - form) * (gap > 0.4 ? 0.22 : 0.055);
+      var gapR = Math.abs(relT2 - rel);
+      rel += (relT2 - rel) * (gapR > 0.4 ? 0.22 : 0.055);
       gl.uniform1f(U.u_form, form);
       gl.uniform1f(U.u_rel, rel);
       // el trazo mide siempre un píxel de placa: a más resolución es más fino
