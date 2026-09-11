@@ -1055,9 +1055,18 @@ class Component extends DCLogic {
     const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const glc = root.querySelector("[data-gl]");
     if (glc && window.ArengaGL && !reduce) {
-      this.gl = window.ArengaGL.start(glc, {
+      const glHandle = window.ArengaGL.start(glc, {
         count: this.coarse ? 15000 : 22000,
         auto: this.props.autoPulse ?? 2600,
+        // el regulador puede volver a intentarlo: hay que devolver el lienzo
+        onRetry: () => {
+          this.gl = glHandle;
+          this.fieldBase = 0.5;
+          this.fpLast = undefined;
+          glc.style.opacity = "1";
+          if (this.fieldCursor) this.fieldCursor.style.display = "none";
+          if (this.logoFb) { this.logoFb.style.opacity = "0"; this.logoFb.style.filter = ""; }
+        },
         onFallback: () => {
           this.gl = null;
           this.fieldBase = 1;
@@ -1067,6 +1076,7 @@ class Component extends DCLogic {
           if (this.fieldCursor) this.fieldCursor.style.display = "";
         }
       });
+      this.gl = glHandle;
       if (this.gl) {
         glc.style.opacity = "1";
         this.fieldBase = 0.5;
