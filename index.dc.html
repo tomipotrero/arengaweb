@@ -1087,6 +1087,28 @@ class Component extends DCLogic {
     setTimeout(() => { if (!this.dead) this.cacheStack(); }, 400);
   }
 
+  /* La banda del logotipo se mide contra la copia, no contra una fracción del
+     alto: el enlace se mueve con el alto de la pantalla y el dibujo escalaba
+     con el ancho, así que a ciertas alturas se cruzaban. El techo es lo último
+     que ocupa la copia; el piso, donde arranca el degradado de la máscara. */
+  measureLogoBox() {
+    if (!this.gl || !this.fieldWrap) return;
+    const now = performance.now();
+    if (this.boxAt && now - this.boxAt < 500) return;
+    this.boxAt = now;
+    const wrap = this.fieldWrap.getBoundingClientRect();
+    const copy = this.fieldWrap.parentElement.querySelector("[data-hero-copy]");
+    if (!copy || !wrap.height) return;
+    const c = copy.getBoundingClientRect();
+    const top = Math.max(c.bottom - wrap.top + 18, wrap.height * 0.5);
+    const bottom = wrap.height * 0.82 - 10;
+    const h = bottom - top;
+    // en pantallas bajas no hay banda libre: mejor sin logotipo que encimado
+    if (h < 46) { this.gl.setLogoBox(0, 0); return; }
+    // la tinta real excede la caja por el largo de la estela y la respiración
+    this.gl.setLogoBox(top + h / 2, Math.min(h - 20, wrap.height * 0.19));
+  }
+
   tickLite(y, vh) {
     const st = this.heroStageRef.current, inner = this.fieldInner;
     if (!st || !inner) return;
@@ -1097,6 +1119,7 @@ class Component extends DCLogic {
       this.gl.setProgress(p);
       // el logotipo ya está formado al llegar y se deshace al bajar
       this.gl.setForm(1 - Math.min(1, Math.max(0, (p - 0.1) / 0.42)));
+      this.measureLogoBox();
       // el campo entra cuando la cortina terminó de subir, no al cargar
       if (!this.entered && this.engine && !this.engine.gate) { this.entered = true; this.gl.enter(); }
     }
