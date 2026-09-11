@@ -98,32 +98,80 @@
     {
       "n": "01",
       "title": "Social Media",
-      "copy": "Estrategia, planificación y ejecución de contenidos alineados a los objetivos del negocio. Construimos marcas relevantes, consistentes y activas en el día a día."
+      "copy": "Estrategia, planificación y ejecución de contenidos alineados a los objetivos del negocio. Construimos marcas relevantes, consistentes y activas en el día a día.",
+      "does": [
+        "Plan de contenidos mensual",
+        "Piezas para feed, stories y reels",
+        "Calendario y publicación",
+        "Reporte de resultados"
+      ],
+      "caseTitle": "Megal",
+      "casePage": "/proyectos/megal"
     },
     {
       "n": "02",
       "title": "Producción audiovisual",
-      "copy": "Creamos piezas audiovisuales de alto impacto, desde la idea hasta la postproducción. Contenido pensado para captar atención, contar historias y escalar en cualquier plataforma."
+      "copy": "Creamos piezas audiovisuales de alto impacto, desde la idea hasta la postproducción. Contenido pensado para captar atención, contar historias y escalar en cualquier plataforma.",
+      "does": [
+        "Dirección y realización",
+        "Producción integral en rodaje",
+        "Post: edición, color y sonido",
+        "Versiones por formato y plataforma"
+      ],
+      "caseTitle": "Club Nacional de Football",
+      "casePage": "/proyectos/nacional"
     },
     {
       "n": "03",
       "title": "Branding / Diseño",
-      "copy": "Desarrollamos identidades sólidas, sistemas visuales y piezas que construyen marca en el tiempo. Diseño estratégico con criterio estético y funcional."
+      "copy": "Desarrollamos identidades sólidas, sistemas visuales y piezas que construyen marca en el tiempo. Diseño estratégico con criterio estético y funcional.",
+      "does": [
+        "Identidad visual y manual de marca",
+        "Sistema gráfico y piezas base",
+        "Diseño de materiales y packaging",
+        "Adaptaciones para cada canal"
+      ],
+      "caseTitle": "Altoconcepto",
+      "casePage": "/proyectos/altoconcepto"
     },
     {
       "n": "04",
       "title": "Influencers",
-      "copy": "Conectamos marcas con creadores relevantes, auténticos y alineados al mensaje. Gestionamos campañas de punta a punta, enfocadas en alcance real y credibilidad."
+      "copy": "Conectamos marcas con creadores relevantes, auténticos y alineados al mensaje. Gestionamos campañas de punta a punta, enfocadas en alcance real y credibilidad.",
+      "does": [
+        "Selección y curaduría de perfiles",
+        "Negociación y contratación",
+        "Coordinación y producción de contenidos",
+        "Medición de alcance y resultados"
+      ],
+      "caseTitle": "",
+      "casePage": ""
     },
     {
       "n": "05",
       "title": "Desarrollo de producto",
-      "copy": "Acompañamos la creación y evolución de productos desde la idea hasta su salida al mercado. Pensamiento estratégico, validación y ejecución enfocada en usuarios reales."
+      "copy": "Acompañamos la creación y evolución de productos desde la idea hasta su salida al mercado. Pensamiento estratégico, validación y ejecución enfocada en usuarios reales.",
+      "does": [
+        "Investigación y definición de alcance",
+        "Arquitectura y flujos",
+        "Diseño de interfaz y prototipo",
+        "Entrega lista para desarrollo"
+      ],
+      "caseTitle": "RefMe Pro",
+      "casePage": "/proyectos/refme-pro"
     },
     {
       "n": "06",
       "title": "Desarrollo de software",
-      "copy": "Diseñamos y desarrollamos soluciones digitales a medida. Tecnología pensada para escalar, optimizar procesos y potenciar el negocio."
+      "copy": "Diseñamos y desarrollamos soluciones digitales a medida. Tecnología pensada para escalar, optimizar procesos y potenciar el negocio.",
+      "does": [
+        "Desarrollo web y aplicaciones",
+        "Integraciones y automatizaciones",
+        "Puesta en producción",
+        "Mantenimiento y evolución"
+      ],
+      "caseTitle": "EigenCloud",
+      "casePage": "/proyectos/eigencloud"
     }
   ],
   "steps": [
@@ -494,5 +542,11 @@
     "contentPath": "content.json",
     "assetDir": "media/",
     "canonicalOrigin": ""
+  },
+  "services": {
+    "title": "Nuestros servicios",
+    "text": "Seis capacidades que se combinan según lo que el proyecto necesite. Podés contratar una o todas: trabajamos con el mismo equipo y el mismo criterio.",
+    "closeTitle": "¿Cuál te sirve?",
+    "closeText": "Contanos qué necesitás y te decimos cómo lo abordamos."
   }
 }
