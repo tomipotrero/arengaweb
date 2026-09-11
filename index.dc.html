@@ -90,7 +90,9 @@
   @media (max-width: 760px) { [data-m-stage] { touch-action: pan-y !important; } [data-hero-wrap] { justify-content: center !important; padding-top: 96px !important; padding-bottom: 34px !important; } }
   @media (max-width: 760px) {
     [data-hero-wrap] { padding-left: 18px !important; padding-right: 18px !important; }
-    [data-hero-copy] h1 { font-size: clamp(72px, 24vw, 150px) !important; white-space: normal !important; line-height: 0.9 !important; letter-spacing: -0.055em !important; }
+    /* "Una fusión" arriba, "ganadora." abajo: a 24vw la primera línea no entra
+       y se partía en tres. El ancho en caracteres fija el quiebre. */
+    [data-hero-copy] h1 { font-size: clamp(52px, 15.5vw, 104px) !important; white-space: normal !important; line-height: 0.92 !important; letter-spacing: -0.05em !important; max-width: 11ch !important; margin: 0 auto !important; }
     [data-hero-copy] p { font-size: 19.5px !important; max-width: 26ch !important; }
     /* el titular entra en dos líneas exactas: la última palabra baja sola */
     [data-hero-copy] h1 span:last-of-type { display: block !important; }
@@ -158,10 +160,10 @@
     </div>
   </div>
 
-  <section ref="{{ heroStageRef }}" style="position: relative; height: 190vh;">
+  <section ref="{{ heroStageRef }}" style="position: relative; height: 300vh;">
    <div ref="{{ heroPinRef }}" style="position: sticky; top: 0; height: 100vh; overflow: hidden;">
-    <div data-field="1" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; mask-image: linear-gradient(to bottom, #000 0%, #000 82%, rgba(0,0,0,0.5) 93%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 82%, rgba(0,0,0,0.5) 93%, rgba(0,0,0,0) 100%);">
-      <div data-field-inner="1" style="position: absolute; inset: -10%; will-change: transform, opacity;">
+    <div data-field="1" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; ">
+      <div data-field-inner="1" style="position: absolute; inset: -10%; will-change: transform, opacity; mask-image: linear-gradient(to bottom, #000 0%, #000 40%, rgba(0,0,0,0.58) 68%, rgba(0,0,0,0.18) 87%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, rgba(0,0,0,0.58) 68%, rgba(0,0,0,0.18) 87%, rgba(0,0,0,0) 100%);">
         <div style="position: absolute; left: -6%; top: -12%; width: 74vmax; height: 74vmax; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(40,234,155,0.3) 0%, rgba(40,234,155,0.12) 34%, rgba(40,234,155,0.03) 60%, rgba(40,234,155,0) 76%); animation: arengaDriftA 34s cubic-bezier(.45,0,.55,1) infinite alternate; will-change: transform;"></div>
         <div style="position: absolute; right: -14%; bottom: -22%; width: 86vmax; height: 86vmax; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(15,191,134,0.26) 0%, rgba(15,191,134,0.1) 36%, rgba(15,191,134,0.02) 62%, rgba(15,191,134,0) 78%); animation: arengaDriftB 46s cubic-bezier(.45,0,.55,1) infinite alternate; will-change: transform;"></div>
         <div style="position: absolute; left: -10%; top: -18%; width: 54vmax; height: 54vmax; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(255,87,21,0.44) 0%, rgba(255,87,21,0.17) 32%, rgba(255,87,21,0.04) 58%, rgba(255,87,21,0) 75%); animation: arengaDriftC 28s cubic-bezier(.45,0,.55,1) infinite alternate; will-change: transform;"></div>
@@ -169,7 +171,7 @@
       </div>
       <canvas data-gl="1" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 900ms ease;"></canvas>
       <div data-field-cursor="1" style="position: absolute; left: 0; top: 0; width: 46vmax; height: 46vmax; margin: -23vmax 0 0 -23vmax; border-radius: 50%; opacity: 0; background: radial-gradient(circle at 50% 50%, rgba(77,225,196,0.42) 0%, rgba(77,225,196,0.16) 34%, rgba(77,225,196,0) 70%); transition: opacity 700ms ease; will-change: transform, opacity;"></div>
-      <div style="position: absolute; inset: 0; background-image: url(noise.svg); background-size: 200px 200px; opacity: 0.2; mix-blend-mode: soft-light;"></div>
+
     </div>
 
 
@@ -1094,19 +1096,12 @@ class Component extends DCLogic {
   measureLogoBox() {
     if (!this.gl || !this.fieldWrap) return;
     const now = performance.now();
-    if (this.boxAt && now - this.boxAt < 500) return;
+    if (this.boxAt && now - this.boxAt < 600) return;
     this.boxAt = now;
-    const wrap = this.fieldWrap.getBoundingClientRect();
-    const copy = this.fieldWrap.parentElement.querySelector("[data-hero-copy]");
-    if (!copy || !wrap.height) return;
-    const c = copy.getBoundingClientRect();
-    const top = Math.max(c.bottom - wrap.top + 18, wrap.height * 0.5);
-    const bottom = wrap.height * 0.82 - 10;
-    const h = bottom - top;
-    // en pantallas bajas no hay banda libre: mejor sin logotipo que encimado
-    if (h < 46) { this.gl.setLogoBox(0, 0); return; }
-    // la tinta real excede la caja por el largo de la estela y la respiración
-    this.gl.setLogoBox(top + h / 2, Math.min(h - 20, wrap.height * 0.19));
+    const h = this.fieldWrap.getBoundingClientRect().height;
+    if (!h) return;
+    // tiene la pantalla entera: cuando se arma, la copia ya no está
+    this.gl.setLogoBox(h * 0.5, h * 0.34);
   }
 
   tickLite(y, vh) {
@@ -1117,8 +1112,13 @@ class Component extends DCLogic {
     p = p < 0 ? 0 : (p > 1 ? 1 : p);
     if (this.gl) {
       this.gl.setProgress(p);
-      // el logotipo ya está formado al llegar y se deshace al bajar
-      this.gl.setForm(1 - Math.min(1, Math.max(0, (p - 0.1) / 0.42)));
+      /* El logotipo es el segundo tiempo del capítulo: no aparece hasta que la
+         copia se fue, se arma grande y centrado, se sostiene, y recién ahí se
+         deshace desde los costados. */
+      const up = Math.min(1, Math.max(0, (p - 0.38) / 0.2));
+      const down = Math.min(1, Math.max(0, (p - 0.72) / 0.26));
+      const ease = (v) => v * v * (3 - 2 * v);
+      this.gl.setForm(ease(up) * (1 - ease(down)));
       this.measureLogoBox();
       // el campo entra cuando la cortina terminó de subir, no al cargar
       if (!this.entered && this.engine && !this.engine.gate) { this.entered = true; this.gl.enter(); }
