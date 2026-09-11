@@ -25,6 +25,10 @@
     "uniform float u_mouseOn;",
     "uniform float u_prog;",
     "uniform float u_amp;",
+    "uniform float u_in;",
+    "uniform vec2  u_wave;",
+    "uniform float u_waveT;",
+    "uniform vec2  u_par;",
     "varying float v_a;",
     "varying vec3  v_c;",
     "float hash(float n) { return fract(sin(n) * 43758.5453123); }",
@@ -47,6 +51,8 @@
     "  vec2 P = p0 * u_res;",
     "  vec2 V = (p1 - p0) * u_res;",
     "  float boost = 0.0;",
+    // parallaje: cada capa de profundidad se corre distinto con el cursor
+    "  P += u_par * mix(5.0, 32.0, z);",
     "  if (u_mouseOn > 0.5) {",
     "    vec2 d = P - u_mouse;",
     "    float r = min(u_res.x, u_res.y) * 0.36;",
@@ -58,9 +64,23 @@
     "    V += (dir * 0.3 + sw * 0.9) * f * 46.0;",
     "    boost = f;",
     "  }",
+    // onda del clic: un anillo que se expande y empuja al pasar
+    "  if (u_waveT >= 0.0) {",
+    "    vec2 d = P - u_wave;",
+    "    float dd = length(d) + 0.001;",
+    "    float rad = u_waveT * min(u_res.x, u_res.y) * 0.9;",
+    "    float band = abs(dd - rad);",
+    "    float f = exp(-(band * band) / 5200.0) * max(0.0, 1.0 - u_waveT * 0.7);",
+    "    P += (d / dd) * f * 105.0;",
+    "    boost += f * 0.85;",
+    "  }",
     // el capítulo se va hacia arriba y converge al centro
     "  P.y -= u_prog * u_prog * u_res.y * 1.05;",
     "  P.x += (u_res.x * 0.5 - P.x) * u_prog * 0.32;",
+    // entrada: el campo se condensa desde abajo, cada partícula a su turno
+    "  float en = clamp((u_in - hash(a_i * 13.0) * 0.42) / 0.58, 0.0, 1.0);",
+    "  en = en * en * (3.0 - 2.0 * en);",
+    "  P.y += (1.0 - en) * u_res.y * mix(0.5, 1.2, z);",
     // la estela va DETRÁS y se apaga hacia la cola: así se lee como movimiento
     "  float sp = length(V);",
     "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z);",
@@ -78,7 +98,7 @@
     "  vec2 e = P / u_res;",
     "  float edge = smoothstep(0.0, 0.1, e.x) * smoothstep(1.0, 0.9, e.x) * smoothstep(0.0, 0.1, e.y) * smoothstep(1.0, 0.88, e.y);",
     "  float tail = mix(1.0, 0.06, a_end);",
-    "  v_a = (0.13 + boost * 0.55) * mix(0.35, 1.25, z) * edge * tail * (1.0 - u_prog * 0.8);",
+    "  v_a = (0.13 + boost * 0.55) * mix(0.35, 1.25, z) * edge * tail * en * (1.0 - u_prog * 0.8);",
     "}"
   ].join("\n");
 
@@ -137,7 +157,7 @@
     buf(ai, "a_i"); buf(ae, "a_end");
 
     var U = {};
-    ["u_time", "u_res", "u_mouse", "u_mouseOn", "u_prog", "u_amp"].forEach(function (k) {
+    ["u_time", "u_res", "u_mouse", "u_mouseOn", "u_prog", "u_amp", "u_in", "u_wave", "u_waveT", "u_par"].forEach(function (k) {
       U[k] = gl.getUniformLocation(prog, k);
     });
 
@@ -147,6 +167,9 @@
     gl.clearColor(0, 0, 0, 0);
 
     var st = { w: 0, h: 0, dpr: 1, prog: 0, mx: -1e4, my: -1e4, on: 0, amp: opts.amp || 0.085, raf: 0, dead: false, t0: performance.now() };
+    // entrada, onda del clic y paralaje: tres uniformes, ningún costo por cuadro
+    var inT = 0, waveT = 0, wx = 0, wy = 0;
+    var parX = 0, parY = 0, parTX = 0, parTY = 0;
     /* Regulador. WebGL no garantiza aceleración: si no hay placa disponible el
        navegador lo emula en el procesador y sale peor que el lienzo. Por eso se
        arranca con una fracción de la población y se sube sólo si hay margen
@@ -214,6 +237,20 @@
       gl.uniform1f(U.u_mouseOn, st.on);
       gl.uniform1f(U.u_prog, st.prog);
       gl.uniform1f(U.u_amp, st.amp);
+      // si nadie llamó a enter() en dos segundos y medio, entra igual: el campo
+      // invisible esperando una señal que no llega sería peor que entrar solo
+      if (!inT && now - st.t0 > 2500) inT = now;
+      var uin = inT ? Math.min(1, (now - inT) / 1500) : 0;
+      gl.uniform1f(U.u_in, uin);
+      parX += (parTX - parX) * 0.07; parY += (parTY - parY) * 0.07;
+      gl.uniform2f(U.u_par, parX, parY);
+      var wt = -1;
+      if (waveT) {
+        wt = (now - waveT) / 1000;
+        if (wt > 1.5) { waveT = 0; wt = -1; }
+      }
+      gl.uniform2f(U.u_wave, wx, wy);
+      gl.uniform1f(U.u_waveT, wt);
       gl.drawArrays(gl.LINES, 0, drawn * 2);
     }
     st.raf = requestAnimationFrame(frame);
@@ -221,7 +258,13 @@
     return {
       count: n,
       setProgress: function (p) { st.prog = p < 0 ? 0 : (p > 1 ? 1 : p); },
-      setPointer: function (x, y, on) { st.mx = x; st.my = y; st.on = on ? 1 : 0; },
+      setPointer: function (x, y, on) {
+        st.mx = x; st.my = y; st.on = on ? 1 : 0;
+        if (on && st.w) { parTX = (x / st.w - 0.5) * 2; parTY = (y / st.h - 0.5) * 2; }
+        else { parTX = 0; parTY = 0; }
+      },
+      enter: function () { if (!inT) inT = performance.now(); },
+      pulse: function (x, y) { wx = x; wy = y; waveT = performance.now(); },
       resize: resize,
       destroy: function () {
         st.dead = true;
