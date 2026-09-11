@@ -355,7 +355,7 @@
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;heroLength&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:380,&quot;min&quot;:220,&quot;max&quot;:560,&quot;step&quot;:20,&quot;unit&quot;:&quot;vh&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;,&quot;label&quot;:&quot;Largo del capítulo&quot;},&quot;typewriter&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;heroLength&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:380,&quot;min&quot;:220,&quot;max&quot;:560,&quot;step&quot;:20,&quot;unit&quot;:&quot;vh&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;autoPulse&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:2600,&quot;min&quot;:0,&quot;max&quot;:8000,&quot;step&quot;:200,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;typewriter&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
 const MARK_D = "M45.5435 7.84641L45.4397 8.03612C43.7536 11.1461 40.4758 13.0867 36.9054 13.0867H32.5423L34.263 17.8138H40.114L36.4336 24.6059C35.9523 25.4954 35.0149 26.049 33.9956 26.049H32.9513L31.7968 22.6L30.8436 19.7575L30.1925 17.8138H30.1296L23.9262 0H12.932L10.1103 4.95415L5.41691 13.1862L2.72104 17.9133L0.0629141 22.5783L0 23.1567H6.44241L6.50532 23.0447C8.2386 19.885 11.5825 17.9164 15.2189 17.9164H19.582L17.8613 13.1893H11.938L13.0075 11.2456L16.4678 4.95415H17.5121C18.503 4.95415 19.3838 5.57614 19.7047 6.50291L21.9916 13.0898L23.6714 17.8169L26.5938 26.049L28.3522 31.0031H39.3465L52.4106 8.42486L52.4735 7.84641H45.5435Z";
 const MARK_W = 52.4735, MARK_H = 31.0031;
 function mix(a, b, t) { return [Math.round(a[0] + (b[0] - a[0]) * t), Math.round(a[1] + (b[1] - a[1]) * t), Math.round(a[2] + (b[2] - a[2]) * t)]; }
@@ -1041,6 +1041,7 @@ class Component extends DCLogic {
     if (glc && window.ArengaGL && !reduce) {
       this.gl = window.ArengaGL.start(glc, {
         count: this.coarse ? 15000 : 22000,
+        auto: this.props.autoPulse ?? 2600,
         onFallback: () => {
           this.gl = null;
           this.fieldBase = 1;
