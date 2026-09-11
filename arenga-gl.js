@@ -245,6 +245,27 @@
     var floor = Math.max(1200, Math.round(n * 0.1));
     var drawn = Math.min(n, Math.max(floor, Math.round(n * 0.22)));
     var ms = 0, chk = 0, last = 0, gaveUp = false, warm = false;
+    /* Abandono con evidencia y con vuelta atrás.
+
+       Antes bastaba UNA ventana de ~14 cuadros lenta para matar el efecto
+       definitivamente: un cuadro trabado por una imagen decodificándose, una
+       recolección de basura o cualquier app de fondo, y esa máquina se quedaba
+       sin partículas el resto de la sesión aunque anduviera perfecto. Dependía
+       del azar del momento, no del hardware: de ahí que a una parte de la gente
+       no le apareciera.
+
+       Ahora hacen falta tres ventanas lentas SEGUIDAS, y una racha buena
+       reinicia la cuenta. Y el abandono es reversible: se vuelve a intentar con
+       la población mínima a los seis segundos, hasta dos veces. */
+    var slow = 0, reintentos = 0, reTimer = 0;
+    // si el navegador declara render por software, eso sí es evidencia dura
+    var swRenderer = false;
+    try {
+      var dbg = gl.getExtension("WEBGL_debug_renderer_info");
+      var rn = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || "") : "";
+      swRenderer = /swiftshader|software|llvmpipe|basic render|microsoft basic/i.test(rn);
+      diag.placa = rn || "desconocida";
+    } catch (e) { diag.placa = "desconocida"; }
     diag.arrancado = true; diag.abandono = false; diag.motivo = ""; diag.poblacion = drawn; diag.cuadroMs = 0;
 
     function resize() {
@@ -286,27 +307,44 @@
       last = now;
       if (++chk > 14) {
         chk = 0;
-        if (ms > 45 && !gaveUp) {
-          // claramente sin aceleración: no vale la pena insistir
-          gaveUp = true; st.dead = true;
-          diag.abandono = true; diag.motivo = "cuadro de " + Math.round(ms) + " ms tras el arranque: sin aceleración por hardware";
-          cancelAnimationFrame(st.raf);
-          if (io) io.disconnect();
-          if (opts.onFallback) opts.onFallback();
-          return;
-        }
-        if (ms > 23) {
-          if (drawn > floor) { drawn = Math.max(floor, Math.round(drawn * 0.6)); ms = 16.7; }
-          else if (!gaveUp) {
+        var lenta = ms > 45;
+        if (ms > 23 && drawn > floor) {
+          // primero se baja la población: casi siempre alcanza
+          drawn = Math.max(floor, Math.round(drawn * 0.6)); ms = 16.7; slow = 0;
+        } else if (lenta || (ms > 23 && drawn <= floor)) {
+          slow++;
+          // el render por software no mejora esperando: se corta en la primera
+          if (!gaveUp && (slow >= 3 || (swRenderer && lenta))) {
             gaveUp = true; st.dead = true;
-            diag.abandono = true; diag.motivo = "ni con la población mínima baja de " + Math.round(ms) + " ms por cuadro";
+            diag.abandono = true;
+            diag.motivo = swRenderer
+              ? "WebGL emulado en el procesador (" + diag.placa + "): la aceleración por hardware está apagada o la placa está en la lista de bloqueo del navegador"
+              : Math.round(ms) + " ms por cuadro en tres mediciones seguidas" + (reintentos ? " (reintento " + reintentos + ")" : "");
             cancelAnimationFrame(st.raf);
             if (io) io.disconnect();
             if (opts.onFallback) opts.onFallback();
+            // se reintenta con lo mínimo: la lentitud pudo ser del momento
+            if (!swRenderer && reintentos < 2) {
+              reTimer = setTimeout(function () {
+                if (!gaveUp || st.killed) return;
+                gaveUp = false; st.dead = false; warm = false;
+                slow = 0; chk = 0; ms = 0; last = 0;
+                reintentos++;
+                drawn = floor;
+                st.t0 = performance.now();
+                diag.abandono = false; diag.motivo = "reintentando con población mínima";
+                if (io) io.observe(canvas);
+                if (opts.onRetry) opts.onRetry();
+                st.raf = requestAnimationFrame(frame);
+              }, 6000);
+            }
             return;
           }
-        } else if (ms > 0 && ms < 14.5 && drawn < n) drawn = Math.min(n, Math.round(drawn * 1.3) + 600);
-        diag.poblacion = drawn; diag.cuadroMs = Math.round(ms);
+        } else {
+          slow = 0;
+          if (ms > 0 && ms < 14.5 && drawn < n) drawn = Math.min(n, Math.round(drawn * 1.3) + 600);
+        }
+        diag.poblacion = drawn; diag.cuadroMs = Math.round(ms); diag.lentas = slow;
       }
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform1f(U.u_time, (now - st.t0) * 0.00042);
@@ -432,6 +470,10 @@
       resize: resize,
       destroy: function () {
         st.dead = true;
+        // marca definitiva: sin esto el reintento podía resucitar el efecto
+        // después de que la página lo dio de baja
+        st.killed = true;
+        if (reTimer) clearTimeout(reTimer);
         if (st.raf) cancelAnimationFrame(st.raf);
         if (io) io.disconnect();
         var lose = gl.getExtension("WEBGL_lose_context");
@@ -456,7 +498,7 @@
       if (!ok) return "El navegador no pudo crear un contexto WebGL: aceleración por hardware desactivada, o la placa está en la lista de bloqueo.";
       if (!d.arrancado) return "El módulo no llegó a arrancar (¿arenga-gl.js no cargó?).";
       if (d.abandono) return "Arrancó y se abandonó: " + d.motivo;
-      return "Andando. Población " + d.poblacion + " partículas, " + d.cuadroMs + " ms por cuadro.";
+      return "Andando. Población " + d.poblacion + " partículas, " + d.cuadroMs + " ms por cuadro. Placa: " + (d.placa || "desconocida") + ".";
     }
   };
 })();
