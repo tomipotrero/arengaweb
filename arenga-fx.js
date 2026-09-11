@@ -366,8 +366,18 @@
     devLinks();
     buildLd(c);
     ENGINES.forEach(function (e) {
-      if (reType) { e.typeRecs = e.typeRecs.filter(function (r) { return r.el.__typeRec === r; }); e.initType(e.root); }
-      if (reBlur) { e.blurEls = e.blurEls.filter(function (x) { return x.__blur; }); e.initBlur(e.root); e.blurFallback(); }
+      /* Los nodos que estaban en pantalla cuando llegó el contenido ya habían
+         gastado su observador: al reemplazarles el texto quedaban invisibles.
+         Tras re-registrarlos se revelan a mano los que están en el viewport. */
+      var enVista = function (el) { var r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < (window.innerHeight || 800); };
+      if (reType) {
+        e.typeRecs = e.typeRecs.filter(function (r) { return r.el.__typeRec === r; }); e.initType(e.root);
+        e.typeRecs.forEach(function (r) { if (enVista(r.el)) e.setTypeWant(r); });
+      }
+      if (reBlur) {
+        e.blurEls = e.blurEls.filter(function (x) { return x.__blur; }); e.initBlur(e.root); e.blurFallback();
+        e.blurEls.forEach(function (el) { if (el.dataset.blur !== "hero" && enVista(el)) e.setBlur(el, true); });
+      }
       if (reVideo && e.rebindVideos) e.rebindVideos();
       anchorSlots(e.root);
       e.scheduleMeasure();
@@ -598,6 +608,9 @@
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!this.dead) { this.remeasureType(); this.scheduleMeasure(); } });
       this.cache();
       ENGINES.push(this);
+      // lo que ya está en pantalla se revela sin esperar al observador: si el
+      // contenido del CMS llegó antes que el motor, el observador ya se gastó
+      setTimeout(() => { if (!this.dead) this.blurFallback(); }, 60);
       loadContent().then(applyContent);
       this.blurSafety = setTimeout(() => this.blurFallback(), 3200);
       this.raf = requestAnimationFrame((t) => this.frame(t));
@@ -1129,9 +1142,20 @@
       if (on && this.blurIO && el.dataset.blur === "1") this.blurIO.unobserve(el);
     }
     blurFallback() {
-      if (this.gate) return;
       const vh = window.innerHeight;
-      this.blurEls.forEach(el => { const r = el.getBoundingClientRect(); if (r.top < vh && r.bottom > 0) this.setBlur(el, true); });
+      /* Sin la condición de la cortina: los nodos "hero" esperan su señal, pero
+         el resto tiene que revelarse si ya está en pantalla. Con el guardia
+         puesto, un titular sobre el pliegue cuyo texto llega del CMS quedaba
+         invisible para siempre. */
+      this.blurEls.forEach(el => {
+        if (this.gate && el.dataset.blur === "hero") return;
+        const r = el.getBoundingClientRect();
+        if (r.top < vh && r.bottom > 0) this.setBlur(el, true);
+      });
+      this.typeRecs.forEach(rec => {
+        const r = rec.el.getBoundingClientRect();
+        if (r.top < vh && r.bottom > 0) this.setTypeWant(rec);
+      });
     }
     /* typewriter paragraphs: the full text stays in the DOM (the untyped tail is only visibility:hidden), so layout
        is final from the first paint and crawlers/readers always see the whole sentence */
