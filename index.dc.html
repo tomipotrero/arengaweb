@@ -160,7 +160,7 @@
     </div>
   </div>
 
-  <section ref="{{ heroStageRef }}" style="position: relative; height: 300vh;">
+  <section ref="{{ heroStageRef }}" style="position: relative; height: 380vh;">
    <div ref="{{ heroPinRef }}" style="position: sticky; top: 0; height: 100vh; overflow: hidden;">
     <div data-field="1" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; ">
       <div data-field-inner="1" style="position: absolute; inset: -10%; will-change: transform, opacity; mask-image: linear-gradient(to bottom, #000 0%, #000 40%, rgba(0,0,0,0.58) 68%, rgba(0,0,0,0.18) 87%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, rgba(0,0,0,0.58) 68%, rgba(0,0,0,0.18) 87%, rgba(0,0,0,0) 100%);">
@@ -350,7 +350,7 @@
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;thickness&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4,&quot;min&quot;:2,&quot;max&quot;:16,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Marca 3D&quot;},&quot;autoRotate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Marca 3D&quot;},&quot;clientsAuto&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:1,&quot;max&quot;:4,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Clientes&quot;},&quot;teamAuto&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Equipo&quot;},&quot;teamSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.3,&quot;max&quot;:2.5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Equipo&quot;},&quot;loader&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Loader&quot;},&quot;loaderSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.6,&quot;max&quot;:5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Loader&quot;},&quot;typewriter&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Tipografía&quot;},&quot;typeSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2.5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Tipografía&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;heroLength&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:380,&quot;min&quot;:220,&quot;max&quot;:560,&quot;step&quot;:20,&quot;unit&quot;:&quot;vh&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;,&quot;label&quot;:&quot;Largo del capítulo&quot;},&quot;typewriter&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
 const MARK_D = "M45.5435 7.84641L45.4397 8.03612C43.7536 11.1461 40.4758 13.0867 36.9054 13.0867H32.5423L34.263 17.8138H40.114L36.4336 24.6059C35.9523 25.4954 35.0149 26.049 33.9956 26.049H32.9513L31.7968 22.6L30.8436 19.7575L30.1925 17.8138H30.1296L23.9262 0H12.932L10.1103 4.95415L5.41691 13.1862L2.72104 17.9133L0.0629141 22.5783L0 23.1567H6.44241L6.50532 23.0447C8.2386 19.885 11.5825 17.9164 15.2189 17.9164H19.582L17.8613 13.1893H11.938L13.0075 11.2456L16.4678 4.95415H17.5121C18.503 4.95415 19.3838 5.57614 19.7047 6.50291L21.9916 13.0898L23.6714 17.8169L26.5938 26.049L28.3522 31.0031H39.3465L52.4106 8.42486L52.4735 7.84641H45.5435Z";
 const MARK_W = 52.4735, MARK_H = 31.0031;
 function mix(a, b, t) { return [Math.round(a[0] + (b[0] - a[0]) * t), Math.round(a[1] + (b[1] - a[1]) * t), Math.round(a[2] + (b[2] - a[2]) * t)]; }
@@ -1086,6 +1086,9 @@ class Component extends DCLogic {
       };
       window.addEventListener("pointerdown", this.onLiteDown, { passive: true });
     }
+    // el largo del capítulo manda el ritmo: más alto, más scroll por tiempo
+    const stg = this.heroStageRef.current;
+    if (stg) stg.style.height = Math.round(this.props.heroLength ?? 380) + "vh";
     setTimeout(() => { if (!this.dead) this.cacheStack(); }, 400);
   }
 
@@ -1115,8 +1118,11 @@ class Component extends DCLogic {
       /* El logotipo es el segundo tiempo del capítulo: no aparece hasta que la
          copia se fue, se arma grande y centrado, se sostiene, y recién ahí se
          deshace desde los costados. */
-      this.gl.setForm(Math.min(1, Math.max(0, (p - 0.34) / 0.32)));
-      this.gl.setRelease(Math.min(1, Math.max(0, (p - 0.78) / 0.22)));
+      /* Cuatro tiempos sobre el largo del capítulo: se va la copia, se arma el
+         logotipo, se sostiene, se deshace. Las fracciones están calculadas para
+         que ninguno ocurra en menos de media pantalla de scroll. */
+      this.gl.setForm(Math.min(1, Math.max(0, (p - 0.27) / 0.33)));
+      this.gl.setRelease(Math.min(1, Math.max(0, (p - 0.76) / 0.24)));
       this.measureLogoBox();
       // el campo entra cuando la cortina terminó de subir, no al cargar
       if (!this.entered && this.engine && !this.engine.gate) { this.entered = true; this.gl.enter(); }
