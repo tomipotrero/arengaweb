@@ -484,8 +484,6 @@
 
   window.ArengaGL = {
     start: start,
-    /* En la consola de la máquina afectada: ArengaGL.why()
-       Dice cuál de las cinco puertas cerró el campo de partículas. */
     why: function () {
       var d = diag;
       var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -495,10 +493,33 @@
       if (!window.WebGLRenderingContext) return "El navegador no soporta WebGL.";
       var ok = false;
       try { ok = !!(cv.getContext("webgl") || cv.getContext("experimental-webgl")); } catch (e) {}
-      if (!ok) return "El navegador no pudo crear un contexto WebGL: aceleración por hardware desactivada, o la placa está en la lista de bloqueo.";
+      if (!ok) return "El navegador no pudo crear un contexto WebGL. Causas típicas: bloqueo de huella digital (Brave Shields, Firefox con resistFingerprinting), aceleración por hardware apagada, o la placa en la lista de bloqueo.";
       if (!d.arrancado) return "El módulo no llegó a arrancar (¿arenga-gl.js no cargó?).";
       if (d.abandono) return "Arrancó y se abandonó: " + d.motivo;
       return "Andando. Población " + d.poblacion + " partículas, " + d.cuadroMs + " ms por cuadro. Placa: " + (d.placa || "desconocida") + ".";
     }
   };
+
+  /* Con ?diag en la dirección el resultado se muestra en pantalla, para no
+     depender de que alguien abra la consola en la máquina afectada. */
+  if (/[?&]diag\b/.test(location.search)) {
+    var mostrar = function () {
+      var box = document.createElement("div");
+      box.style.cssText = "position:fixed;left:12px;bottom:12px;z-index:9999;max-width:min(520px,92vw);padding:14px 16px;border-radius:14px;font:13px/1.5 'Hubot Sans',Helvetica,sans-serif;color:#f2efe9;background:rgba(7,9,11,0.92);border:1px solid rgba(255,255,255,0.16);box-shadow:0 18px 40px -18px rgba(0,0,0,0.8);white-space:pre-wrap";
+      var mm = window.matchMedia;
+      var lineas = [
+        "PARTÍCULAS: " + window.ArengaGL.why(),
+        "",
+        "Menos movimiento: " + (mm && mm("(prefers-reduced-motion: reduce)").matches ? "SÍ (apaga el efecto a propósito)" : "no"),
+        "WebGL disponible: " + (window.WebGLRenderingContext ? "sí" : "NO"),
+        "Pantalla: " + window.innerWidth + "×" + window.innerHeight + " @" + (window.devicePixelRatio || 1) + "x",
+        "Navegador: " + navigator.userAgent.slice(0, 90)
+      ];
+      box.textContent = lineas.join("\n");
+      box.addEventListener("click", function () { box.remove(); });
+      document.body.appendChild(box);
+    };
+    // se espera a que el regulador tenga una medición real
+    setTimeout(mostrar, 4200);
+  }
 })();
