@@ -521,6 +521,15 @@
   }
 
   var suppressUntil = 0;
+  /* Al recargar, el navegador restaura la posición de scroll. Con un hero de
+     320vh eso deja al visitante en la mitad del capítulo, sin header y sin
+     contexto. Se recarga siempre desde arriba, salvo que la URL pida un ancla. */
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (!location.hash) {
+    window.addEventListener("load", function () { window.scrollTo(0, 0); }, { once: true });
+    window.scrollTo(0, 0);
+  }
+
   window.__arengaSuppressClick = function (ms) { suppressUntil = performance.now() + (ms || 350); };
   document.addEventListener("click", function (e) {
     if (performance.now() < suppressUntil) { e.preventDefault(); e.stopPropagation(); return; }
@@ -778,10 +787,10 @@
         }
         const holo = document.createElement("div");
         holo.setAttribute("data-holo", "1");
-        holo.style.cssText = "position:absolute;inset:0;pointer-events:none;opacity:0;mix-blend-mode:screen;background-size:260% 260%;background-position:50% 50%;background-image:linear-gradient(118deg, rgba(255,87,21,0) 12%, rgba(255,87,21,0.42) 26%, rgba(255,236,220,0.3) 38%, rgba(40,234,155,0.4) 52%, rgba(40,234,155,0.26) 66%, rgba(255,87,21,0.24) 78%, rgba(255,87,21,0) 92%);";
+        holo.style.cssText = "position:absolute;inset:0;pointer-events:none;opacity:0;background-size:260% 260%;background-position:50% 50%;background-image:linear-gradient(118deg, rgba(255,87,21,0) 12%, rgba(255,87,21,0.42) 26%, rgba(255,236,220,0.3) 38%, rgba(40,234,155,0.4) 52%, rgba(40,234,155,0.26) 66%, rgba(255,87,21,0.24) 78%, rgba(255,87,21,0) 92%);";
         const glare = document.createElement("div");
         glare.setAttribute("data-glare", "1");
-        glare.style.cssText = "position:absolute;inset:0;pointer-events:none;opacity:0;mix-blend-mode:screen;";
+        glare.style.cssText = "position:absolute;inset:0;pointer-events:none;opacity:0;";
         el.appendChild(holo); el.appendChild(glare);
         el.__hover = { el, kind, amp, holo, glare, on: 0, px: 0, py: 0, tx: 0, ty: 0, w: 0, h: 0, hit: false, idle: true, r: null };
         this.hoverEls.push(el.__hover);
@@ -846,6 +855,17 @@
         if (el.__tfPre !== undefined) el.style.transform = el.__tfPre + el.__hoverTf + el.__tfPost;
         else el.style.transform = (el.__py ? "translate3d(0," + el.__py.toFixed(1) + "px,0)" : "") + el.__hoverTf;
       }
+      /* El modo de mezcla se pone sólo mientras el brillo se ve. Declarado
+         siempre, cada una de las ~140 capas obliga al navegador a aislar su
+         grupo y componer contra el fondo aunque esté en opacidad cero. */
+      const vivo = o > 0.002;
+      if (vivo !== h.blend) {
+        h.blend = vivo;
+        h.holo.style.mixBlendMode = vivo ? "screen" : "";
+        h.glare.style.mixBlendMode = vivo ? "screen" : "";
+      }
+      if (!vivo && h.wasOff) { h.holo.style.opacity = "0"; h.glare.style.opacity = "0"; return; }
+      h.wasOff = !vivo;
       const X = ((tx + 0.5) * 100).toFixed(1) + "% " + ((ty + 0.5) * 100).toFixed(1) + "%";
       const rad = Math.round(Math.max(200, Math.min(h.w || 300, h.h || 300) * 0.9));
       const mask = "radial-gradient(" + rad + "px " + rad + "px at " + X + ", #000 0%, rgba(0,0,0,0.5) 48%, transparent 80%)";
