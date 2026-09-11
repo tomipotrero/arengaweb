@@ -1031,7 +1031,7 @@ class Component extends DCLogic {
     const glc = root.querySelector("[data-gl]");
     if (glc && window.ArengaGL && !reduce) {
       this.gl = window.ArengaGL.start(glc, {
-        count: this.coarse ? 9000 : 22000,
+        count: this.coarse ? 15000 : 22000,
         onFallback: () => {
           this.gl = null;
           this.fieldBase = 1;
