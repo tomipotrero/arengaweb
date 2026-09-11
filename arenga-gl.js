@@ -19,6 +19,8 @@
   var VERT = [
     "attribute float a_i;",
     "attribute float a_end;",
+    "attribute vec4  a_s1;",
+    "attribute vec4  a_s2;",
     "attribute vec2  a_tgt;",
     "uniform float u_time;",
     "uniform vec2  u_res;",
@@ -36,7 +38,10 @@
     "uniform vec4  u_box;",
     "varying float v_a;",
     "varying vec3  v_c;",
-    "float hash(float n) { return fract(sin(n) * 43758.5453123); }",
+    /* Las semillas llegan como dato, no se calculan con sin() en el sombreador:
+       el hash clásico depende de la precisión de coma flotante de cada placa y
+       en las más modestas degenera en patrones. Así el campo se ve igual en
+       todas, y de paso el sombreador hace menos cuentas. */
     // campo de flujo analítico: tres octavas, sin estado y sin costuras
     "vec2 flow(vec2 b, float t, float ph, float sc) {",
     "  float u = sin(b.y * 5.5 + t * 0.55 + ph) + 0.55 * cos(b.x * 9.0 - t * 0.42 + ph) + 0.26 * sin(b.y * 17.0 - t * 0.9 + ph * 1.7);",
@@ -44,12 +49,13 @@
     "  return b + vec2(u, v) * u_amp * sc;",
     "}",
     "void main() {",
-    "  vec2 base = vec2(hash(a_i * 1.7), hash(a_i * 3.3 + 11.0));",
-    // se agrupan en filamentos ondulados: un campo parejo se lee como ruido
-    "  base.y = mix(base.y, 0.5 + 0.42 * sin(base.x * 4.0 + hash(a_i * 11.0) * 2.2), 0.34);",
-    "  float ph = hash(a_i * 5.1) * 6.2831;",
+    "  vec2 base = a_s1.xy;",
+    "  float ph = a_s1.z;",
+    "  float z = a_s1.w;",
+    "  float k = a_s2.x;",
+    "  float off = a_s2.y;",
+    "  vec2 fdir = a_s2.zw;",
     // profundidad: las cercanas van más rápido, más largas y más brillantes
-    "  float z = hash(a_i * 2.1);",
     "  float sc = mix(0.5, 1.15, z);",
     "  vec2 p0 = flow(base, u_time * sc, ph, sc);",
     "  vec2 p1 = flow(base, u_time * sc + 0.16, ph, sc);",
@@ -92,7 +98,6 @@
     "    float edge = min(1.0, abs(a_tgt.x));",
     // llegada: cada partícula entra en su momento, repartido al azar, así el
     // dibujo se condensa de a poco en vez de aparecer de golpe
-    "    float off = hash(a_i * 17.3) * 0.6;",
     "    float arr = clamp((u_form - off) / max(0.2, 1.0 - off), 0.0, 1.0);",
     "    arr = arr * arr * arr * (arr * (arr * 6.0 - 15.0) + 10.0);",
     // salida: desde los costados hacia el centro
@@ -108,22 +113,20 @@
     "    P = mix(P, T, form);",
     "  }",
     // entrada: el campo se condensa desde abajo, cada partícula a su turno
-    "  float en = clamp((u_in - hash(a_i * 13.0) * 0.42) / 0.58, 0.0, 1.0);",
+    "  float en = clamp((u_in - off * 0.7) / 0.58, 0.0, 1.0);",
     "  en = en * en * (3.0 - 2.0 * en);",
     "  P.y += (1.0 - en) * u_res.y * mix(0.5, 1.2, z);",
     // la estela va DETRÁS y se apaga hacia la cola: así se lee como movimiento
     "  float sp = length(V);",
     "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z);",
     "  len = mix(len, spacing * 1.75, form);",
-    "  vec2 fdir = normalize(vec2(hash(a_i * 23.1) - 0.5, hash(a_i * 29.7) - 0.5) + vec2(0.0007, 0.0011));",
     "  vec2 dv = normalize(V + vec2(0.0001, 0.0001));",
     "  dv = mix(dv, fdir, form);",
     "  vec2 Q = P - dv * len * a_end;",
     "  vec2 clip = (Q / u_res) * 2.0 - 1.0;",
     "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
-    "  float k = hash(a_i * 7.7);",
     "  vec3 c = mix(vec3(0.157, 0.918, 0.608), vec3(0.302, 0.882, 0.769), k);",
-    "  c = mix(c, vec3(0.553, 0.941, 0.478), hash(a_i * 9.3) * 0.55);",
+    "  c = mix(c, vec3(0.553, 0.941, 0.478), a_s2.y * 0.55);",
     "  if (k > 0.955) c = vec3(1.0, 0.341, 0.082);",
     "  if (k < 0.055) c = vec3(0.949, 0.937, 0.914);",
     "  v_c = c;",
@@ -148,6 +151,7 @@
     gl.shaderSource(s, src);
     gl.compileShader(s);
     if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      if (window.console) console.warn("ArengaGL shader:", gl.getShaderInfoLog(s));
       gl.deleteShader(s);
       return null;
     }
@@ -174,21 +178,36 @@
 
     var coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
     var n = Math.max(2000, Math.min(opts.count || (coarse ? 11000 : 26000), 60000));
-    var ai = new Float32Array(n * 2), ae = new Float32Array(n * 2);
+    var ae = new Float32Array(n * 2);
+    // semillas: posición base, fase, profundidad, tono, turno y dirección propia
+    var s1 = new Float32Array(n * 8), s2 = new Float32Array(n * 8);
     for (var i = 0; i < n; i++) {
-      ai[i * 2] = i + 1; ai[i * 2 + 1] = i + 1;
-      ae[i * 2] = 0; ae[i * 2 + 1] = 1;
+      var bx = Math.random(), by = Math.random();
+      // se agrupan en filamentos ondulados: un campo parejo se lee como ruido
+      var band = 0.5 + 0.42 * Math.sin(bx * 4 + Math.random() * 2.2);
+      by = by + (band - by) * 0.34;
+      var ph = Math.random() * 6.2831, z = Math.random();
+      var k = Math.random(), off = Math.random() * 0.6;
+      var a = Math.random() * 6.2831;
+      var fx = Math.cos(a), fy = Math.sin(a);
+      for (var e = 0; e < 2; e++) {
+        var o = (i * 2 + e) * 4;
+        s1[o] = bx; s1[o + 1] = by; s1[o + 2] = ph; s1[o + 3] = z;
+        s2[o] = k; s2[o + 1] = off; s2[o + 2] = fx; s2[o + 3] = fy;
+        ae[i * 2 + e] = e;
+      }
     }
     function buf(data, loc, size) {
       var b = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, b);
       gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
       var l = gl.getAttribLocation(prog, loc);
+      if (l < 0) return b;
       gl.enableVertexAttribArray(l);
       gl.vertexAttribPointer(l, size || 1, gl.FLOAT, false, 0, 0);
       return b;
     }
-    buf(ai, "a_i"); buf(ae, "a_end");
+    buf(ae, "a_end"); buf(s1, "a_s1", 4); buf(s2, "a_s2", 4);
     // destinos del logotipo; 9 = esta partícula no forma parte de él
     var at = new Float32Array(n * 4);
     for (var j = 0; j < n * 2; j++) { at[j * 2] = 9; at[j * 2 + 1] = 9; }
