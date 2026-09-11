@@ -223,9 +223,9 @@
     gl.blendFunc(gl.ONE, gl.ONE);
     gl.clearColor(0, 0, 0, 0);
 
-    var st = { w: 0, h: 0, dpr: 1, prog: 0, mx: -1e4, my: -1e4, on: 0, amp: opts.amp || 0.085, raf: 0, dead: false, t0: performance.now() };
+    var st = { w: 0, h: 0, dpr: 1, prog: 0, mx: -1e4, my: -1e4, on: 0, amp: opts.amp || 0.085, auto: opts.auto || 0, raf: 0, dead: false, t0: performance.now() };
     // entrada, onda del clic y paralaje: tres uniformes, ningún costo por cuadro
-    var inT = 0, waveT = 0, wx = 0, wy = 0;
+    var inT = 0, waveT = 0, wx = 0, wy = 0, lastAuto = 0;
     var parX = 0, parY = 0, parTX = 0, parTY = 0, form = 0, rel = 0, formT2 = 0, relT2 = 0;
     // caja del logotipo: centro vertical y ancho máximo, en px. La fija la
     // página, que es la única que sabe dónde terminan la copia y el enlace.
@@ -300,6 +300,14 @@
       // si nadie llamó a enter() en dos segundos y medio, entra igual: el campo
       // invisible esperando una señal que no llega sería peor que entrar solo
       if (!inT && now - st.t0 > 2500) inT = now;
+      /* Ondas solas. Sólo cuando el campo está libre: durante el logotipo las
+         partículas están fijas en su punto y un empujón lo desdibujaría. */
+      if (st.auto && !waveT && form < 0.05 && inT && now - inT > 1200 && now - lastAuto > st.auto) {
+        lastAuto = now;
+        wx = st.w * (0.18 + Math.random() * 0.64);
+        wy = st.h * (0.2 + Math.random() * 0.6);
+        waveT = now;
+      }
       var uin = inT ? Math.min(1, (now - inT) / 1500) : 0;
       gl.uniform1f(U.u_in, uin);
       parX += (parTX - parX) * 0.07; parY += (parTY - parY) * 0.07;
@@ -394,7 +402,8 @@
         };
         img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
       },
-      pulse: function (x, y) { wx = x; wy = y; waveT = performance.now(); },
+      pulse: function (x, y) { wx = x; wy = y; waveT = performance.now(); lastAuto = performance.now(); },
+      setAuto: function (ms) { st.auto = ms > 0 ? ms : 0; },
       resize: resize,
       destroy: function () {
         st.dead = true;
