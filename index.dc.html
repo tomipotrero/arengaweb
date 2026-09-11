@@ -49,6 +49,7 @@
 <script src="./image-slot.js"></script>
 <script src="./cms-store.js"></script>
 <script src="./arenga-fx.js"></script>
+<script src="./arenga-gl.js"></script>
 <style>
   html { scroll-behavior: smooth; }
   /* Campo del hero: cada masa se pinta una sola vez en su capa y después sólo
@@ -166,6 +167,7 @@
         <div style="position: absolute; left: -10%; top: -18%; width: 54vmax; height: 54vmax; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(255,87,21,0.6) 0%, rgba(255,87,21,0.26) 32%, rgba(255,87,21,0.06) 58%, rgba(255,87,21,0) 75%); animation: arengaDriftC 28s cubic-bezier(.45,0,.55,1) infinite alternate; will-change: transform;"></div>
         <div style="position: absolute; left: 32%; top: 40%; width: 40vmax; height: 40vmax; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(141,240,122,0.3) 0%, rgba(141,240,122,0.12) 38%, rgba(141,240,122,0) 72%); animation: arengaDriftD 40s cubic-bezier(.45,0,.55,1) infinite alternate; will-change: transform;"></div>
       </div>
+      <canvas data-gl="1" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 900ms ease;"></canvas>
       <div data-field-cursor="1" style="position: absolute; left: 0; top: 0; width: 46vmax; height: 46vmax; margin: -23vmax 0 0 -23vmax; border-radius: 50%; opacity: 0; background: radial-gradient(circle at 50% 50%, rgba(77,225,196,0.42) 0%, rgba(77,225,196,0.16) 34%, rgba(77,225,196,0) 70%); transition: opacity 700ms ease; will-change: transform, opacity;"></div>
       <div style="position: absolute; inset: 0; background-image: url(noise.svg); background-size: 200px 200px; opacity: 0.32; mix-blend-mode: overlay;"></div>
     </div>
@@ -417,6 +419,9 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    if (this.gl) { this.gl.destroy(); this.gl = null; }
+    if (this.onLiteMove) window.removeEventListener("pointermove", this.onLiteMove);
+    if (this.onLiteOut) window.removeEventListener("pointerleave", this.onLiteOut);
     this.dead = true;
     if (this.engine) this.engine.destroy();
     if (this.stageRO) this.stageRO.disconnect();
@@ -1009,16 +1014,40 @@ class Component extends DCLogic {
      compositor por CSS. Acá sólo queda lo que necesita saber del scroll y del
      puntero, y son dos escrituras de estilo por cuadro como máximo. */
   initLite() {
+    if (this.liteOn) return;
+    this.liteOn = true;
     const root = this.rootRef && this.rootRef.current ? this.rootRef.current : document;
     this.fieldWrap = root.querySelector("[data-field]");
     this.fieldInner = root.querySelector("[data-field-inner]");
     this.fieldCursor = root.querySelector("[data-field-cursor]");
     this.coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+    /* Las partículas vuelven, pero en la placa de video. Las masas de color
+       quedan como fondo: si la placa no está disponible o el visitante pidió
+       menos movimiento, el hero sigue siendo el de ellas y nada se rompe. */
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const glc = root.querySelector("[data-gl]");
+    if (glc && window.ArengaGL && !reduce) {
+      this.gl = window.ArengaGL.start(glc, {
+        count: this.coarse ? 9000 : 22000,
+        onFallback: () => {
+          this.gl = null;
+          glc.style.opacity = "0";
+          if (this.fieldInner) this.fieldInner.style.opacity = "1";
+          if (this.fieldCursor) this.fieldCursor.style.display = "";
+        }
+      });
+      if (this.gl) {
+        glc.style.opacity = "1";
+        if (this.fieldInner) this.fieldInner.style.opacity = "0.62";
+        if (this.fieldCursor) this.fieldCursor.style.display = "none";
+      }
+    }
     if (this.fieldCursor && !this.coarse) {
       let raf = 0, cx = 0, cy = 0;
       this.onLiteMove = (e) => {
         const w = this.fieldWrap.getBoundingClientRect();
         cx = e.clientX - w.left; cy = e.clientY - w.top;
+        if (this.gl) { this.gl.setPointer(cx, cy, true); return; }
         this.fieldCursor.style.opacity = "1";
         if (raf) return;
         raf = requestAnimationFrame(() => {
@@ -1026,7 +1055,10 @@ class Component extends DCLogic {
           this.fieldCursor.style.transform = "translate3d(" + cx + "px," + cy + "px,0)";
         });
       };
-      this.onLiteOut = () => { this.fieldCursor.style.opacity = "0"; };
+      this.onLiteOut = () => {
+        if (this.gl) { this.gl.setPointer(-1e4, -1e4, false); return; }
+        this.fieldCursor.style.opacity = "0";
+      };
       window.addEventListener("pointermove", this.onLiteMove, { passive: true });
       window.addEventListener("pointerleave", this.onLiteOut, { passive: true });
     }
@@ -1039,6 +1071,7 @@ class Component extends DCLogic {
     const span = Math.max(1, st.offsetHeight - vh);
     let p = (y - st.offsetTop) / span;
     p = p < 0 ? 0 : (p > 1 ? 1 : p);
+    if (this.gl) this.gl.setProgress(p);
     if (this.fpLast !== undefined && Math.abs(p - this.fpLast) < 0.0015) return;
     this.fpLast = p;
     // el campo se va hacia arriba y se apaga: la misma idea de abducción,
