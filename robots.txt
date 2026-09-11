@@ -3,5 +3,7 @@ Allow: /
 Disallow: /panel
 Disallow: /Arenga%20Admin.dc.html
 Disallow: /admin.state.json
+Disallow: /Arenga%20Home%20v1%20(marca%203D).dc.html
+Disallow: /Arenga%20Hero%20Particulas.dc.html
 
 Sitemap: https://arenga.uy/sitemap.xml
