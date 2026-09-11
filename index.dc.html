@@ -96,7 +96,8 @@
     /* "Una fusión" arriba, "ganadora." abajo: a 24vw la primera línea no entra
        y se partía en tres. El ancho en caracteres fija el quiebre. */
     [data-hero-copy] h1 { font-size: clamp(52px, 15.5vw, 104px) !important; white-space: normal !important; line-height: 0.92 !important; letter-spacing: -0.05em !important; max-width: 11ch !important; margin: 0 auto !important; }
-    [data-hero-copy] p { font-size: 19.5px !important; max-width: 26ch !important; }
+    /* el ancho en caracteres la dejaba pegada a la izquierda dentro de su caja */
+    [data-hero-copy] p { font-size: 21px !important; max-width: 25ch !important; margin-left: auto !important; margin-right: auto !important; }
     /* el titular entra en dos líneas exactas: la última palabra baja sola */
     [data-hero-copy] h1 span:last-of-type { display: block !important; }
     [data-hero-copy] a[data-m-hide] { display: inline-flex !important; margin-top: auto !important; padding-top: clamp(34px, 14vh, 130px) !important; }
