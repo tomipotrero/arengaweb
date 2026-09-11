@@ -99,6 +99,15 @@
       if (!Array.isArray(c.stills)) c.stills = ["", "", "", ""];
       while (c.stills.length < 4) c.stills.push("");
     });
+    // cada capacidad tiene cuatro entregables: el panel los edita por índice
+    if (Array.isArray(d.caps)) d.caps.forEach(function (c) {
+      if (!c || typeof c !== "object") return;
+      if (!Array.isArray(c.does)) c.does = ["", "", "", ""];
+      while (c.does.length < 4) c.does.push("");
+      if (typeof c.caseTitle !== "string") c.caseTitle = "";
+      if (typeof c.casePage !== "string") c.casePage = "";
+    });
+    d.services = Object.assign({ title: "", text: "", closeTitle: "", closeText: "" }, d.services || {});
     d.runtime = Object.assign({ repo: "", branch: "main", contentPath: "content.json", assetDir: CMS_DIR, canonicalOrigin: "" }, d.runtime || {});
     return d;
   }
