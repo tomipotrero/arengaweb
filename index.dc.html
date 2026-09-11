@@ -88,6 +88,9 @@
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } }
   /* móvil: la marca 3D ocupa la mitad de abajo del hero; el swipe vertical sigue haciendo scroll */
   @media (max-width: 760px) { [data-m-stage] { touch-action: pan-y !important; } [data-hero-wrap] { justify-content: center !important; padding-top: 96px !important; padding-bottom: 34px !important; } }
+  /* la bajada en una línea, pero sólo donde entra: en teléfono tiene que
+     quebrar. white-space y no text-wrap, que Safari viejo no reconoce */
+  @media (min-width: 761px) { [data-hero-copy] p { white-space: nowrap; } }
   @media (max-width: 760px) {
     [data-hero-wrap] { padding-left: 18px !important; padding-right: 18px !important; }
     /* "Una fusión" arriba, "ganadora." abajo: a 24vw la primera línea no entra
@@ -170,6 +173,7 @@
         <div style="position: absolute; left: 32%; top: 40%; width: 40vmax; height: 40vmax; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(141,240,122,0.17) 0%, rgba(141,240,122,0.07) 38%, rgba(141,240,122,0) 72%); animation: arengaDriftD 40s cubic-bezier(.45,0,.55,1) infinite alternate; will-change: transform;"></div>
       </div>
       <canvas data-gl="1" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 900ms ease;"></canvas>
+      <svg data-logo-fb="1" viewBox="0 0 207 31" aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: min(80%, 1150px); height: auto; transform: translate(-50%, -50%); color: #e8f6ee; opacity: 0; will-change: opacity, filter;"><use href="#arenga-wordmark"></use></svg>
       <div data-field-cursor="1" style="position: absolute; left: 0; top: 0; width: 46vmax; height: 46vmax; margin: -23vmax 0 0 -23vmax; border-radius: 50%; opacity: 0; background: radial-gradient(circle at 50% 50%, rgba(77,225,196,0.42) 0%, rgba(77,225,196,0.16) 34%, rgba(77,225,196,0) 70%); transition: opacity 700ms ease; will-change: transform, opacity;"></div>
 
     </div>
@@ -185,16 +189,16 @@
       </nav>
     </header>
 
-    <div data-hero-wrap="1" style="position: absolute; inset: 0; z-index: 15; display: flex; flex-direction: column; justify-content: center; gap: 34px; padding: clamp(110px, 16vh, 150px) clamp(30px, 5.2vw, 104px) clamp(48px, 9vh, 120px); pointer-events: none;">
-      <div data-hero-copy="1" data-m-full="1" style="max-width: min(900px, 100%); margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(20px, 2.6vh, 28px); will-change: transform, opacity;">
-        <h1 data-cms="home.heroTitle" data-cms-mode="lines" data-blur="hero" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(34px, 6.4vw, 116px); white-space: nowrap; font-weight: 400; line-height: 0.95; letter-spacing: -0.045em; color: #f4f2ee;">Somos<br>Arenga.</h1>
-        <p data-cms="home.heroText" data-blur="hero" style="margin: 0; max-width: 38ch; font-size: clamp(17px, 1.25vw, 21px); line-height: 1.55; color: #eae6de;">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
-        <a data-m-hide="1" href="#work" style="margin-top: clamp(28px, 9vh, 96px); pointer-events: auto; display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14.5px; font-weight: 500; color: rgba(244,242,238,0.78); text-decoration: none; transition: color 240ms ease;" style-hover="color: #f4f2ee;">
+        <a href="#work" style="position: absolute; left: 50%; bottom: clamp(22px, 3.4vh, 40px); transform: translateX(-50%); z-index: 16; pointer-events: auto; display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14.5px; font-weight: 500; color: rgba(244,242,238,0.78); text-decoration: none; transition: color 240ms ease;" style-hover="color: #f4f2ee;">
           <span data-bob="1" style="flex: none; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; color: #28ea9b; animation: arenga-bob 2.4s cubic-bezier(.45,0,.55,1) infinite;">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v13M6 12l6 6 6-6"></path></svg>
           </span>
           <span>Conocé más</span>
         </a>
+    <div data-hero-wrap="1" style="position: absolute; inset: 0; z-index: 15; display: flex; flex-direction: column; justify-content: center; gap: 34px; padding: clamp(110px, 16vh, 150px) clamp(30px, 5.2vw, 104px) clamp(48px, 9vh, 120px); pointer-events: none;">
+      <div data-hero-copy="1" data-m-full="1" style="max-width: min(900px, 100%); margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(20px, 2.6vh, 28px); will-change: transform, opacity;">
+        <h1 data-cms="home.heroTitle" data-cms-mode="lines" data-blur="hero" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(34px, 6.4vw, 116px); white-space: nowrap; font-weight: 400; line-height: 0.95; letter-spacing: -0.045em; color: #f4f2ee;">Somos<br>Arenga.</h1>
+        <p data-cms="home.heroText" data-blur="hero" style="margin: 0; max-width: none; font-size: clamp(17px, 1.25vw, 21px); line-height: 1.55; color: #eae6de;">Productora creativa en Montevideo. Ideamos y producimos contenido relevante, y lo amplificamos con influencers.</p>
         <div data-m-only="1" style="margin-top: clamp(24px, 7vh, 70px); justify-content: center; display: flex; align-items: center; gap: 10px; font-size: 13px; color: #dcd8d0;">
           <span style="width: 6px; height: 6px; border-radius: 999px; background: #28ea9b; box-shadow: 0 0 12px rgba(40,234,155,0.8);"></span>
           <span>Deslizá el campo · seguí scrolleando</span>
@@ -453,6 +457,8 @@ class Component extends DCLogic {
         this.heroCopy.style.opacity = String(Math.max(0, 1 - p * 1.15));
         // se va como entró: desenfocándose, no sólo bajando la opacidad
         this.heroCopy.style.filter = p > 0.001 ? "blur(" + (p * p * 16).toFixed(2) + "px)" : "";
+        // el enlace vive fuera del bloque de copia: se apaga con él
+        if (this.heroCta) this.heroCta.style.opacity = String(Math.max(0, 1 - p * 1.6));
       }
 
     }
@@ -1023,6 +1029,8 @@ class Component extends DCLogic {
     this.fieldWrap = root.querySelector("[data-field]");
     this.fieldInner = root.querySelector("[data-field-inner]");
     this.fieldCursor = root.querySelector("[data-field-cursor]");
+    this.heroCta = root.querySelector('a[href="#work"]');
+    this.logoFb = root.querySelector("[data-logo-fb]");
     this.coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
     /* Las partículas vuelven, pero en la placa de video. Las masas de color
        quedan como fondo: si la placa no está disponible o el visitante pidió
@@ -1126,6 +1134,17 @@ class Component extends DCLogic {
       this.measureLogoBox();
       // el campo entra cuando la cortina terminó de subir, no al cargar
       if (!this.entered && this.engine && !this.engine.gate) { this.entered = true; this.gl.enter(); }
+    } else if (this.logoFb) {
+      /* Sin placa, sin WebGL o con movimiento reducido, el momento del
+         logotipo existe igual: el mismo símbolo del documento entra y sale
+         desenfocándose. No son partículas, pero ningún dispositivo se queda
+         sin la escena. */
+      const up = Math.min(1, Math.max(0, (p - 0.27) / 0.33));
+      const out = Math.min(1, Math.max(0, (p - 0.76) / 0.24));
+      const a = up * (1 - out);
+      this.logoFb.style.opacity = a.toFixed(3);
+      const b = (1 - up) * 26 + out * 30;
+      this.logoFb.style.filter = b > 0.4 ? "blur(" + b.toFixed(1) + "px)" : "";
     }
     if (this.fpLast !== undefined && Math.abs(p - this.fpLast) < 0.0015) return;
     this.fpLast = p;
