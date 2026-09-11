@@ -21,11 +21,11 @@
 <meta property="og:description" content="Arenga es una productora creativa, fusión de Potrero y Coach. Ideamos y producimos contenido relevante y lo amplificamos con influencers. Casos con Megal, RefMe Pro, EigenCloud, Nacional y Altoconcepto.">
 <meta property="og:url" content="https://arenga.uy/">
 <link rel="canonical" href="https://arenga.uy/">
-<meta property="og:image" content="https://arenga.uy/share.png">
+<meta property="og:image" content="https://arenga.uy/share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Arenga — productora creativa. Contenido, producción y amplificación con influencers.">
-<meta name="twitter:image" content="https://arenga.uy/share.png">
+<meta name="twitter:image" content="https://arenga.uy/share.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Arenga — Productora creativa: contenido, producción y amplificación con influencers">
 <meta name="twitter:description" content="Arenga es una productora creativa, fusión de Potrero y Coach. Ideamos y producimos contenido relevante y lo amplificamos con influencers. Casos con Megal, RefMe Pro, EigenCloud, Nacional y Altoconcepto.">
@@ -609,8 +609,15 @@ class Component extends DCLogic {
 
   tickRing(dt, y, vh) {
     if (!this.ringCards || this.engine.mobile) return;
-    const rect = this.ring.getBoundingClientRect();
-    if (rect.bottom < -80 || rect.top > vh + 80) return;
+    // la posición del anillo se remide cada 400 ms, no en cada cuadro
+    const t = performance.now();
+    if (this.ringAt === undefined || t - this.ringAt > 400) {
+      this.ringAt = t;
+      const r = this.ring.getBoundingClientRect();
+      this.ringTop = r.top + (window.scrollY || 0); this.ringH = r.height;
+    }
+    const top = this.ringTop - (window.scrollY || 0);
+    if (top + this.ringH < -80 || top > vh + 80) return;
     const auto = this.props.teamAuto === false ? 0 : 0.0075 * (Number(this.props.teamSpeed ?? 1));
     if (!this.ringDrag) {
       const target = this.ringHover ? 0 : -auto;
@@ -1120,8 +1127,16 @@ class Component extends DCLogic {
   tickLite(y, vh) {
     const st = this.heroStageRef.current, inner = this.fieldInner;
     if (!st || !inner) return;
-    const span = Math.max(1, st.offsetHeight - vh);
-    let p = (y - st.offsetTop) / span;
+    /* offsetHeight y offsetTop fuerzan un cálculo de layout cada vez que se
+       leen. Acá corrían dos por cuadro en todo scroll de la página. La medida
+       sólo cambia al redimensionar, así que se cachea. */
+    const ahora = performance.now();
+    if (this.hsAt === undefined || ahora - this.hsAt > 500 || this.hsVh !== vh) {
+      this.hsAt = ahora; this.hsVh = vh;
+      this.hsH = st.offsetHeight; this.hsTop = st.offsetTop;
+    }
+    const span = Math.max(1, this.hsH - vh);
+    let p = (y - this.hsTop) / span;
     p = p < 0 ? 0 : (p > 1 ? 1 : p);
     if (this.gl) {
       this.gl.setProgress(p);
