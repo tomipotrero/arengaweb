@@ -33,7 +33,7 @@
     "uniform float u_form;",
     "uniform float u_rel;",
     "uniform float u_gain;",
-    "uniform vec3  u_box;",
+    "uniform vec4  u_box;",
     "varying float v_a;",
     "varying vec3  v_c;",
     "float hash(float n) { return fract(sin(n) * 43758.5453123); }",
@@ -100,9 +100,9 @@
     "    rel = rel * rel * rel * (rel * (rel * 6.0 - 15.0) + 10.0);",
     "    form = arr * (1.0 - rel) * step(2.0, u_box.z);",
     "    float bw = min(u_res.x * 0.8, min(1500.0, u_box.z));",
-    // los destinos vienen de una rejilla de 520 de ancho: al escalar quedan
-    // separados, así que el trazo tiene que medir esa separación para cerrar
-    "    spacing = bw / 520.0;",
+    // los destinos vienen de una rejilla cuyo ancho manda el módulo: al escalar
+    // quedan separados, y el trazo tiene que medir esa separación para cerrar
+    "    spacing = bw / max(16.0, u_box.w);",
     "    vec2 T = vec2(u_res.x * 0.5, u_box.x) + a_tgt * bw * 0.5;",
     "    T += vec2(sin(u_time * 2.1 + ph), cos(u_time * 1.7 + ph)) * mix(1.3, 0.3, form);",
     "    P = mix(P, T, form);",
@@ -210,7 +210,7 @@
     var parX = 0, parY = 0, parTX = 0, parTY = 0, form = 0, rel = 0, formT2 = 0, relT2 = 0;
     // caja del logotipo: centro vertical y ancho máximo, en px. La fija la
     // página, que es la única que sabe dónde terminan la copia y el enlace.
-    var boxY = 0, boxW = 0, boxAR = 0.15;
+    var boxY = 0, boxW = 0, boxAR = 0.15, sampW = 520;
     /* Regulador. WebGL no garantiza aceleración: si no hay placa disponible el
        navegador lo emula en el procesador y sale peor que el lienzo. Por eso se
        arranca con una fracción de la población y se sube sólo si hay margen
@@ -301,7 +301,7 @@
       // el trazo mide siempre un píxel de placa: a más resolución es más fino
       // en píxeles de página, y hay que devolverle el brillo que pierde
       gl.uniform1f(U.u_gain, st.dpr);
-      gl.uniform3f(U.u_box, boxY || st.h * 0.73, boxAR, boxW);
+      gl.uniform4f(U.u_box, boxY || st.h * 0.5, boxAR, boxW, sampW);
       gl.drawArrays(gl.LINES, 0, drawn * 2);
     }
     st.raf = requestAnimationFrame(frame);
@@ -333,21 +333,36 @@
         var img = new Image();
         img.onload = function () {
           if (st.dead) return;
-          var W = 520, H = Math.max(2, Math.round(520 * (img.height / img.width)));
+          var want = Math.round(n * (frac || 0.42));
+          var AR = img.height / img.width;
+          /* Dos pases. El primero, chico, sólo mide cuánta tinta tiene el
+             dibujo; con eso se elige la rejilla final para que la cantidad de
+             celdas con tinta sea ~la de partículas disponibles. Con rejilla
+             fija, un isotipo cuadrado generaba cuatro veces más puntos que
+             partículas y el dibujo quedaba cubierto a un cuarto. */
           var oc = document.createElement("canvas");
+          var g2;
+          var pw = 110, phh = Math.max(2, Math.round(110 * AR));
+          oc.width = pw; oc.height = phh;
+          g2 = oc.getContext("2d");
+          g2.drawImage(img, 0, 0, pw, phh);
+          var dp = g2.getImageData(0, 0, pw, phh).data, ink = 0;
+          for (var i2 = 3; i2 < dp.length; i2 += 4) if (dp[i2] > 120) ink++;
+          var inkFrac = Math.max(0.02, ink / (pw * phh));
+          var W = Math.max(64, Math.min(1500, Math.round(Math.sqrt(want / (inkFrac * AR)))));
+          var H = Math.max(2, Math.round(W * AR));
           oc.width = W; oc.height = H;
-          var g2 = oc.getContext("2d");
+          g2 = oc.getContext("2d");
           g2.drawImage(img, 0, 0, W, H);
           var d = g2.getImageData(0, 0, W, H).data;
           var pts = [];
           for (var yy = 0; yy < H; yy += 1) {
             for (var xx = 0; xx < W; xx += 1) {
-              if (d[(yy * W + xx) * 4 + 3] > 120) pts.push((xx / W - 0.5) * 2, ((yy / H - 0.5) * 2) * (H / W));
+              if (d[(yy * W + xx) * 4 + 3] > 120) pts.push((xx / W - 0.5) * 2, ((yy / H - 0.5) * 2) * AR);
             }
           }
           if (!pts.length) return;
-          boxAR = H / W;
-          var want = Math.round(n * (frac || 0.42));
+          boxAR = AR; sampW = W;
           var m = pts.length / 2;
           for (var k2 = 0; k2 < want; k2++) {
             var s = ((k2 * 2654435761) % m + m) % m;
