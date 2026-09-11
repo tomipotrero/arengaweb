@@ -149,7 +149,7 @@
     </div>
   </div>
 
-  <section ref="{{ heroStageRef }}" style="position: relative; height: 320vh;">
+  <section ref="{{ heroStageRef }}" style="position: relative; height: 190vh;">
    <div ref="{{ heroPinRef }}" style="position: sticky; top: 0; height: 100vh; overflow: hidden;">
     <div style="position: absolute; inset: 0;">
       <canvas ref="{{ canvasRef }}" data-hero-canvas="1" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y;"></canvas>
@@ -1059,7 +1059,7 @@ class Component extends DCLogic {
     this.fcold = list.map((x, i) => { const c = hex(x); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (i === 0 ? 0.22 : 0.6) + ")"; });
     this.fhot = list.map((x, i) => { const c = hex(x); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (i === 0 ? 0.5 : 0.95) + ")"; });
     this.fT = list.length;
-    const base = Math.min(this.coarse ? 5400 : 9000, (w * h) / (this.coarse ? 155 : 95));
+    const base = Math.min(this.coarse ? 2600 : 4200, (w * h) / (this.coarse ? 320 : 210));
     const n = Math.max(400, Math.round(base * (this.reduce ? 0.4 : 1)));
     this.fn = n; this.fnA = n; this.fms = 0;
     this.fx = new Float32Array(n); this.fy = new Float32Array(n);
@@ -1071,7 +1071,10 @@ class Component extends DCLogic {
       this.fph[i] = Math.random() * 6.283;
       this.ftone[i] = Math.random() < 0.2 ? 0 : 1 + Math.floor(Math.random() * (this.fT - 1));
     }
-    this.sampleField(w, h);
+    /* El logotipo de partículas quedó afuera: la proyección de los ~9000
+       destinos por cuadro más la atracción por partícula era el grueso del
+       costo, y en máquinas modestas tiraba los fps al piso. El capítulo ahora
+       es campo libre: flota, reacciona al puntero y sube al scrollear. */
   }
 
   // destinos: se rasteriza el logotipo del propio documento y se muestrea
@@ -1171,7 +1174,7 @@ class Component extends DCLogic {
       this.fform = 0;
     } else if (this.fform > 0.45) this.fwasFormed = true;
 
-    const formT = rp(prog, 0.13, 0.26) * (1 - rp(prog, 0.74, 0.96));
+    const formT = 0;
     // al scrollear rápido el objetivo salta entero: si la constante es siempre
     // lenta el campo queda desfasado del scroll y se ve trabado
     const gap = Math.abs(formT - this.fform);
