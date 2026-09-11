@@ -31,6 +31,7 @@
     "uniform float u_waveT;",
     "uniform vec2  u_par;",
     "uniform float u_form;",
+    "uniform float u_rel;",
     "uniform vec3  u_box;",
     "varying float v_a;",
     "varying vec3  v_c;",
@@ -86,8 +87,15 @@
     "  float form = 0.0;",
     "  if (a_tgt.x < 2.0) {",
     "    float edge = min(1.0, abs(a_tgt.x));",
-    "    float rel = clamp(((1.0 - u_form) - (1.0 - edge) * 0.52) / 0.48, 0.0, 1.0);",
-    "    form = u_form * (1.0 - rel * rel * (3.0 - 2.0 * rel)) * step(2.0, u_box.z);",
+    // llegada: cada partícula entra en su momento, repartido al azar, así el
+    // dibujo se condensa de a poco en vez de aparecer de golpe
+    "    float off = hash(a_i * 17.3) * 0.6;",
+    "    float arr = clamp((u_form - off) / max(0.2, 1.0 - off), 0.0, 1.0);",
+    "    arr = arr * arr * arr * (arr * (arr * 6.0 - 15.0) + 10.0);",
+    // salida: desde los costados hacia el centro
+    "    float rel = clamp((u_rel - (1.0 - edge) * 0.52) / 0.48, 0.0, 1.0);",
+    "    rel = rel * rel * rel * (rel * (rel * 6.0 - 15.0) + 10.0);",
+    "    form = arr * (1.0 - rel) * step(2.0, u_box.z);",
     "    float bw = min(u_res.x * 0.8, min(1500.0, u_box.z));",
     "    vec2 T = vec2(u_res.x * 0.5, u_box.x) + a_tgt * bw * 0.5;",
     "    T += vec2(sin(u_time * 2.1 + ph), cos(u_time * 1.7 + ph)) * mix(1.3, 0.3, form);",
@@ -177,7 +185,7 @@
     var atBuf = buf(at, "a_tgt", 2);
 
     var U = {};
-    ["u_time", "u_res", "u_mouse", "u_mouseOn", "u_prog", "u_amp", "u_in", "u_wave", "u_waveT", "u_par", "u_form", "u_box"].forEach(function (k) {
+    ["u_time", "u_res", "u_mouse", "u_mouseOn", "u_prog", "u_amp", "u_in", "u_wave", "u_waveT", "u_par", "u_form", "u_rel", "u_box"].forEach(function (k) {
       U[k] = gl.getUniformLocation(prog, k);
     });
 
@@ -189,7 +197,7 @@
     var st = { w: 0, h: 0, dpr: 1, prog: 0, mx: -1e4, my: -1e4, on: 0, amp: opts.amp || 0.085, raf: 0, dead: false, t0: performance.now() };
     // entrada, onda del clic y paralaje: tres uniformes, ningún costo por cuadro
     var inT = 0, waveT = 0, wx = 0, wy = 0;
-    var parX = 0, parY = 0, parTX = 0, parTY = 0, form = 0;
+    var parX = 0, parY = 0, parTX = 0, parTY = 0, form = 0, rel = 0, formT2 = 0, relT2 = 0;
     // caja del logotipo: centro vertical y ancho máximo, en px. La fija la
     // página, que es la única que sabe dónde terminan la copia y el enlace.
     var boxY = 0, boxW = 0, boxAR = 0.15;
@@ -274,7 +282,12 @@
       }
       gl.uniform2f(U.u_wave, wx, wy);
       gl.uniform1f(U.u_waveT, wt);
+      // se persigue el objetivo en vez de saltar a él: scrollear rápido no
+      // arma ni desarma el logotipo de golpe
+      form += (formT2 - form) * 0.055;
+      rel += (relT2 - rel) * 0.055;
       gl.uniform1f(U.u_form, form);
+      gl.uniform1f(U.u_rel, rel);
       gl.uniform3f(U.u_box, boxY || st.h * 0.73, boxAR, boxW);
       gl.drawArrays(gl.LINES, 0, drawn * 2);
     }
@@ -289,7 +302,8 @@
         else { parTX = 0; parTY = 0; }
       },
       enter: function () { if (!inT) inT = performance.now(); },
-      setForm: function (f) { form = f < 0 ? 0 : (f > 1 ? 1 : f); },
+      setForm: function (f) { formT2 = f < 0 ? 0 : (f > 1 ? 1 : f); },
+      setRelease: function (f) { relT2 = f < 0 ? 0 : (f > 1 ? 1 : f); },
       /* La página manda la banda libre: centro vertical y alto disponible. El
          ancho se deriva del alto por la proporción real del dibujo, así el
          logotipo no puede cruzarse con la copia ni con el enlace. */
