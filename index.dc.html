@@ -1115,10 +1115,8 @@ class Component extends DCLogic {
       /* El logotipo es el segundo tiempo del capítulo: no aparece hasta que la
          copia se fue, se arma grande y centrado, se sostiene, y recién ahí se
          deshace desde los costados. */
-      const up = Math.min(1, Math.max(0, (p - 0.38) / 0.2));
-      const down = Math.min(1, Math.max(0, (p - 0.72) / 0.26));
-      const ease = (v) => v * v * (3 - 2 * v);
-      this.gl.setForm(ease(up) * (1 - ease(down)));
+      this.gl.setForm(Math.min(1, Math.max(0, (p - 0.34) / 0.32)));
+      this.gl.setRelease(Math.min(1, Math.max(0, (p - 0.78) / 0.22)));
       this.measureLogoBox();
       // el campo entra cuando la cortina terminó de subir, no al cargar
       if (!this.entered && this.engine && !this.engine.gate) { this.entered = true; this.gl.enter(); }
