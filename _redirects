@@ -4,6 +4,7 @@
 /                          /index.dc.html 200
 /trabajos                  /Arenga%20Trabajos.dc.html 200
 /quienes-somos             /Arenga%20Quienes%20Somos.dc.html 200
+/servicios                 /Arenga%20Servicios.dc.html 200
 /contacto                  /Arenga%20Contacto.dc.html 200
 /panel                     /Arenga%20Admin.dc.html 200
 /proyectos/megal           /Arenga%20Proyecto.dc.html 200
@@ -19,6 +20,7 @@
 /index.dc.html                            / 301
 /Arenga%20Trabajos.dc.html                /trabajos 301
 /Arenga%20Quienes%20Somos.dc.html         /quienes-somos 301
+/Arenga%20Servicios.dc.html               /servicios 301
 /Arenga%20Contacto.dc.html                /contacto 301
 /Arenga%20Admin.dc.html                   /panel 301
 /Arenga%20Proyecto.dc.html                /proyectos/megal 301
