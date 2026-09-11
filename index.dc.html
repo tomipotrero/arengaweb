@@ -160,7 +160,7 @@
 
   <section ref="{{ heroStageRef }}" style="position: relative; height: 190vh;">
    <div ref="{{ heroPinRef }}" style="position: sticky; top: 0; height: 100vh; overflow: hidden;">
-    <div data-field="1" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; mask-image: linear-gradient(to bottom, #000 0%, #000 62%, rgba(0,0,0,0.55) 84%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, rgba(0,0,0,0.55) 84%, rgba(0,0,0,0) 100%);">
+    <div data-field="1" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; mask-image: linear-gradient(to bottom, #000 0%, #000 82%, rgba(0,0,0,0.5) 93%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 82%, rgba(0,0,0,0.5) 93%, rgba(0,0,0,0) 100%);">
       <div data-field-inner="1" style="position: absolute; inset: -10%; will-change: transform, opacity;">
         <div style="position: absolute; left: -6%; top: -12%; width: 74vmax; height: 74vmax; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(40,234,155,0.3) 0%, rgba(40,234,155,0.12) 34%, rgba(40,234,155,0.03) 60%, rgba(40,234,155,0) 76%); animation: arengaDriftA 34s cubic-bezier(.45,0,.55,1) infinite alternate; will-change: transform;"></div>
         <div style="position: absolute; right: -14%; bottom: -22%; width: 86vmax; height: 86vmax; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(15,191,134,0.26) 0%, rgba(15,191,134,0.1) 36%, rgba(15,191,134,0.02) 62%, rgba(15,191,134,0) 78%); animation: arengaDriftB 46s cubic-bezier(.45,0,.55,1) infinite alternate; will-change: transform;"></div>
@@ -1042,6 +1042,16 @@ class Component extends DCLogic {
       if (this.gl) {
         glc.style.opacity = "1";
         this.fieldBase = 0.5;
+        // el logotipo sale del propio símbolo del documento: no hay dibujo duplicado
+        const sym = document.getElementById("arenga-wordmark");
+        if (sym) {
+          const narrow = window.innerWidth <= 760;
+          const inner = sym.innerHTML.replace(/currentColor/g, "#fff");
+          const only = narrow ? (inner.match(/<path[^>]*>(?:<\/path>)?/) || [""])[0] : inner;
+          const vb = narrow ? "0 0 53 31" : "0 0 207 31";
+          const wd = narrow ? 424 : 828;
+          this.gl.setLogo('<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb + '" width="' + wd + '" height="' + Math.round(wd * (31 / (narrow ? 53 : 207))) + '"><g fill="#fff">' + only + "</g></svg>", narrow ? 0.5 : 0.42);
+        }
         if (this.fieldCursor) this.fieldCursor.style.display = "none";
       }
     }
@@ -1085,6 +1095,8 @@ class Component extends DCLogic {
     p = p < 0 ? 0 : (p > 1 ? 1 : p);
     if (this.gl) {
       this.gl.setProgress(p);
+      // el logotipo ya está formado al llegar y se deshace al bajar
+      this.gl.setForm(1 - Math.min(1, Math.max(0, (p - 0.1) / 0.42)));
       // el campo entra cuando la cortina terminó de subir, no al cargar
       if (!this.entered && this.engine && !this.engine.gate) { this.entered = true; this.gl.enter(); }
     }
