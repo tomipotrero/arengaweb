@@ -146,6 +146,12 @@
     "void main() { gl_FragColor = vec4(v_c * v_a, v_a); }"
   ].join("\n");
 
+  /* Estado del diagnóstico, en el ámbito del módulo. Antes vivía en
+     window.ArengaGL.diag, y como el objeto se reasigna cada vez que el módulo
+     se evalúa, why() leía un objeto viejo y respondía que nunca había
+     arrancado. Ahora start() muta este mismo objeto y why() lo lee del cierre. */
+  var diag = { motor: "webgl", arrancado: false, poblacion: 0, cuadroMs: 0, abandono: false, motivo: "" };
+
   function compile(gl, type, src) {
     var s = gl.createShader(type);
     gl.shaderSource(s, src);
@@ -238,9 +244,7 @@
     var floor = Math.max(1200, Math.round(n * 0.1));
     var drawn = Math.min(n, Math.max(floor, Math.round(n * 0.22)));
     var ms = 0, chk = 0, last = 0, gaveUp = false, warm = false;
-    // diagnóstico: en la consola, window.ArengaGL.why()
-    var diag = { motor: "webgl", poblacion: 0, cuadroMs: 0, abandono: false, motivo: "" };
-    window.ArengaGL.diag = diag;
+    diag.arrancado = true; diag.abandono = false; diag.motivo = ""; diag.poblacion = drawn; diag.cuadroMs = 0;
 
     function resize() {
       var w = canvas.clientWidth, h = canvas.clientHeight;
@@ -440,7 +444,7 @@
     /* En la consola de la máquina afectada: ArengaGL.why()
        Dice cuál de las cinco puertas cerró el campo de partículas. */
     why: function () {
-      var d = window.ArengaGL.diag;
+      var d = diag;
       var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduce) return "El sistema pide menos movimiento (Reducir movimiento en macOS / Mostrar animaciones en Windows). El campo no arranca a propósito.";
       var cv = document.querySelector("[data-gl]");
@@ -449,7 +453,7 @@
       var ok = false;
       try { ok = !!(cv.getContext("webgl") || cv.getContext("experimental-webgl")); } catch (e) {}
       if (!ok) return "El navegador no pudo crear un contexto WebGL: aceleración por hardware desactivada, o la placa está en la lista de bloqueo.";
-      if (!d) return "El módulo no llegó a arrancar (¿arenga-gl.js no cargó?).";
+      if (!d.arrancado) return "El módulo no llegó a arrancar (¿arenga-gl.js no cargó?).";
       if (d.abandono) return "Arrancó y se abandonó: " + d.motivo;
       return "Andando. Población " + d.poblacion + " partículas, " + d.cuadroMs + " ms por cuadro.";
     }
