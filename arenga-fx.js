@@ -1091,7 +1091,33 @@
       el.style.opacity = "1";
       el.style.transform = "translate3d(0,0,0)";
       setTimeout(() => { el.style.willChange = "auto"; }, 1250 + delay);
+      Array.from(el.querySelectorAll("[data-count]")).forEach(n => this.countUp(n, delay));
       if (this.frameIO) this.frameIO.unobserve(el);
+    }
+    /* Cifras que cuentan al entrar. El texto original manda: se conservan los
+       signos y los ceros a la izquierda, así "+15" cuenta a +15 y "05" a 05.
+       Si no hay dígitos no se toca nada. */
+    countUp(el, delay) {
+      if (el.__counted) return;
+      el.__counted = true;
+      const raw = el.dataset.count || el.textContent || "";
+      const m = raw.match(/\d+/);
+      if (!m || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+      const target = parseInt(m[0], 10);
+      const pad = m[0].length;
+      const antes = raw.slice(0, m.index), despues = raw.slice(m.index + m[0].length);
+      const pinta = (v) => { el.textContent = antes + String(v).padStart(pad, "0") + despues; };
+      pinta(0);
+      const dur = 1100;
+      setTimeout(() => {
+        const t0 = performance.now();
+        const paso = (now) => {
+          const t = Math.min(1, (now - t0) / dur);
+          pinta(Math.round(target * (1 - Math.pow(1 - t, 3))));
+          if (t < 1) requestAnimationFrame(paso);
+        };
+        requestAnimationFrame(paso);
+      }, delay + 120);
     }
     // nothing may stay invisible: whatever is on screen after the layout settles gets shown
     frameFallback() {
