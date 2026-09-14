@@ -42,6 +42,11 @@
   ],
   "leaders": [
     {
+      "name": "Maximiliano Patri",
+      "role": "Creative & Content Director",
+      "photo": "team/maximiliano-patri.webp"
+    },
+    {
       "name": "Agustín Bruni",
       "role": "Creative & Art Director",
       "photo": "team/agustin-bruni.webp"
@@ -50,11 +55,6 @@
       "name": "Guillermo Bruni",
       "role": "Commercial Director",
       "photo": "team/guillermo-bruni.webp"
-    },
-    {
-      "name": "Maximiliano Patri",
-      "role": "Creative & Content Director",
-      "photo": "team/maximiliano-patri.webp"
     },
     {
       "name": "Marcos Furtado",
