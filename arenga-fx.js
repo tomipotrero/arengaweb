@@ -1067,7 +1067,10 @@
       if (!this.frameIO) this.frameIO = new IntersectionObserver(entries => {
         entries.forEach(en => { if (en.isIntersecting) this.showFrame(en.target); });
       }, { rootMargin: "-6% 0px -6% 0px", threshold: 0 });
-      Array.from(root.querySelectorAll('[data-reveal="frame"]')).forEach(el => {
+      /* "frame" y "rise" comparten la entrada; sólo "frame" pasa por
+         balanceFrames, que reescribe columnas de grilla. "rise" sirve para
+         tarjetas en grillas propias que no hay que tocar. */
+      Array.from(root.querySelectorAll('[data-reveal="frame"], [data-reveal="rise"]')).forEach(el => {
         if (el.__frameBound) return;
         el.__frameBound = true;
         const inner = el.querySelector("image-slot, img");
@@ -1093,7 +1096,7 @@
     // nothing may stay invisible: whatever is on screen after the layout settles gets shown
     frameFallback() {
       const vh = window.innerHeight;
-      Array.from(this.root.querySelectorAll('[data-reveal="frame"]')).forEach(el => {
+      Array.from(this.root.querySelectorAll('[data-reveal="frame"], [data-reveal="rise"]')).forEach(el => {
         const r = el.getBoundingClientRect();
         if (r.top < vh && r.bottom > 0) this.showFrame(el);
       });
