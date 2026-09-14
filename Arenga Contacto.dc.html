@@ -66,6 +66,8 @@
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
   image-slot::part(frame) { border-radius: inherit; }
   input::placeholder, textarea::placeholder { color: rgba(244,242,238,0.45); }
+  /* el formulario al lado del titular sólo cuando hay ancho de sobra */
+  @media (max-width: 1000px) { [data-contact-hero] { grid-template-columns: minmax(0, 1fr) !important; } }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } }
   @media (min-width: 761px) { [data-m-only] { display: none !important; } }
   @media (max-width: 1100px) { [data-foot-legal] { width: 100%; justify-content: space-between; } }
@@ -126,12 +128,25 @@
   </header>
 
   <main style="display: flex; flex-direction: column;">
-  <section style="position: relative; z-index: 1; padding: 96px clamp(30px, 5.2vw, 104px) 0; display: flex; flex-direction: column; align-items: flex-start; gap: 24px;">
+  <section data-contact-hero="1" data-m-grid="1" style="position: relative; z-index: 1; padding: 96px clamp(30px, 5.2vw, 104px) 0; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); gap: 48px clamp(40px, 5vw, 96px); align-items: start;">
+   <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 24px;">
     <span data-glass="1" style="padding: 10px 19px; border-radius: 999px; font-size: 12px; font-weight: 500; letter-spacing: 0.02em; color: rgba(244,242,238,0.85); background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)); backdrop-filter: blur(7px) saturate(125%); -webkit-backdrop-filter: blur(7px) saturate(125%); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.7), inset 0 -1px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65);">Contacto</span>
-    <h1 data-blur="1" style="margin: 0; max-width: 14ch; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(56px, 8.4vw, 144px); font-weight: 400; line-height: 0.9; letter-spacing: -0.045em; color: #f4f2ee; text-wrap: balance;">Hablemos de tu próximo proyecto</h1>
-    <div style="width: 100%; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-top: 12px;">
-      <p style="margin: 0; max-width: 44ch; font-size: 18px; line-height: 1.55; color: rgba(242,239,233,0.7);"><span data-type="1">Contanos qué querés hacer, para cuándo y en qué formato. Un mail o el formulario, como prefieras.</span></p>
-    </div>
+    <h1 data-blur="1" style="margin: 0; max-width: 15ch; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(44px, 5.4vw, 96px); font-weight: 400; line-height: 0.9; letter-spacing: -0.045em; color: #f4f2ee; text-wrap: balance;">Hablemos de tu próximo proyecto</h1>
+    <p style="margin: 12px 0 0; max-width: 44ch; font-size: 18px; line-height: 1.55; color: rgba(242,239,233,0.7);"><span data-type="1">Contanos qué querés hacer, para cuándo y en qué formato. Te respondemos por mail.</span></p>
+   </div>
+      <div id="formulario" style="display: flex; flex-direction: column; align-items: flex-start; gap: 14px; width: 100%; padding-top: 6px;">
+        <div style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+          <input ref="{{ nameRef }}" type="text" placeholder="Nombre" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
+          <input ref="{{ emailRef }}" type="email" placeholder="Tu email" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
+        </div>
+        <input ref="{{ companyRef }}" type="text" placeholder="Marca o empresa" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
+        <input ref="{{ hpRef }}" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="No completar" style="position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;">
+        <textarea ref="{{ msgRef }}" rows="5" placeholder="Contanos del proyecto" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; resize: vertical; font-family: inherit; font-size: 15px; line-height: 1.6; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);"></textarea>
+        <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 6px;">
+          <button ref="{{ btnRef }}" onClick="{{ sendForm }}" style="padding: 15px 28px; border-radius: 999px; border: none; font-family: inherit; font-size: 15px; font-weight: 500; color: #ffffff; background: #da3b05; cursor: pointer; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Enviar mensaje</button>
+          <span ref="{{ statusRef }}" role="status" aria-live="polite" style="font-size: 13px; line-height: 1.4; color: rgba(244,242,238,0.5);">Te respondemos por mail</span>
+        </div>
+      </div>
   </section>
 
   <section style="position: relative; z-index: 1; padding: 80px 0 0; display: flex; flex-direction: column; gap: 28px;">
@@ -164,26 +179,12 @@
       <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 26px; flex: 1 1 320px;">
         <svg viewBox="0 0 207 31" style="height: 26px; width: 174px; color: #f4f2ee;" aria-label="Arenga"><use href="#arenga-wordmark"></use></svg>
         <span data-blur="1" style="font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(38px, 4.6vw, 72px); font-weight: 400; letter-spacing: -0.04em; line-height: 1;">Contanos<br>del proyecto</span>
-        <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 6px; font-size: 15px; color: rgba(244,242,238,0.72);">
-          <span data-cms="site.city">Montevideo · Uruguay</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 10px; margin-top: 4px;">
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 6px;">
+          <a href="#formulario" style="display: inline-flex; align-items: center; gap: 14px; padding: 16px 28px; border-radius: 999px; font-size: 15px; font-weight: 500; color: #ffffff; background: #da3b05; text-decoration: none; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Ir al formulario<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v13M6 12l6 6 6-6"></path></svg></a>
           <a data-glass="1" data-cms="site.instagram" data-cms-mode="href" href="#" aria-label="Instagram" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.7), inset 0 -1px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65);"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5.4"></rect><circle cx="12" cy="12" r="4.1"></circle><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"></circle></svg></a>
         </div>
       </div>
-      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 14px; flex: 1 1 380px; max-width: 560px;">
-        <div style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
-          <input ref="{{ nameRef }}" type="text" placeholder="Nombre" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
-          <input ref="{{ emailRef }}" type="email" placeholder="Tu email" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
-        </div>
-        <input ref="{{ companyRef }}" type="text" placeholder="Marca o empresa" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
-        <input ref="{{ hpRef }}" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="No completar" style="position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;">
-        <textarea ref="{{ msgRef }}" rows="5" placeholder="Contanos del proyecto" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; resize: vertical; font-family: inherit; font-size: 15px; line-height: 1.6; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);"></textarea>
-        <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 6px;">
-          <button ref="{{ btnRef }}" onClick="{{ sendForm }}" style="padding: 15px 28px; border-radius: 999px; border: none; font-family: inherit; font-size: 15px; font-weight: 500; color: #ffffff; background: #da3b05; cursor: pointer; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Enviar mensaje</button>
-          <span ref="{{ statusRef }}" role="status" aria-live="polite" style="font-size: 13px; line-height: 1.4; color: rgba(244,242,238,0.5);">Te respondemos por mail</span>
-        </div>
-      </div>
+
     </div>
     <div style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 13px; font-weight: 500; color: rgba(244,242,238,0.7);">
       <div style="display: flex; align-items: center; gap: 10px;">
