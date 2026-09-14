@@ -10,34 +10,34 @@
   "home": {
     "heroTitle": "Una fusión ganadora.",
     "heroText": "Potrero y Coach se juntaron para generar algo distinto.",
-    "workTitle": "Trabajos elegidos",
+    "workTitle": "Algunos casos de éxito",
     "workText": "Film, motion y diseño en equipo.",
     "clientsTitle": "Marcas que confían",
-    "clientsText": "Veintiuna marcas con las que trabajamos y seguimos trabajando.",
+    "clientsText": "",
     "teamTitle": "Quiénes somos",
-    "teamText": "Diez personas que crean, ejecutan y gestionan proyectos de principio a fin.",
+    "teamText": "Creativos, diseñadores, filmmakers: un equipo con todas las capacidades para elevar tu marca.",
     "heroPoster": ""
   },
   "about": {
     "title": "Arenga es la fusión de Potrero y Coach",
-    "text": "Una productora creativa con las capacidades de idear y producir contenido relevante, con la posibilidad de amplificarlo con influencers."
+    "text": "Tenemos todas las capacidades para idear, producir, gestionar y amplificar el contenido de tu marca."
   },
   "stats": [
     {
-      "n": "10",
-      "label": "Personas entre liderazgo y equipo"
+      "n": "+15",
+      "label": "Personas dentro del equipo"
     },
     {
-      "n": "06",
-      "label": "Capacidades, de social media a software"
+      "n": "05",
+      "label": "Capacidades, de social media a producto"
     },
     {
-      "n": "03",
-      "label": "Países: Uruguay, Chile y Paraguay"
+      "n": "05",
+      "label": "Países en los que trabajamos: Uruguay, Chile, Paraguay, EEUU y México"
     },
     {
-      "n": "+2000",
-      "label": "Assets digitales entregados"
+      "n": "+30",
+      "label": "Marcas confían en nosotros"
     }
   ],
   "leaders": [
