@@ -159,19 +159,6 @@
       ],
       "caseTitle": "RefMe Pro",
       "casePage": "/proyectos/refme-pro"
-    },
-    {
-      "n": "06",
-      "title": "Desarrollo de software",
-      "copy": "Diseñamos y desarrollamos soluciones digitales a medida. Tecnología pensada para escalar, optimizar procesos y potenciar el negocio.",
-      "does": [
-        "Desarrollo web y aplicaciones",
-        "Integraciones y automatizaciones",
-        "Puesta en producción",
-        "Mantenimiento y evolución"
-      ],
-      "caseTitle": "EigenCloud",
-      "casePage": "/proyectos/eigencloud"
     }
   ],
   "steps": [
