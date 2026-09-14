@@ -595,8 +595,18 @@
       if (!target) return;
       e.preventDefault();
       var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var top = href.length > 1 ? target.getBoundingClientRect().top + (window.scrollY || 0) : 0;
-      window.scrollTo({ top: top, behavior: reduce ? "auto" : "smooth" });
+      /* La medida se toma antes de empezar y el layout sigue moviéndose durante
+         el scroll suave (revelados, parallax), así que el punto final quedaba
+         más abajo del elemento. Se deja aire para el menú flotante y se corrige
+         al terminar, si quedó desviado. */
+      var nav = document.querySelector("[data-nav-float]");
+      var aire = href.length > 1 ? Math.round((nav ? nav.getBoundingClientRect().height : 48) + 26) : 0;
+      var punto = function () {
+        return href.length > 1
+          ? Math.max(0, target.getBoundingClientRect().top + (window.scrollY || 0) - (target.__py || 0) - aire)
+          : 0;
+      };
+      window.scrollTo({ top: punto(), behavior: reduce ? "auto" : "smooth" });
       return;
     }
     if (/^[a-z][a-z0-9+.-]*:/i.test(href) && !/^https?:/i.test(href)) return;
@@ -860,7 +870,7 @@
       this.ptr.moved = false;
       if (!(moved || scrolled || this.hoverAnim)) return;
       const px = this.ptr.x, py = this.ptr.y, vh = window.innerHeight;
-      let winner = null, wz = -1e9;
+      let winner = null, wz = -1e9, wcd = 1e9, wIn = false;
       for (const h of hs) {
         const el = h.el;
         h.hit = false;
@@ -868,10 +878,20 @@
         const r = el.getBoundingClientRect();
         if (!(r.width > 0) || r.bottom < -40 || r.top > vh + 40) continue;
         const m = h.on > 0.5 ? Math.max(14, Math.min(r.width, r.height) * 0.08) : 0;
-        if (px < r.left - m || px > r.right + m || py < r.top - m || py > r.bottom + m) continue;
+        // el margen no se estira a lo ancho: en una tarjeta que ocupa toda la
+        // fila, 30 px de más por el costado la mantenían activa fuera de su caja
+        const mx = Math.min(m, r.width * 0.02);
+        if (px < r.left - mx || px > r.right + mx || py < r.top - m || py > r.bottom + m) continue;
         h.hit = true; h.r = r;
         const z = this.hoverZ(el);
-        if (z >= wz) { wz = z; winner = h; }
+        /* Prioridad al que tiene el cursor DENTRO de su caja. Dos tarjetas
+           apiladas se solapan por el margen de histéresis, y con z igual la
+           elección caía en el orden del documento: al cruzar el borde entre una
+           y otra el efecto quedaba pegado en la anterior. */
+        const dentro = px >= r.left && px <= r.right && py >= r.top && py <= r.bottom;
+        const cd = Math.abs(px - (r.left + r.width / 2)) / Math.max(1, r.width) + Math.abs(py - (r.top + r.height / 2)) / Math.max(1, r.height);
+        const mejor = !winner || (dentro && !wIn) || (dentro === wIn && (z > wz || (z === wz && cd < wcd)));
+        if (mejor) { wz = z; wcd = cd; wIn = dentro; winner = h; }
       }
       let anim = false;
       for (const h of hs) {
