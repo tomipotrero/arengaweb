@@ -536,7 +536,7 @@
     "branch": "main",
     "contentPath": "content.json",
     "assetDir": "media/",
-    "canonicalOrigin": ""
+    "canonicalOrigin": "https://arenga.uy"
   },
   "services": {
     "title": "Nuestros servicios",
