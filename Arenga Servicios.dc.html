@@ -67,7 +67,20 @@
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
   image-slot::part(frame) { border-radius: inherit; }
   image-slot[fit="contain"]::part(frame) { background: transparent; }
+  /* la fila del servicio reacciona sin capa de brillo ni giro: se aclara el
+     fondo y el título toma el blanco pleno */
+  [data-svc] { transition: background-color 300ms ease; }
+  [data-svc]:hover { background-color: rgba(255,255,255,0.028); }
+  [data-svc] h2 { transition: color 300ms ease; }
+  [data-svc]:hover h2 { color: #ffffff; }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } [data-m-grid] { grid-template-columns: minmax(0, 1fr) !important; } }
+  /* Sin desenfoque de fondo en pantallas táctiles: recalcularlo en cada cuadro
+     con el contenido moviéndose detrás es lo que traba el scroll. El vidrio se
+     compensa con un fondo algo más sólido, y el resto se ve igual. */
+  @media (pointer: coarse) {
+    * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+    [data-glass] { background-color: rgba(11,15,20,0.78) !important; }
+  }
   @media (min-width: 761px) { [data-m-only] { display: none !important; } }
   @media (max-width: 1100px) { [data-foot-legal] { width: 100%; justify-content: space-between; } }
   @media (max-width: 1200px) { [data-g4] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
@@ -143,7 +156,7 @@
 
   <section style="position: relative; z-index: 1; padding: 96px clamp(30px, 5.2vw, 104px) 0; display: flex; flex-direction: column; gap: 0;">
     <sc-for list="{{ caps }}" as="c" hint-placeholder-count="5">
-      <article data-reveal="1" data-m-grid="1" data-tilt="0.35" style="position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px clamp(40px, 6vw, 110px); align-items: start; padding: 52px 0; border-top: 1px solid rgba(255,255,255,0.14); will-change: transform, opacity;">
+      <article data-svc="1" data-reveal="1" data-m-grid="1" style="position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px clamp(40px, 6vw, 110px); align-items: start; padding: 52px 0; border-top: 1px solid rgba(255,255,255,0.14); will-change: transform, opacity;">
         <div style="display: flex; flex-direction: column; gap: 18px;">
           <div style="display: flex; align-items: baseline; gap: 18px;">
             <span style="font-weight: 600; letter-spacing: 0.1em; font-variant-numeric: tabular-nums; font-size: 12px; color: #28ea9b;">{{ c.n }}</span>
