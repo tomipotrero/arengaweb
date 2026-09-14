@@ -110,7 +110,6 @@
       <a data-menu-item="1" href="/contacto" style="font-size: clamp(40px, 11vw, 64px); font-weight: 400; line-height: 1.04; letter-spacing: -0.04em; color: #ff5715; opacity: 0; transform: translate3d(0,22px,0); transition: opacity 400ms ease, transform 620ms cubic-bezier(.2,.7,.2,1);">Contacto</a>
     </nav>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 13px; color: rgba(244,242,238,0.6);">
-      <span data-cms="site.email">hola@arenga.uy</span>
       <span data-cms="site.city">Montevideo · Uruguay</span>
     </div>
   </div>
@@ -132,7 +131,6 @@
     <h1 data-blur="1" style="margin: 0; max-width: 14ch; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(56px, 8.4vw, 144px); font-weight: 400; line-height: 0.9; letter-spacing: -0.045em; color: #f4f2ee; text-wrap: balance;">Hablemos de tu próximo proyecto</h1>
     <div style="width: 100%; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-top: 12px;">
       <p style="margin: 0; max-width: 44ch; font-size: 18px; line-height: 1.55; color: rgba(242,239,233,0.7);"><span data-type="1">Contanos qué querés hacer, para cuándo y en qué formato. Un mail o el formulario, como prefieras.</span></p>
-      <a data-cms="site.email" data-cms-mode="mailto" href="mailto:hola@arenga.uy" data-ul="1" style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 15px; font-weight: 500; color: #28ea9b; transition: color 220ms ease;" style-hover="color: #ff5715;"><span style="position: relative;">hola@arenga.uy<span data-ul-line="1" style="position: absolute; left: 0; right: 0; bottom: -3px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.2,.7,.2,1);"></span></span></a>
     </div>
   </section>
 
@@ -167,7 +165,6 @@
         <svg viewBox="0 0 207 31" style="height: 26px; width: 174px; color: #f4f2ee;" aria-label="Arenga"><use href="#arenga-wordmark"></use></svg>
         <span data-blur="1" style="font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(38px, 4.6vw, 72px); font-weight: 400; letter-spacing: -0.04em; line-height: 1;">Contanos<br>del proyecto</span>
         <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 6px; font-size: 15px; color: rgba(244,242,238,0.72);">
-          <a data-cms="site.email" data-cms-mode="mailto" href="mailto:hola@arenga.uy" data-ul="1" style="align-self: flex-start; position: relative; padding: 4px 0; color: rgba(244,242,238,0.82); transition: color 220ms ease;" style-hover="color: #ff5715;">hola@arenga.uy<span data-ul-line="1" style="position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.2,.7,.2,1);"></span></a>
           <span data-cms="site.city">Montevideo · Uruguay</span>
         </div>
         <div style="display: flex; align-items: center; gap: 10px; margin-top: 4px;">
@@ -215,7 +212,7 @@ class Component extends DCLogic {
     const v = (r) => (r.current ? r.current.value.trim() : "");
     const btn = this.btnRef.current, st = this.statusRef.current;
     const say = (t, c) => { if (st) { st.textContent = t; st.style.color = c || "rgba(244,242,238,0.5)"; } };
-    const fail = "No pudimos enviarlo. Prob\u00e1 de nuevo en un momento o escribinos a hola@arenga.uy.";
+    const fail = "No pudimos enviarlo. Prob\u00e1 de nuevo en un momento o escribinos por Instagram.";
     const name = v(this.nameRef), email = v(this.emailRef), company = v(this.companyRef), message = v(this.msgRef);
     if (!message) { say("Contanos algo del proyecto antes de enviar.", "#ff8d5a"); if (this.msgRef.current) this.msgRef.current.focus(); return; }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) { say("Dejanos un email v\u00e1lido para poder responderte.", "#ff8d5a"); if (this.emailRef.current) this.emailRef.current.focus(); return; }
@@ -234,7 +231,7 @@ class Component extends DCLogic {
         say("Recibido. Te escribimos a " + email + ".", "#28ea9b");
       } else {
         if (btn) btn.textContent = "Enviar mensaje";
-        say(out.error === "not_configured" ? "El env\u00edo todav\u00eda no est\u00e1 configurado. Escribinos a hola@arenga.uy." : fail, "#ff8d5a");
+        say(out.error === "not_configured" ? "El env\u00edo todav\u00eda no est\u00e1 configurado. Escribinos por Instagram." : fail, "#ff8d5a");
       }
     } catch (e) {
       if (btn) btn.textContent = "Enviar mensaje";
