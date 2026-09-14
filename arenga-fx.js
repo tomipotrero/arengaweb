@@ -552,7 +552,6 @@
     "/proyectos/megal": "Arenga%20Proyecto.dc.html",
     "/proyectos/refme-pro": "Arenga%20Proyecto%20RefMe.dc.html",
     "/proyectos/eigencloud": "Arenga%20Proyecto%20Eigen.dc.html",
-    "/proyectos/nacional": "Arenga%20Proyecto%20Nacional.dc.html",
     "/proyectos/altoconcepto": "Arenga%20Proyecto%20Altoconcepto.dc.html"
   };
   var DEV_ROUTING = /\.dc\.html$/i.test(location.pathname);
