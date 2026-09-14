@@ -10,10 +10,10 @@
     "run_worker_first": true
   },
   "vars": {
-    "CONTACT_TO": "tomi@potrero.com.uy",
+    "CONTACT_TO": "creatividad@arenga.uy",
     "CONTACT_FROM": "web@arenga.uy"
   },
   "send_email": [
-    { "name": "EMAIL", "destination_address": "tomi@potrero.com.uy" }
+    { "name": "EMAIL", "destination_address": "creatividad@arenga.uy" }
   ]
 }
