@@ -325,6 +325,11 @@
       knowsAbout: (c.caps || []).map(function (x) { return x && x.title; }).filter(Boolean)
     };
     if (base) { org["@id"] = base + "/#arenga"; org.url = base + "/"; }
+    // el logotipo alimenta el panel de conocimiento de Google
+    if (base && site.logo) org.logo = { "@type": "ImageObject", url: base + "/" + String(site.logo).replace(/^\//, "") };
+    if (Array.isArray(site.countries) && site.countries.length) {
+      org.areaServed = site.countries.map(function (n) { return { "@type": "Country", name: n }; });
+    }
     if (site.email) org.email = site.email;
     if (city[0]) org.address = { "@type": "PostalAddress", addressLocality: city[0], addressCountry: city[1] === "Uruguay" ? "UY" : city[1] || undefined };
     if (social.length) org.sameAs = social;
@@ -349,6 +354,37 @@
         };
         if (cs.client) data.about = { "@type": "Organization", name: cs.client };
         if (base && cs.page) data.url = base + cs.page;
+      } else if (kind === "crumbs" && base) {
+        /* Ruta de migas para los casos, que viven dos niveles abajo. Sin esto
+           Google muestra la URL cruda en el resultado en vez de la jerarquía. */
+        var idx = Number(el.getAttribute("data-cms-ld-case"));
+        var cc = (c.cases || [])[idx];
+        if (!cc) return;
+        data = {
+          "@context": "https://schema.org", "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Inicio", item: base + "/" },
+            { "@type": "ListItem", position: 2, name: "Trabajos", item: base + "/trabajos" },
+            { "@type": "ListItem", position: 3, name: cc.title, item: base + (cc.page || "") }
+          ]
+        };
+      } else if (kind === "services") {
+        // un Service por capacidad, con sus entregables reales
+        var caps = (c.caps || []).filter(function (x) { return x && x.title; });
+        if (!caps.length) return;
+        data = {
+          "@context": "https://schema.org", "@type": "ItemList",
+          itemListElement: caps.map(function (x, i) {
+            return {
+              "@type": "ListItem", position: i + 1,
+              item: {
+                "@type": "Service", name: x.title, description: x.copy || undefined,
+                provider: base ? { "@id": base + "/#arenga" } : { "@type": "Organization", name: "Arenga" },
+                serviceOutput: Array.isArray(x.does) && x.does.length ? x.does.filter(Boolean) : undefined
+              }
+            };
+          })
+        };
       }
       if (data) el.textContent = JSON.stringify(data);
     });
