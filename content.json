@@ -294,37 +294,6 @@
       "coverMobile": "work/eigen-03.webp"
     },
     {
-      "title": "Club Nacional de Football",
-      "kind": "Producción y Creatividad",
-      "client": "Club Nacional de Football",
-      "stat": "Sold out",
-      "results": "Sold out de butacas en menos de un mes",
-      "services": "Producción y Creatividad",
-      "metaLabel": "Campaña",
-      "metaValue": "Butacas",
-      "intro": "Producción y creatividad para la campaña de butacas del Club Nacional de Football. Sold out en menos de un mes.",
-      "whatText": "Creatividad y producción de las piezas de la campaña de butacas, en formato horizontal y vertical.",
-      "w1Title": "Creatividad",
-      "w1Text": "Idea y guion de la campaña.",
-      "w2Title": "Producción",
-      "w2Text": "Rodaje y postproducción de las piezas.",
-      "w3Title": "Resultado",
-      "w3Text": "Sold out de butacas en menos de un mes.",
-      "how1": "Arrancamos con un kick off para entender el negocio, los objetivos y el contexto real de la marca, y definimos alcance y plan de acción. Después ordenamos procesos, equipos y herramientas para que el proyecto pudiera escalar sin fricción.",
-      "how2": "Con esa base, creatividad y producción salieron del mismo equipo. Las butacas se agotaron en menos de un mes.",
-      "video": "https://vimeo.com/1133564690?fl=ip&fe=ec",
-      "cover": "work/nacional-escudo.webp",
-      "hero": "work/nacional-escudo.webp",
-      "stills": [
-        "work/chatgpt-image-8-sept-2026-11-12-44-a-m.webp",
-        "work/nacional-03.webp",
-        "work/bandera-nacional.webp",
-        "work/gardel.webp"
-      ],
-      "page": "/proyectos/nacional",
-      "coverMobile": ""
-    },
-    {
       "title": "Altoconcepto",
       "kind": "Branding · Social Media",
       "client": "Altoconcepto",
@@ -364,9 +333,6 @@
       "title": "RefMe Pro"
     },
     {
-      "title": "Club Nacional de Football"
-    },
-    {
       "title": "EigenCloud"
     }
   ],
@@ -386,25 +352,11 @@
       "src": "logos/refme-pro.svg"
     },
     {
-      "slug": "club-nacional-de-football",
-      "name": "Club Nacional de Football",
-      "sector": "Deporte",
-      "tag": "Caso",
-      "src": "logos/club-nacional-de-football.svg"
-    },
-    {
       "slug": "altoconcepto",
       "name": "Altoconcepto",
       "sector": "Retail",
       "tag": "Caso",
       "src": "logos/altoconcepto.svg"
-    },
-    {
-      "slug": "penarol",
-      "name": "Peñarol",
-      "sector": "Deporte",
-      "tag": "Cliente",
-      "src": "logos/penarol.svg"
     },
     {
       "slug": "tottenham-hotspur",
