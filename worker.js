@@ -51,7 +51,7 @@ async function contact(request, env) {
   if (!message) return json({ ok: false, error: "empty" }, 422);
   if (!okMail(email)) return json({ ok: false, error: "email" }, 422);
 
-  const to = env.CONTACT_TO || "tomi@potrero.com.uy";
+  const to = env.CONTACT_TO || "creatividad@arenga.uy";
   const from = env.CONTACT_FROM || "web@arenga.uy";
   const subject = "Contacto web — " + (company || name || email);
   const text = [
