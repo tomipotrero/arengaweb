@@ -918,11 +918,16 @@
     /* the corner under the pointer sinks (weight); a magnet card also slides toward the pointer; the sheen only lives around the pointer */
     writeHover(h) {
       const el = h.el, o = h.on, a = h.amp, tx = h.tx, ty = h.ty;
+      /* En una tarjeta mucho más ancha que alta, el giro en Y saca el borde
+         lateral fuera del plano y contra el fondo queda una costura dura — se
+         ve como si la tarjeta se cortara. El giro se atenúa según la
+         proporción, así las filas anchas se inclinan apenas. */
+      const g = o * (h.w > h.h * 1.8 ? 0.3 : 1);
       if (h.kind !== "glass") {
         let tf;
         if (h.kind === "magnet") tf = " translate3d(" + (tx * 26 * a * o).toFixed(1) + "px," + ((ty * 20 * a - 6) * o).toFixed(1) + "px,0) perspective(1400px) rotateX(" + (-ty * 11 * a * o).toFixed(2) + "deg) rotateY(" + (tx * 13 * a * o).toFixed(2) + "deg) scale(" + (1 + 0.035 * o).toFixed(4) + ")";
         else if (el.__tfPre !== undefined) tf = " rotateX(" + (-ty * 16 * a * o).toFixed(2) + "deg) rotateY(" + (tx * 18 * a * o).toFixed(2) + "deg) translate3d(0,0," + (-(14 + (Math.abs(tx) + Math.abs(ty)) * 16) * o).toFixed(1) + "px)";
-        else tf = " perspective(1200px) rotateX(" + (-ty * 12 * a * o).toFixed(2) + "deg) rotateY(" + (tx * 14 * a * o).toFixed(2) + "deg) translateY(" + (-4 * o).toFixed(1) + "px)";
+        else tf = " perspective(1200px) rotateX(" + (-ty * 12 * a * g).toFixed(2) + "deg) rotateY(" + (tx * 14 * a * g).toFixed(2) + "deg) translateY(" + (-4 * o).toFixed(1) + "px)";
         el.__hoverTf = o < 0.002 ? "" : tf;
         if (el.__tfPre !== undefined) el.style.transform = el.__tfPre + el.__hoverTf + el.__tfPost;
         else el.style.transform = (el.__py ? "translate3d(0," + el.__py.toFixed(1) + "px,0)" : "") + el.__hoverTf;
