@@ -12,6 +12,9 @@
 /proyectos/eigencloud      /Arenga%20Proyecto%20Eigen.dc.html 200
 /proyectos/altoconcepto    /Arenga%20Proyecto%20Altoconcepto.dc.html 200
 
+# caso dado de baja: la URL estaba indexada, se traslada a la lista
+/proyectos/nacional        /trabajos 301
+
 # assets pedidos desde una URL anidada (/proyectos/…): support.js, content.json, work/…
 /proyectos/*               /:splat 200
 
@@ -27,6 +30,3 @@
 /Arenga%20Proyecto%20Eigen.dc.html        /proyectos/eigencloud 301
 /Arenga%20Proyecto%20Nacional.dc.html     /trabajos 301
 /Arenga%20Proyecto%20Altoconcepto.dc.html /proyectos/altoconcepto 301
-
-# caso dado de baja: la URL estaba indexada, se traslada a la lista
-/proyectos/nacional        /trabajos 301
