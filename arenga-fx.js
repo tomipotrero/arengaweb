@@ -12,7 +12,11 @@
   var css = document.createElement("style");
   css.textContent =
     "[data-ul]:hover [data-ul-line]{transform:scaleX(1)!important}" +
-    "[data-stack-link]:hover [data-stack-cta]{color:#ff5715;transform:translateY(-1px)}" +
+    /* El CTA de la pila tiene pointer-events:none, así que su hover lo dispara
+       la tarjeta. La regla venía de cuando el botón era de vidrio y cambiaba de
+       color; ahora es naranja sólido y se comporta como los demás: se levanta y
+       enciende el resplandor. El !important es por el box-shadow en línea. */
+    "[data-stack-link]:hover [data-stack-cta]{transform:translateY(-2px);box-shadow:0 18px 40px -14px rgba(255,87,21,0.95)!important}" +
     "@media (pointer:fine){*,*::before,*::after{cursor:none!important}}";
   document.head.appendChild(css);
 
