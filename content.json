@@ -5,7 +5,15 @@
     "copyright": "Arenga © 2026",
     "instagram": "#",
     "linkedin": "#",
-    "x": "#"
+    "x": "#",
+    "countries": [
+      "Uruguay",
+      "Chile",
+      "Paraguay",
+      "Estados Unidos",
+      "México"
+    ],
+    "logo": "apple-touch-icon.png"
   },
   "home": {
     "heroTitle": "Una fusión ganadora.",
