@@ -143,7 +143,10 @@
     "  float edge = smoothstep(0.0, 0.1, e.x) * smoothstep(1.0, 0.9, e.x) * smoothstep(0.0, 0.1, e.y) * smoothstep(1.0, 0.88, e.y);",
     "  float tail = mix(1.0, 0.06, a_end);",
     // las partículas sueltas se apagan cuando el logotipo toma la pantalla
-    "  v_a = (0.13 + boost * 0.55 + form * 1.15) * mix(mix(0.35, 1.25, z), 1.0, form) * mix(1.0 - u_form * 0.88, 1.0, isLogo) * u_gain * edge * tail * en * (1.0 - u_prog * 0.8);",
+    /* El brillo formado llegaba a 1,28 de alfa y con mezcla aditiva saturaba:
+       el logotipo se veía como una mancha plana en vez de puntos. A 0,62 y
+       conservando algo de variación por profundidad, el dibujo respira. */
+    "  v_a = (0.13 + boost * 0.55 + form * 0.62) * mix(mix(0.35, 1.25, z), 0.88, form) * mix(1.0 - u_form * 0.88, 1.0, isLogo) * u_gain * edge * tail * en * (1.0 - u_prog * 0.8);",
     "}"
   ].join("\n");
 
