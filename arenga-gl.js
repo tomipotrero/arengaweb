@@ -189,6 +189,23 @@
     } catch (e) { gl = null; }
     if (!gl) return null;
 
+    /* Render por software, detectado ANTES de dibujar. Si el navegador emula
+       WebGL en el procesador (aceleración apagada, placa en lista de bloqueo,
+       máquina virtual), el efecto no va a funcionar nunca: mejor no arrancar
+       que trabar la página un segundo y recién entonces caer al respaldo. El
+       regulador sigue existiendo para los casos que no se delatan por nombre. */
+    var placa = "desconocida";
+    try {
+      var dbg0 = gl.getExtension("WEBGL_debug_renderer_info");
+      placa = dbg0 ? String(gl.getParameter(dbg0.UNMASKED_RENDERER_WEBGL) || "") || "desconocida" : "desconocida";
+    } catch (e) {}
+    diag.placa = placa;
+    if (/swiftshader|software|llvmpipe|basic render|microsoft basic|virtualbox|vmware/i.test(placa)) {
+      diag.abandono = true;
+      diag.motivo = "WebGL emulado en el procesador (" + placa + "): la aceleración por hardware está apagada o la placa está en la lista de bloqueo del navegador. No se arranca el campo.";
+      return null;
+    }
+
     var vs = compile(gl, gl.VERTEX_SHADER, VERT);
     var fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
     if (!vs || !fs) return null;
@@ -278,7 +295,7 @@
       var dbg = gl.getExtension("WEBGL_debug_renderer_info");
       var rn = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || "") : "";
       swRenderer = /swiftshader|software|llvmpipe|basic render|microsoft basic/i.test(rn);
-      diag.placa = rn || "desconocida";
+      diag.placa = rn || placa;
     } catch (e) { diag.placa = "desconocida"; }
     diag.arrancado = true; diag.abandono = false; diag.motivo = ""; diag.poblacion = drawn; diag.cuadroMs = 0;
 
