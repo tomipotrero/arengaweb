@@ -52,6 +52,7 @@
 <script src="./arenga-gl.js"></script>
 <style>
   html { scroll-behavior: smooth; }
+  html, body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   /* Campo del hero: cada masa se pinta una sola vez en su capa y después sólo
      se transforma, así el navegador la mueve en la placa de video sin repintar
      nada. Reemplazó al lienzo de partículas, que costaba CPU en cada cuadro. */
@@ -174,7 +175,7 @@
   </div>
 
   <section ref="{{ heroStageRef }}" style="position: relative; height: 440vh;">
-   <div ref="{{ heroPinRef }}" style="position: sticky; top: 0; height: 100vh; overflow: hidden;">
+   <div ref="{{ heroPinRef }}" style="position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden;">
     <div data-field="1" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; ">
       <div data-field-inner="1" style="position: absolute; inset: -10%; will-change: transform, opacity; mask-image: linear-gradient(to bottom, #000 0%, #000 40%, rgba(0,0,0,0.58) 68%, rgba(0,0,0,0.18) 87%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, rgba(0,0,0,0.58) 68%, rgba(0,0,0,0.18) 87%, rgba(0,0,0,0) 100%);">
         <div style="position: absolute; left: -6%; top: -12%; width: 74vmax; height: 74vmax; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(40,234,155,0.3) 0%, rgba(40,234,155,0.12) 34%, rgba(40,234,155,0.03) 60%, rgba(40,234,155,0) 76%); animation: arengaDriftA 34s cubic-bezier(.45,0,.55,1) infinite alternate; will-change: transform;"></div>
