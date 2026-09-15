@@ -83,7 +83,7 @@
     [data-person-photo] { transition: transform 460ms cubic-bezier(.2,.7,.2,1), box-shadow 460ms ease; transform-style: preserve-3d; }
     article:hover > * > [data-person-photo] { transform: perspective(900px) translate3d(0,-2px,42px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.24), 0 18px 30px -14px rgba(0,0,0,0.85), 0 40px 60px -30px rgba(0,0,0,0.75); }
   }
-  image-slot::part(frame) { border-radius: inherit; }
+  image-slot::part(frame), image-slot::part(image) { border-radius: inherit; }
   [data-stack-link], [data-cf-card], [data-person-photo], [data-ring-inner] { contain: paint; }
   image-slot[fit="contain"]::part(frame) { background: transparent; }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } [data-m-grid] { grid-template-columns: minmax(0, 1fr) !important; } }
@@ -108,7 +108,7 @@
   @media (max-width: 620px) { [data-g4] { grid-template-columns: minmax(0, 1fr) !important; } }
 </style>
 </helmet>
-<div ref="{{ rootRef }}" style="position: relative; width: 100%; display: flex; flex-direction: column; font-family: 'Hubot Sans', 'Archivo', Helvetica, sans-serif; background: #050708; color: #f2efe9; overflow-x: clip; isolation: isolate;">
+<div ref="{{ rootRef }}" style="position: relative; width: 100%; display: flex; flex-direction: column; font-family: 'Hubot Sans', 'Archivo', Helvetica, sans-serif; background: #050708; color: #f2efe9; isolation: isolate;">
 
   <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;">
     <symbol id="arenga-mark" viewBox="0 0 52.5 31.1"><path fill="currentColor" d="M45.5435 7.84641L45.4397 8.03612C43.7536 11.1461 40.4758 13.0867 36.9054 13.0867H32.5423L34.263 17.8138H40.114L36.4336 24.6059C35.9523 25.4954 35.0149 26.049 33.9956 26.049H32.9513L31.7968 22.6L30.8436 19.7575L30.1925 17.8138H30.1296L23.9262 0H12.932L10.1103 4.95415L5.41691 13.1862L2.72104 17.9133L0.0629141 22.5783L0 23.1567H6.44241L6.50532 23.0447C8.2386 19.885 11.5825 17.9164 15.2189 17.9164H19.582L17.8613 13.1893H11.938L13.0075 11.2456L16.4678 4.95415H17.5121C18.503 4.95415 19.3838 5.57614 19.7047 6.50291L21.9916 13.0898L23.6714 17.8169L26.5938 26.049L28.3522 31.0031H39.3465L52.4106 8.42486L52.4735 7.84641H45.5435Z"></path></symbol>
