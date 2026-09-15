@@ -515,6 +515,71 @@
   window.ArengaBalanceFrames = balanceFrames;
   window.ArengaAnchorSlots = anchorSlots;
 
+  /* Scroll suavizado con inercia (estilo Lenis), sobre el scroll REAL del
+     navegador: la rueda no mueve la página, mueve un objetivo, y cada cuadro la
+     página avanza una fracción de lo que falta. Como es scroll nativo, sticky,
+     anclas y barra lateral siguen funcionando, y todo lo que lee scrollY hereda
+     la suavidad. Sólo con rueda/trackpad (en táctil el dedo ya tiene la suya) y
+     nunca con "reducir movimiento". Teclado y arrastre de la barra quedan
+     nativos y resincronizan el objetivo. */
+  window.ArengaSmooth = {
+    handle: null,
+    start: function (opts) {
+      opts = opts || {};
+      if (this.handle) return this.handle;
+      var mm = window.matchMedia;
+      if (mm && mm("(prefers-reduced-motion: reduce)").matches) return null;
+      if (mm && mm("(pointer: coarse)").matches) return null;
+      var lerp = Math.min(0.4, Math.max(0.03, opts.lerp || 0.1));
+      var target = window.scrollY || 0, current = target, raf = 0, active = false, dead = false, lastT = 0;
+      var maxY = function () { return Math.max(0, document.documentElement.scrollHeight - window.innerHeight); };
+      var tick = function (now) {
+        if (dead) return;
+        // el paso se normaliza a 60 cuadros por segundo: en un monitor de 140 Hz
+        // la inercia se siente igual que en uno de 60, no el doble de rápida
+        var dt = lastT ? Math.min(3, (now - lastT) / 16.67) : 1;
+        lastT = now;
+        var k = 1 - Math.pow(1 - lerp, dt);
+        current += (target - current) * k;
+        if (Math.abs(target - current) < 0.4) { current = target; active = false; lastT = 0; window.scrollTo({ top: current, behavior: "instant" }); return; }
+        window.scrollTo({ top: current, behavior: "instant" });
+        raf = requestAnimationFrame(tick);
+      };
+      var onWheel = function (e) {
+        if (e.ctrlKey || e.defaultPrevented) return;                 // zoom con pinch
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;         // gesto horizontal: al carrusel
+        var dy = e.deltaY;
+        if (e.deltaMode === 1) dy *= 16; else if (e.deltaMode === 2) dy *= window.innerHeight;
+        e.preventDefault();
+        if (!active) current = window.scrollY || 0;
+        target = Math.max(0, Math.min(maxY(), (active ? target : current) + dy));
+        if (!active) { active = true; raf = requestAnimationFrame(tick); }
+      };
+      // scroll que no vino de la rueda (teclado, barra, ancla, enlace): se toma
+      // el mando y se corta la inercia en curso. El propio scrollTo deja
+      // scrollY igual a current, as\u00ed que no se confunde con externo.
+      var onScroll = function () {
+        var y = window.scrollY || 0;
+        if (Math.abs(y - current) > 2) {
+          current = target = y;
+          if (active) { active = false; lastT = 0; if (raf) cancelAnimationFrame(raf); }
+        }
+      };
+      window.addEventListener("wheel", onWheel, { passive: false });
+      window.addEventListener("scroll", onScroll, { passive: true });
+      this.handle = {
+        state: function () { return { target: target, current: current, active: active, lerp: lerp }; },
+        setLerp: function (v) { lerp = Math.min(0.4, Math.max(0.03, v)); },
+        stop: function () {
+          dead = true; if (raf) cancelAnimationFrame(raf);
+          window.removeEventListener("wheel", onWheel); window.removeEventListener("scroll", onScroll);
+          window.ArengaSmooth.handle = null;
+        }
+      };
+      return this.handle;
+    }
+  };
+
   /* ---- mobile menu ---- */
   function menuEl() { return document.querySelector("[data-menu]"); }
   function setMenu(open) {
@@ -658,6 +723,11 @@
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!this.dead) { this.remeasureType(); this.scheduleMeasure(); } });
       this.cache();
       ENGINES.push(this);
+      /* Scroll con inercia en todo el sitio, salvo el panel de edici\u00f3n. 0,04 es
+         el valor elegido a mano tras probarlo en la vista previa. */
+      if (window.ArengaSmooth && !window.ArengaSmooth.handle && !/admin|panel/i.test(location.pathname)) {
+        window.ArengaSmooth.start({ lerp: 0.04 });
+      }
       // lo que ya está en pantalla se revela sin esperar al observador: si el
       // contenido del CMS llegó antes que el motor, el observador ya se gastó
       setTimeout(() => { if (!this.dead) this.blurFallback(); }, 60);
