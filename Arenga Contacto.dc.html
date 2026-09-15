@@ -74,8 +74,8 @@
      con el contenido moviéndose detrás es lo que traba el scroll. El vidrio se
      compensa con un fondo algo más sólido, y el resto se ve igual. */
   @media (pointer: coarse) {
-    *:not([data-loader]):not([data-menu]) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-    [data-glass]:not([data-loader]):not([data-menu]) { background-color: rgba(11,15,20,0.78) !important; }
+    *:not([data-loader]):not([data-menu]):not([data-arenga-curtain]) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+    [data-glass]:not([data-loader]):not([data-menu]):not([data-arenga-curtain]) { background-color: rgba(11,15,20,0.78) !important; }
   }
   @media (min-width: 761px) { [data-m-only] { display: none !important; } }
   @media (max-width: 1100px) { [data-foot-legal] { width: 100%; justify-content: space-between; } }
