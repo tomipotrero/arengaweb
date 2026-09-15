@@ -733,6 +733,20 @@
         this.pageHeader.style.transition = "opacity 380ms cubic-bezier(.2,.7,.2,1)";
       }
       this.bindHover(r); this.initBlur(r); this.initType(r); this.initMarquees(r); this.initVideos(r); anchorSlots(r);
+      /* Cada will-change es una capa de composición permanente. Con más de cien,
+         Chrome pasa más tiempo componiendo que dibujando y el scroll se arrastra
+         (Safari lo absorbe, de ahí que sólo se notara en uno). Se dejan sólo las
+         piezas que se mueven todo el tiempo; el resto recupera la capa sola
+         cuando hace falta, que para un hover o una entrada puntual alcanza. */
+      const barrer = () => {
+        if (this.dead) return;
+        const vivas = "[data-par],[data-stack-card],[data-cf-card],[data-marquee] > *,[data-field-inner],[data-gl],[data-nav-float],[data-hero-copy],[data-logo-fb],[data-ring-inner]";
+        Array.from(r.querySelectorAll("[style*='will-change']")).forEach(el => {
+          if (el.matches(vivas) || el.closest("[data-marquee]")) return;
+          el.style.willChange = "auto";
+        });
+      };
+      setTimeout(barrer, 2600); setTimeout(barrer, 7000);
       this.measure();
     }
     measure() {
