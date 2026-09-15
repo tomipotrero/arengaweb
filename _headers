@@ -2,20 +2,31 @@
 # Absoluta al dominio final: la copia en workers.dev apunta acá y no compite en el índice.
 /
   Link: <https://arenga.uy/>; rel="canonical"
+  Link: </content.json>; rel="preload"; as="fetch"; crossorigin
 /trabajos
   Link: <https://arenga.uy/trabajos>; rel="canonical"
+  Link: </content.json>; rel="preload"; as="fetch"; crossorigin
 /quienes-somos
   Link: <https://arenga.uy/quienes-somos>; rel="canonical"
+  Link: </content.json>; rel="preload"; as="fetch"; crossorigin
 /contacto
   Link: <https://arenga.uy/contacto>; rel="canonical"
+  Link: </content.json>; rel="preload"; as="fetch"; crossorigin
+/servicios
+  Link: <https://arenga.uy/servicios>; rel="canonical"
+  Link: </content.json>; rel="preload"; as="fetch"; crossorigin
 /proyectos/megal
   Link: <https://arenga.uy/proyectos/megal>; rel="canonical"
+  Link: </content.json>; rel="preload"; as="fetch"; crossorigin
 /proyectos/refme-pro
   Link: <https://arenga.uy/proyectos/refme-pro>; rel="canonical"
+  Link: </content.json>; rel="preload"; as="fetch"; crossorigin
 /proyectos/eigencloud
   Link: <https://arenga.uy/proyectos/eigencloud>; rel="canonical"
+  Link: </content.json>; rel="preload"; as="fetch"; crossorigin
 /proyectos/altoconcepto
   Link: <https://arenga.uy/proyectos/altoconcepto>; rel="canonical"
+  Link: </content.json>; rel="preload"; as="fetch"; crossorigin
 
 # El panel no se indexa
 /panel
