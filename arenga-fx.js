@@ -803,14 +803,34 @@
         this.marquees.push(m);
         const enter = (e) => { if (e.pointerType === "mouse") m.paused = true; };
         const leave = () => { m.paused = false; };
-        const down = (e) => { if (e.button) return; m.drag = true; m.moved = 0; m.lastX = e.clientX; m.lastT = performance.now(); m.dragVel = 0; };
+        const down = (e) => {
+          if (e.button) return;
+          /* En táctil el arrastre no se toma de entrada: se espera a saber si el
+             gesto es horizontal. Antes cualquier toque ponía drag y el dedo
+             que sólo quería scrollear arrastraba la cinta de costado y la
+             dejaba con inercia al soltar. */
+          m.touch = e.pointerType === "touch";
+          m.pend = m.touch;
+          m.drag = !m.touch;
+          m.moved = 0; m.dx0 = 0; m.dy0 = 0;
+          m.lastX = e.clientX; m.lastY = e.clientY;
+          m.lastT = performance.now(); m.dragVel = 0;
+        };
         const move = (e) => {
+          if (m.pend) {
+            m.dx0 += Math.abs(e.clientX - m.lastX);
+            m.dy0 += Math.abs(e.clientY - m.lastY);
+            m.lastX = e.clientX; m.lastY = e.clientY;
+            if (m.dy0 > 8 && m.dy0 > m.dx0) { m.pend = false; m.drag = false; return; }
+            if (m.dx0 > 8 && m.dx0 > m.dy0) { m.pend = false; m.drag = true; m.lastT = performance.now(); }
+            return;
+          }
           if (!m.drag) return;
           const now = performance.now(), dx = e.clientX - m.lastX, dtm = Math.max(1, now - m.lastT);
-          m.lastX = e.clientX; m.lastT = now; m.x += dx; m.moved += Math.abs(dx);
+          m.lastX = e.clientX; m.lastY = e.clientY; m.lastT = now; m.x += dx; m.moved += Math.abs(dx);
           m.dragVel = Math.max(-2.5, Math.min(2.5, dx / dtm));
         };
-        const up = () => { if (!m.drag) return; m.drag = false; m.vel = m.dragVel; if (m.moved > 6 && window.__arengaSuppressClick) window.__arengaSuppressClick(400); };
+        const up = () => { m.pend = false; if (!m.drag) return; m.drag = false; m.vel = m.dragVel; if (m.moved > 6 && window.__arengaSuppressClick) window.__arengaSuppressClick(400); };
         el.addEventListener("pointerenter", enter); el.addEventListener("pointerleave", leave); el.addEventListener("pointerdown", down);
         window.addEventListener("pointermove", move, { passive: true }); window.addEventListener("pointerup", up); window.addEventListener("pointercancel", up);
         m.unbind = () => { el.removeEventListener("pointerenter", enter); el.removeEventListener("pointerleave", leave); el.removeEventListener("pointerdown", down); window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); window.removeEventListener("pointercancel", up); };
