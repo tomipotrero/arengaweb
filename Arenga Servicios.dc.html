@@ -76,6 +76,8 @@
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
   [data-cf-foot], [data-cf-meta] { border-radius: 0 !important; }
   image-slot::part(frame) { border-radius: inherit; }
+  [data-stack-link], [data-cf-card], [data-person-photo], [data-ring-inner] { contain: paint; }
+  html { overflow-x: clip; }
   image-slot[fit="contain"]::part(frame) { background: transparent; }
   /* La fila reacciona como fila: el contenido avanza y una línea de acento
      crece desde la izquierda. Sin transform 3D ni mix-blend, que sobre un
