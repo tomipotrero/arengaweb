@@ -205,7 +205,7 @@
       </nav>
     </header>
 
-        <a href="#work" aria-label="Ir a los trabajos" style="position: absolute; left: 50%; bottom: clamp(24px, 3.6vh, 44px); transform: translateX(-50%); z-index: 16; pointer-events: auto; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: #ffffff; text-decoration: none; opacity: 0.82; transition: opacity 240ms ease, transform 240ms cubic-bezier(.2,.7,.2,1);" style-hover="opacity: 1; transform: translateX(-50%) translateY(3px);">
+        <a href="#work" onClick="{{ onHeroCta }}" aria-label="Ver la marca" style="position: absolute; left: 50%; bottom: clamp(24px, 3.6vh, 44px); transform: translateX(-50%); z-index: 16; pointer-events: auto; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: #ffffff; text-decoration: none; opacity: 0.82; transition: opacity 240ms ease, transform 240ms cubic-bezier(.2,.7,.2,1);" style-hover="opacity: 1; transform: translateX(-50%) translateY(3px);">
           <svg data-bob="1" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="filter: drop-shadow(0 2px 6px rgba(5,7,8,0.7));"><path d="M12 4v15M5.5 12.5L12 19l6.5-6.5"></path></svg>
         </a>
     <div data-hero-wrap="1" style="position: absolute; inset: 0; z-index: 15; display: flex; flex-direction: column; justify-content: center; gap: 34px; padding: clamp(110px, 16vh, 150px) clamp(30px, 5.2vw, 104px) clamp(48px, 9vh, 120px); pointer-events: none;">
@@ -1564,6 +1564,20 @@ class Component extends DCLogic {
     for (let k = 0; k < T; k++) { ctx.strokeStyle = this.fhot[k]; ctx.stroke(hot[k]); }
   }
 
+  /* La flecha del hero lleva al momento de la marca, no a los trabajos: está a
+     media pantalla del capítulo, no en un ancla del documento, así que se
+     calcula contra el alto real de la sección. El href a #work queda como
+     respaldo si el guion no corre. */
+  onHeroCta = (e) => {
+    const st = this.heroStageRef.current;
+    if (!st) return;
+    e.preventDefault();
+    const span = Math.max(1, st.offsetHeight - window.innerHeight);
+    // 0,66: el armado termina en 0,60 y el desarmado empieza en 0,76 — se cae
+    // en el tramo en que la marca está entera
+    window.scrollTo({ top: Math.round(st.offsetTop + span * 0.66), behavior: "smooth" });
+  };
+
   renderVals() {
     const cc = this.state.c || {};
     const narrow = !!(this.mqm ? this.mqm.matches : (window.matchMedia && window.matchMedia("(max-width: 760px)").matches));
@@ -1587,6 +1601,7 @@ class Component extends DCLogic {
       onStageDown: this.onStageDown, blockDrag: this.blockDrag,
       teamRing: team.concat(team.slice(0, 4)),
       heroStageRef: this.heroStageRef,
+      onHeroCta: this.onHeroCta,
       heroPinRef: this.heroPinRef,
       teamLoop: team.concat(team),
       clients: (Array.isArray(cc.clients) ? cc.clients : []).map((b, i, all) => ({
