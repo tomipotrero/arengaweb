@@ -87,6 +87,7 @@
      las esquinas salen cuadradas: cada capa lleva su propio radio */
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
   [data-cf-foot], [data-cf-meta] { border-radius: 0 !important; }
+  [data-person-photo] > image-slot, [data-stack-link] > image-slot, [data-magnet] > image-slot, [data-brand-logo] > image-slot, [data-reveal="frame"] > image-slot, [data-reveal="frame"] image-slot { border-radius: inherit; }
   image-slot::part(frame), image-slot::part(image) { border-radius: inherit; }
   [data-stack-link], [data-cf-card], [data-person-photo], [data-ring-inner] { contain: paint; }
   /* en el teléfono la barra del navegador entra y sale y 100vh cambia a mitad
@@ -710,14 +711,19 @@ class Component extends DCLogic {
       window.addEventListener("pointermove", this.onCfMove, { passive: true });
       window.addEventListener("pointerup", this.onCfUp);
       window.addEventListener("pointercancel", this.onCfUp);
+      /* Sin preventDefault y en modo pasivo. Antes, si el gesto del trackpad
+         arrancaba apenas en diagonal, se cancelaba el evento; Safari fija esa
+         decisión para todo el gesto y el scroll vertical quedaba muerto hasta
+         sacar el cursor del carrusel. No hay nada que cancelar: la página no
+         tiene desplazamiento horizontal. Se exige intención horizontal clara
+         para pasar de marca. */
       this.cf.addEventListener("wheel", (e) => {
-        if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
-        e.preventDefault();
+        if (Math.abs(e.deltaX) < 14 || Math.abs(e.deltaX) < Math.abs(e.deltaY) * 2) return;
         const now = performance.now();
         if (now - (this.cfWheelT || 0) < 420) return;
         this.cfWheelT = now;
         this.stepClient(e.deltaX > 0 ? 1 : -1);
-      }, { passive: false });
+      }, { passive: true });
     }
     const prev = r.querySelector("[data-cf-prev]"), next = r.querySelector("[data-cf-next]");
     if (prev && prev.dataset.cfBound !== "1") { prev.dataset.cfBound = "1"; prev.addEventListener("click", () => this.stepClient(-1)); }
