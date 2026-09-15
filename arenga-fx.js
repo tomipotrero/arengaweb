@@ -711,6 +711,10 @@
       this.footer = r.querySelector("[data-footer]");
       this.footerBlur = this.footer ? this.footer.querySelector("[data-blur]") : null;
       this.navFloat = r.querySelector("[data-nav-float]");
+      this.pageHeader = r.querySelector("header");
+      if (this.pageHeader && !this.pageHeader.style.transition) {
+        this.pageHeader.style.transition = "opacity 380ms cubic-bezier(.2,.7,.2,1)";
+      }
       if (this.mo) this.mo.takeRecords();
       this.scheduleMeasure();
     }
@@ -724,6 +728,10 @@
       this.footer = r.querySelector("[data-footer]");
       this.footerBlur = this.footer ? this.footer.querySelector("[data-blur]") : null;
       this.navFloat = r.querySelector("[data-nav-float]");
+      this.pageHeader = r.querySelector("header");
+      if (this.pageHeader && !this.pageHeader.style.transition) {
+        this.pageHeader.style.transition = "opacity 380ms cubic-bezier(.2,.7,.2,1)";
+      }
       this.bindHover(r); this.initBlur(r); this.initType(r); this.initMarquees(r); this.initVideos(r); anchorSlots(r);
       this.measure();
     }
@@ -766,6 +774,16 @@
           this.navShown = show;
           this.navFloat.style.opacity = show ? "1" : "0";
           this.navFloat.style.transform = show ? "translate3d(0,0,0)" : "translate3d(0,-130%,0)";
+          /* El encabezado de la página y la barra flotante son lo mismo, y no
+             pueden estar los dos. En el inicio el encabezado va dentro del
+             contenedor fijo del hero, así que acompaña todo el capítulo y al
+             volver hacia arriba quedaban superpuestos — dos "Contacto" y el
+             logotipo pisado. En las demás páginas ya está fuera de pantalla
+             cuando esto corre, así que apagarlo no se ve. */
+          if (this.pageHeader) {
+            this.pageHeader.style.opacity = show ? "0" : "1";
+            this.pageHeader.style.pointerEvents = show ? "none" : "";
+          }
         }
       }
       if (this.footer) {
