@@ -147,10 +147,6 @@
     <h1 data-cms="services.title" data-cms-mode="lines" style="margin: 0; max-width: 18ch; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(52px, 7.6vw, 130px); font-weight: 400; line-height: 0.9; letter-spacing: -0.045em; color: #f4f2ee; text-wrap: balance;">Nuestros servicios</h1>
     <div style="width: 100%; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-top: 12px;">
       <p style="margin: 0; max-width: 54ch; font-size: 18px; line-height: 1.55; color: rgba(242,239,233,0.7);"><span data-cms="services.text">Cinco capacidades que se combinan según lo que el proyecto necesite. Podés contratar una o todas: trabajamos con el mismo equipo y el mismo criterio.</span></p>
-      <div style="display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 12px; color: #28ea9b;">
-        <span style="width: 6px; height: 6px; border-radius: 999px; background: #28ea9b; box-shadow: 0 0 12px rgba(40,234,155,0.8);"></span>
-        <span>{{ capsCount }}</span>
-      </div>
     </div>
   </section>
 
@@ -276,8 +272,6 @@ class Component extends DCLogic {
       leaders: people(c.leaders, "arenga-lead-", []),
       team: people(c.team, "arenga-team-", []),
       steps: (Array.isArray(c.steps) ? c.steps : []),
-      // el contador sale del CMS: escrito a mano quedaba desfasado al dar de baja un servicio
-      capsCount: String((Array.isArray(c.caps) ? c.caps : []).length).padStart(2, "0") + " servicios",
       caps: (Array.isArray(c.caps) ? c.caps : []).map((cap, i) => Object.assign({}, cap, {
         does: Array.isArray(cap.does) ? cap.does : [],
         // sin caso publicado el enlace no se dibuja: mejor ausente que roto
