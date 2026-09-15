@@ -72,6 +72,8 @@
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
   [data-cf-foot], [data-cf-meta] { border-radius: 0 !important; }
   image-slot::part(frame) { border-radius: inherit; }
+  [data-stack-link], [data-cf-card], [data-person-photo], [data-ring-inner] { contain: paint; }
+  html { overflow-x: clip; }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } [data-m-grid] { grid-template-columns: minmax(0, 1fr) !important; } [data-m-grid] > * { grid-column: 1 / -1 !important; } }
   /* Sin desenfoque de fondo en pantallas táctiles: recalcularlo en cada cuadro
      con el contenido moviéndose detrás es lo que traba el scroll. El vidrio se
