@@ -109,7 +109,7 @@
     // quedan separados, y el trazo tiene que medir esa separación para cerrar
     "    spacing = bw / max(16.0, u_box.w);",
     "    vec2 T = vec2(u_res.x * 0.5, u_box.x) + a_tgt * bw * 0.5;",
-    "    T += vec2(sin(u_time * 2.1 + ph), cos(u_time * 1.7 + ph)) * mix(1.3, 0.3, form);",
+    "    T += vec2(sin(u_time * 2.1 + ph), cos(u_time * 1.7 + ph)) * mix(1.3, 0.16, form);",
     "    P = mix(P, T, form);",
     "  }",
     // entrada: el campo se condensa desde abajo, cada partícula a su turno
@@ -119,9 +119,14 @@
     // la estela va DETRÁS y se apaga hacia la cola: así se lee como movimiento
     "  float sp = length(V);",
     "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z);",
-    "  len = mix(len, spacing * 1.75, form);",
+    "  len = mix(len, spacing * 1.5, form);",
     "  vec2 dv = normalize(V + vec2(0.0001, 0.0001));",
-    "  dv = mix(dv, fdir, form);",
+    /* Formado, el trazo va en diagonal fija y mide la diagonal de la celda: así
+       tapa el hueco horizontal Y el vertical de la rejilla y el dibujo se lee
+       macizo. Con dirección al azar (lo anterior) los trazos se cruzaban y la
+       silueta quedaba peluda — muy visible en teléfono, donde la rejilla es
+       gruesa en relación al dibujo. Un pelo de azar evita el patrón perfecto. */
+    "  dv = mix(dv, normalize(vec2(0.74, 0.67) + fdir * 0.14), form);",
     "  vec2 Q = P - dv * len * a_end;",
     "  vec2 clip = (Q / u_res) * 2.0 - 1.0;",
     "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
