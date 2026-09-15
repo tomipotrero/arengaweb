@@ -155,12 +155,12 @@
    </div>
       <div id="formulario" style="display: flex; flex-direction: column; align-items: flex-start; gap: 14px; width: 100%; padding-top: 6px;">
         <div style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
-          <input ref="{{ nameRef }}" type="text" placeholder="Nombre" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
-          <input ref="{{ emailRef }}" type="email" placeholder="Tu email" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
+          <input ref="{{ nameRef }}" type="text" aria-label="Nombre" autocomplete="name" onKeyDown="{{ onFormKey }}" placeholder="Nombre" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
+          <input ref="{{ emailRef }}" type="email" aria-label="Tu email" autocomplete="email" inputmode="email" onKeyDown="{{ onFormKey }}" placeholder="Tu email" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
         </div>
-        <input ref="{{ companyRef }}" type="text" placeholder="Marca o empresa" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
+        <input ref="{{ companyRef }}" type="text" aria-label="Marca o empresa" autocomplete="organization" onKeyDown="{{ onFormKey }}" placeholder="Marca o empresa" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; font-family: inherit; font-size: 15px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);">
         <input ref="{{ hpRef }}" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="No completar" style="position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;">
-        <textarea ref="{{ msgRef }}" rows="5" placeholder="Contanos del proyecto" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; resize: vertical; font-family: inherit; font-size: 15px; line-height: 1.6; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);"></textarea>
+        <textarea ref="{{ msgRef }}" rows="5" aria-label="Contanos del proyecto" onKeyDown="{{ onFormKey }}" placeholder="Contanos del proyecto" style="width: 100%; padding: 15px 16px; border-radius: 14px; border: none; outline: none; resize: vertical; font-family: inherit; font-size: 15px; line-height: 1.6; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.4), 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 240ms ease;" style-focus="box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.55), 0 0 0 1px rgba(255,87,21,0.7);"></textarea>
         <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 6px;">
           <button ref="{{ btnRef }}" onClick="{{ sendForm }}" style="padding: 15px 28px; border-radius: 999px; border: none; font-family: inherit; font-size: 15px; font-weight: 500; color: #ffffff; background: #da3b05; cursor: pointer; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Enviar mensaje</button>
           <span ref="{{ statusRef }}" role="status" aria-live="polite" style="font-size: 13px; line-height: 1.4; color: rgba(244,242,238,0.5);">Te respondemos por mail</span>
@@ -271,13 +271,22 @@ class Component extends DCLogic {
     if (this.engine) this.engine.destroy();
   }
 
+  /* No hay <form>, así que Enter no enviaba: en los campos de una línea se
+     envía, y en el mensaje se deja pasar el salto de línea. */
+  onFormKey = (e) => {
+    if (e.key !== "Enter" || e.shiftKey) return;
+    if (e.target.tagName === "TEXTAREA") return;
+    e.preventDefault();
+    this.sendForm(e);
+  };
+
   renderVals() {
     const cms = this.state.c || {};
     const rows = Array.isArray(cms.cases) ? cms.cases : [];
     const previews = rows.map((r, i) => ({ index: String(i + 1).padStart(2, "0"), title: r.title, kind: r.kind, year: r.stat, href: r.page || "#", photo: r.cover || "", slot: "arenga-case-" + (i + 1), placeholder: "Still \u2014 " + r.title }));
     return {
       rootRef: this.rootRef, nameRef: this.nameRef, emailRef: this.emailRef, companyRef: this.companyRef, msgRef: this.msgRef,
-      hpRef: this.hpRef, btnRef: this.btnRef, statusRef: this.statusRef, sendForm: this.sendForm,
+      hpRef: this.hpRef, btnRef: this.btnRef, statusRef: this.statusRef, sendForm: this.sendForm, onFormKey: this.onFormKey,
       previews: previews.concat(previews, previews)
     };
   }
