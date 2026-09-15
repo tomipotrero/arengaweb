@@ -83,6 +83,7 @@
     [data-person-photo] { transition: transform 460ms cubic-bezier(.2,.7,.2,1), box-shadow 460ms ease; transform-style: preserve-3d; }
     article:hover > * > [data-person-photo] { transform: perspective(900px) translate3d(0,-2px,42px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.24), 0 18px 30px -14px rgba(0,0,0,0.85), 0 40px 60px -30px rgba(0,0,0,0.75); }
   }
+  [data-person-photo] > image-slot, [data-stack-link] > image-slot, [data-magnet] > image-slot, [data-brand-logo] > image-slot, [data-reveal="frame"] > image-slot, [data-reveal="frame"] image-slot { border-radius: inherit; }
   image-slot::part(frame), image-slot::part(image) { border-radius: inherit; }
   [data-stack-link], [data-cf-card], [data-person-photo], [data-ring-inner] { contain: paint; }
   image-slot[fit="contain"]::part(frame) { background: transparent; }
