@@ -76,6 +76,15 @@
     *:not([data-loader]):not([data-menu]):not([data-arenga-curtain]) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
     [data-glass]:not([data-loader]):not([data-menu]):not([data-arenga-curtain]) { background-color: rgba(11,15,20,0.78) !important; }
   }
+  /* los dos botones del cierre, en una sola fila también en teléfono */
+  @media (max-width: 760px) {
+    [data-cta-row] { gap: 10px !important; }
+    [data-cta-row] a { font-size: 13px !important; white-space: nowrap; }
+    [data-cta-row] a[href="/contacto"] { padding: 13px 18px !important; gap: 9px !important; }
+    [data-cta-row] a[href="/trabajos"] { padding: 7px 7px 7px 16px !important; gap: 10px !important; }
+    [data-cta-row] a svg { width: 15px !important; height: 15px !important; }
+    [data-cta-row] a[href="/trabajos"] span[style*="width: 34px"] { width: 30px !important; height: 30px !important; }
+  }
   @media (min-width: 761px) { [data-m-only] { display: none !important; } }
   @media (max-width: 1100px) { [data-foot-legal] { width: 100%; justify-content: space-between; } }
   @media (max-width: 1200px) { [data-g4] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
@@ -309,9 +318,9 @@
   <section data-reveal="1" style="position: relative; z-index: 1; padding: 120px clamp(30px, 5.2vw, 104px) 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 30px; will-change: transform, opacity;">
     <h2 data-blur="1" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(38px, 4.6vw, 72px); font-weight: 400; line-height: 1; letter-spacing: -0.035em; color: #f4f2ee;">Ya nos conocés.</h2>
     <p data-blur="1" style="margin: 0; max-width: 42ch; font-size: clamp(16px, 1.15vw, 19px); line-height: 1.55; color: rgba(242,239,233,0.72);">Contanos qué necesitás y armamos el equipo para tu proyecto.</p>
-    <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 14px;">
-      <a href="/contacto" style="display: inline-flex; align-items: center; gap: 14px; padding: 16px 28px; border-radius: 999px; font-size: 15px; font-weight: 500; color: #ffffff; background: #da3b05; text-decoration: none; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Escribinos<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    <div data-cta-row="1" style="display: flex; align-items: center; justify-content: center; gap: 14px;">
       <a href="/trabajos" data-glass="1" style="display: inline-flex; align-items: center; gap: 16px; padding: 9px 9px 9px 26px; border-radius: 999px; font-size: 15px; font-weight: 500; color: #f4f2ee; background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)); backdrop-filter: blur(7px) saturate(125%); -webkit-backdrop-filter: blur(7px) saturate(125%); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.7), inset 0 -1.2px 0.5px rgba(255,255,255,0.3), inset 2px 2px 5px rgba(255,150,90,0.12), inset -2px -2px 5px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.12), 0 14px 30px -14px rgba(0,0,0,0.7); transition: transform 260ms cubic-bezier(.2,.7,.2,1);" style-hover="transform: translateY(-2px);">Ver todos los trabajos<span style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 999px; background: #da3b05; color: #ffffff;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a>
+      <a href="/contacto" style="display: inline-flex; align-items: center; gap: 14px; padding: 16px 28px; border-radius: 999px; font-size: 15px; font-weight: 500; color: #ffffff; background: #da3b05; text-decoration: none; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);">Escribinos<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
     </div>
   </section>
   </main>
