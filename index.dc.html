@@ -1081,6 +1081,8 @@ class Component extends DCLogic {
         }
       });
       this.gl = glHandle;
+      // sin placa el lienzo no se muestra nunca: las masas quedan al 100 %
+      if (!this.gl) { glc.style.display = "none"; this.fieldBase = 1; }
       if (this.gl) {
         glc.style.opacity = "1";
         this.fieldBase = 0.5;
