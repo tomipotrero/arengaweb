@@ -73,6 +73,7 @@
   /* Safari no recorta overflow:hidden cuando la tarjeta está transformada y
      las esquinas salen cuadradas: cada capa lleva su propio radio */
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
+  [data-cf-foot], [data-cf-meta] { border-radius: 0 !important; }
   image-slot::part(frame) { border-radius: inherit; }
   input::placeholder, textarea::placeholder { color: rgba(244,242,238,0.45); }
   /* el formulario al lado del titular sólo cuando hay ancho de sobra */
