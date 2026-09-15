@@ -55,6 +55,14 @@
   /* El mundito gira: cada meridiano se achata hasta el canto y vuelve a abrirse */
   @keyframes arenga-globe { 0%, 100% { transform: scaleX(1); } 25% { transform: scaleX(0.05); } 50% { transform: scaleX(1); } 75% { transform: scaleX(0.05); } }
   @media (prefers-reduced-motion: reduce) { [data-globe] { animation: none !important; } }
+  /* El tope del titular en caracteres es para pantallas anchas. En teléfono
+     queda por debajo del ancho disponible y parte las líneas antes de tiempo:
+     16ch a 52px son 250 px contra 328 de hueco real. */
+  @media (max-width: 760px) { h1 { max-width: none !important; text-wrap: wrap !important; font-size: clamp(42px, 12.4vw, 56px) !important; } }
+  @media (max-width: 760px) {
+    [data-brand-card] { flex-wrap: nowrap !important; padding: 16px 18px !important; }
+    [data-brand-logo] { width: clamp(96px, 29vw, 150px) !important; height: 46px !important; }
+  }
   html, body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   @keyframes arenga-grain { 0% { transform: translate3d(0,0,0); } 12.5% { transform: translate3d(-3%,2%,0); } 25% { transform: translate3d(2%,-4%,0); } 37.5% { transform: translate3d(-4%,-1%,0); } 50% { transform: translate3d(3%,3%,0); } 62.5% { transform: translate3d(-1%,4%,0); } 75% { transform: translate3d(4%,-2%,0); } 87.5% { transform: translate3d(-2%,-3%,0); } 100% { transform: translate3d(0,0,0); } }
   html, body { margin: 0; padding: 0; background: #050708; }
@@ -175,17 +183,17 @@
       <span style="font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 12px; color: #28ea9b;">Origen</span>
     </div>
     <div data-m-grid="1" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;">
-      <article id="potrero" data-reveal="1" data-glass="1" style="position: relative; padding: 18px 22px; border-radius: 20px; overflow: hidden; display: flex; align-items: center; gap: clamp(16px, 2vw, 28px); flex-wrap: wrap; transition: box-shadow 420ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.05)), rgba(13,17,22,0.55); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.5), inset 0 -1.2px 0.5px rgba(255,255,255,0.24), inset 2px 2px 6px rgba(255,150,90,0.09), inset -2px -2px 6px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.1), 0 16px 32px -18px rgba(0,0,0,0.7); will-change: transform, opacity;">
+      <article id="potrero" data-brand-card="1" data-reveal="1" data-glass="1" style="position: relative; padding: 18px 22px; border-radius: 20px; overflow: hidden; display: flex; align-items: center; gap: clamp(16px, 2vw, 28px); flex-wrap: wrap; transition: box-shadow 420ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.05)), rgba(13,17,22,0.55); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.5), inset 0 -1.2px 0.5px rgba(255,255,255,0.24), inset 2px 2px 6px rgba(255,150,90,0.09), inset -2px -2px 6px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.1), 0 16px 32px -18px rgba(0,0,0,0.7); will-change: transform, opacity;">
         <span style="font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 11px; color: #28ea9b;">01</span>
-        <div style="position: relative; flex: 0 1 auto; min-width: 0; width: clamp(128px, 15vw, 190px); height: 62px; padding: 4px 0; border-radius: 10px;">
+        <div data-brand-logo="1" style="position: relative; flex: 0 1 auto; min-width: 0; width: clamp(128px, 15vw, 190px); height: 62px; padding: 4px 0; border-radius: 10px;">
           <image-slot data-cms-alt="brands.0.name" data-cms="brands.0.logo" data-cms-mode="src" id="arenga-brand-potrero" shape="rect" fit="contain" placeholder="Logo Potrero" style="position: absolute; inset: 0; width: 100%; height: 100%;"></image-slot>
         </div>
         <span style="flex: 1 1 auto;"></span>
         <a data-cms="brands.0.url" data-cms-mode="href" href="https://potrero.com.uy/" target="_blank" rel="noopener" data-ul="1" style="display: inline-flex; align-items: center; gap: 9px; padding: 6px 0; font-size: 13.5px; font-weight: 500; color: rgba(244,242,238,0.82); transition: color 220ms ease;" style-hover="color: #ff5715;"><span style="position: relative;">potrero.com.uy<span data-ul-line="1" style="position: absolute; left: 0; right: 0; bottom: -3px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform 380ms cubic-bezier(.2,.7,.2,1);"></span></span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></a>
       </article>
-      <article id="coach" data-reveal="1" data-glass="1" style="position: relative; padding: 18px 22px; border-radius: 20px; overflow: hidden; display: flex; align-items: center; gap: clamp(16px, 2vw, 28px); flex-wrap: wrap; transition: box-shadow 420ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.05)), rgba(13,17,22,0.55); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.5), inset 0 -1.2px 0.5px rgba(255,255,255,0.24), inset 2px 2px 6px rgba(255,150,90,0.09), inset -2px -2px 6px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.1), 0 16px 32px -18px rgba(0,0,0,0.7); will-change: transform, opacity;">
+      <article id="coach" data-brand-card="1" data-reveal="1" data-glass="1" style="position: relative; padding: 18px 22px; border-radius: 20px; overflow: hidden; display: flex; align-items: center; gap: clamp(16px, 2vw, 28px); flex-wrap: wrap; transition: box-shadow 420ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.05)), rgba(13,17,22,0.55); box-shadow: inset 0 1.2px 0.5px rgba(255,255,255,0.5), inset 0 -1.2px 0.5px rgba(255,255,255,0.24), inset 2px 2px 6px rgba(255,150,90,0.09), inset -2px -2px 6px rgba(40,234,155,0.1), 0 0 0 1px rgba(255,255,255,0.1), 0 16px 32px -18px rgba(0,0,0,0.7); will-change: transform, opacity;">
         <span style="font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 11px; color: #28ea9b;">02</span>
-        <div style="position: relative; flex: 0 1 auto; min-width: 0; width: clamp(128px, 15vw, 190px); height: 62px; padding: 4px 0; border-radius: 10px;">
+        <div data-brand-logo="1" style="position: relative; flex: 0 1 auto; min-width: 0; width: clamp(128px, 15vw, 190px); height: 62px; padding: 4px 0; border-radius: 10px;">
           <image-slot data-cms-alt="brands.1.name" data-cms="brands.1.logo" data-cms-mode="src" id="arenga-brand-coach" shape="rect" fit="contain" placeholder="Logo Coach" style="position: absolute; inset: 0; width: 100%; height: 100%;"></image-slot>
         </div>
         <span style="flex: 1 1 auto;"></span>
