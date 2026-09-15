@@ -77,7 +77,7 @@
     [data-glass]:not([data-loader]):not([data-menu]):not([data-arenga-curtain]) { background-color: rgba(11,15,20,0.78) !important; }
   }
   @media (pointer: coarse) {
-    [data-hero-card] { transform: none !important; opacity: 1 !important; }
+    [data-hero-card] { transform: translateZ(0) !important; opacity: 1 !important; -webkit-mask-image: -webkit-radial-gradient(#fff, #000) !important; mask-image: radial-gradient(#fff, #000) !important; }
     [data-hero-card-wrap] { perspective: none !important; margin-left: 0 !important; margin-right: 0 !important; }
   }
   @media (min-width: 761px) { [data-m-only] { display: none !important; } }
