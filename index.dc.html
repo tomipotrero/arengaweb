@@ -88,6 +88,8 @@
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
   [data-cf-foot], [data-cf-meta] { border-radius: 0 !important; }
   image-slot::part(frame) { border-radius: inherit; }
+  [data-stack-link], [data-cf-card], [data-person-photo], [data-ring-inner] { contain: paint; }
+  html { overflow-x: clip; }
   /* en el teléfono la barra del navegador entra y sale y 100vh cambia a mitad
      del scroll: svh es el alto chico y estable, y la tarjeta nunca queda tapada */
   @supports (height: 100svh) { [data-stack-sticky] { height: 100svh; } }
