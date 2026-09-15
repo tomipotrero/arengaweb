@@ -134,6 +134,9 @@
     "  c = mix(c, vec3(0.553, 0.941, 0.478), a_s2.y * 0.55);",
     "  if (k > 0.955) c = vec3(1.0, 0.341, 0.082);",
     "  if (k < 0.055) c = vec3(0.949, 0.937, 0.914);",
+    // formado, el logotipo va en blanco: el verde del campo libre se desvanece
+    // a medida que cada partícula llega a su punto
+    "  c = mix(c, vec3(0.973, 0.969, 0.961), form);",
     "  v_c = c;",
     // sin corte en los bordes del lienzo, y cola transparente
     "  vec2 e = P / u_res;",
