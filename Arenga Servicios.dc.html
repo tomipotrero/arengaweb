@@ -71,12 +71,16 @@
      crece desde la izquierda. Sin transform 3D ni mix-blend, que sobre un
      bloque sin fondo propio dejan cantos duros. */
   [data-svc] { transition: background-color 320ms ease; }
+  /* el filete superior llega hasta el carril de la línea */
+  [data-svc] { margin-left: -22px !important; padding-left: 22px !important; }
+  @media (max-width: 900px) { [data-svc] { margin-left: -12px !important; padding-left: 12px !important; } }
   [data-svc]:hover { background-color: rgba(255,255,255,0.03); }
   [data-svc] > * { transition: transform 420ms cubic-bezier(.2,.7,.2,1); }
   [data-svc]:hover > * { transform: translateX(10px); }
   [data-svc] h2 { transition: color 320ms ease; }
   [data-svc]:hover h2 { color: #ffffff; }
-  [data-svc]::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: #ff5715; transform: scaleY(0); transform-origin: 50% 0; transition: transform 460ms cubic-bezier(.2,.7,.2,1); }
+  [data-svc]::after { content: ""; position: absolute; left: -22px; top: 0; bottom: 0; width: 2px; background: #ff5715; transform: scaleY(0); transform-origin: 50% 0; transition: transform 460ms cubic-bezier(.2,.7,.2,1); }
+  @media (max-width: 900px) { [data-svc]::after { left: -12px; } }
   [data-svc]:hover::after { transform: scaleY(1); }
   @media (pointer: coarse) { [data-svc]:hover > * { transform: none; } }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } [data-m-grid] { grid-template-columns: minmax(0, 1fr) !important; } }
