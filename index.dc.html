@@ -86,6 +86,7 @@
   /* Safari no recorta overflow:hidden cuando la tarjeta está transformada y
      las esquinas salen cuadradas: cada capa lleva su propio radio */
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
+  [data-cf-foot], [data-cf-meta] { border-radius: 0 !important; }
   image-slot::part(frame) { border-radius: inherit; }
   /* en el teléfono la barra del navegador entra y sale y 100vh cambia a mitad
      del scroll: svh es el alto chico y estable, y la tarjeta nunca queda tapada */
@@ -297,8 +298,8 @@
         <span data-glass="1" style="align-self: flex-start; padding: 10px 19px; border-radius: 999px; font-size: 12px; font-weight: 500; color: rgba(244,242,238,0.85); background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 46%, rgba(255,255,255,0.05)); backdrop-filter: blur(7px) saturate(125%); -webkit-backdrop-filter: blur(7px) saturate(125%); box-shadow: inset 0 1px 0.5px rgba(255,255,255,0.7), inset 0 -1px 0.5px rgba(255,255,255,0.3), 0 0 0 1px rgba(255,255,255,0.12), 0 10px 22px -12px rgba(0,0,0,0.65);">Equipo</span>
         <h2 data-blur="1" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(44px, 5.6vw, 88px); font-weight: 400; line-height: 0.95; letter-spacing: -0.035em; color: #f4f2ee;">Quiénes somos</h2>
       </div>
-      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 18px; max-width: 36ch;">
-        <p style="margin: 0; font-size: 16px; line-height: 1.6; color: rgba(242,239,233,0.62);"><span data-cms="home.teamText" data-type="1">Creativos, diseñadores, filmmakers: un equipo con todas las capacidades para elevar tu marca.</span></p>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 20px; flex: 0 1 clamp(300px, 38%, 520px); max-width: 46ch;">
+        <p style="margin: 0; font-size: 17px; line-height: 1.55; color: rgba(242,239,233,0.68);"><span data-cms="home.teamText" data-type="1">Creativos, diseñadores, filmmakers: un equipo con todas las capacidades para elevar tu marca.</span></p>
         <a href="/quienes-somos" style="display: inline-flex; align-items: center; gap: 10px; padding: 13px 24px; border-radius: 999px; font-size: 14px; font-weight: 500; color: #ffffff; background: #da3b05; text-decoration: none; transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;" style-hover="transform: translateY(-2px); box-shadow: 0 16px 34px -16px rgba(255,87,21,0.9);"><span>Conocenos</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
       </div>
     </div>
