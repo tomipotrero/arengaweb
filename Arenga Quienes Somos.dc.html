@@ -52,6 +52,9 @@
 <script src="./arenga-fx.js"></script>
 <style>
   html { scroll-behavior: smooth; }
+  /* El mundito gira: cada meridiano se achata hasta el canto y vuelve a abrirse */
+  @keyframes arenga-globe { 0%, 100% { transform: scaleX(1); } 25% { transform: scaleX(0.05); } 50% { transform: scaleX(1); } 75% { transform: scaleX(0.05); } }
+  @media (prefers-reduced-motion: reduce) { [data-globe] { animation: none !important; } }
   html, body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   @keyframes arenga-grain { 0% { transform: translate3d(0,0,0); } 12.5% { transform: translate3d(-3%,2%,0); } 25% { transform: translate3d(2%,-4%,0); } 37.5% { transform: translate3d(-4%,-1%,0); } 50% { transform: translate3d(3%,3%,0); } 62.5% { transform: translate3d(-1%,4%,0); } 75% { transform: translate3d(4%,-2%,0); } 87.5% { transform: translate3d(-2%,-3%,0); } 100% { transform: translate3d(0,0,0); } }
   html, body { margin: 0; padding: 0; background: #050708; }
@@ -129,7 +132,7 @@
       <a data-menu-item="1" href="/contacto" style="font-size: clamp(40px, 11vw, 64px); font-weight: 400; line-height: 1.04; letter-spacing: -0.04em; color: #ff5715; opacity: 0; transform: translate3d(0,22px,0); transition: opacity 400ms ease, transform 620ms cubic-bezier(.2,.7,.2,1);">Contacto</a>
     </nav>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 13px; color: rgba(244,242,238,0.6);">
-      <span data-cms="site.city">Montevideo · Uruguay</span>
+      <span style="display: inline-flex; align-items: center; gap: 10px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><ellipse data-globe="1" cx="12" cy="12" rx="4" ry="9" style="transform-box: fill-box; transform-origin: center; animation: arenga-globe 9s cubic-bezier(.45,0,.55,1) infinite;"></ellipse><ellipse data-globe="1" cx="12" cy="12" rx="4" ry="9" style="transform-box: fill-box; transform-origin: center; animation: arenga-globe 9s cubic-bezier(.45,0,.55,1) infinite; animation-delay: -2.25s;"></ellipse><path d="M3.4 9.2h17.2M3.4 14.8h17.2"></path></svg><span data-cms="site.city">Montevideo · Uruguay</span></span>
     </div>
   </div>
 
@@ -336,7 +339,7 @@
     </div>
     <div style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 13px; font-weight: 500; color: rgba(244,242,238,0.7);">
       <div style="display: flex; align-items: center; gap: 10px;">
-        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><ellipse cx="12" cy="12" rx="4" ry="9"></ellipse><path d="M3.4 9.2h17.2M3.4 14.8h17.2"></path></svg>
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><ellipse data-globe="1" cx="12" cy="12" rx="4" ry="9" style="transform-box: fill-box; transform-origin: center; animation: arenga-globe 9s cubic-bezier(.45,0,.55,1) infinite;"></ellipse><ellipse data-globe="1" cx="12" cy="12" rx="4" ry="9" style="transform-box: fill-box; transform-origin: center; animation: arenga-globe 9s cubic-bezier(.45,0,.55,1) infinite; animation-delay: -2.25s;"></ellipse><path d="M3.4 9.2h17.2M3.4 14.8h17.2"></path></svg>
         <span data-cms="site.city">Montevideo · Uruguay</span>
       </div>
       <span data-foot-legal="1" style="display: inline-flex; align-items: center; gap: 22px; flex-wrap: wrap;"><span data-cms="site.copyright" style="opacity: 0.7;">Arenga © 2026</span><span style="display: inline-flex; align-items: center; gap: 10px;"><span style="opacity: 0.7;">Designed and produced by</span><a href="https://potrero.com.uy/" target="_blank" rel="noopener" aria-label="Potrero" style="display: inline-flex; align-items: center; color: #f4f2ee; opacity: 0.85; transition: opacity 220ms ease, color 220ms ease;" style-hover="opacity: 1; color: #ff5715;"><svg viewBox="0 0 1822 343" style="height: 13px; width: auto; display: block;" aria-hidden="true"><use href="#potrero-wordmark"></use></svg></a></span></span>
