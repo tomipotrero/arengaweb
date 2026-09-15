@@ -119,7 +119,10 @@
     // la estela va DETRÁS y se apaga hacia la cola: así se lee como movimiento
     "  float sp = length(V);",
     "  float len = (1.8 + sp * 0.42 + boost * 7.0 + u_prog * 7.0) * mix(0.55, 1.35, z);",
-    "  len = mix(len, spacing * 1.5, form);",
+    /* Formado, el trazo tiene que ser un punto, no una raya: con la rejilla
+       adaptativa spacing sube en pantallas anchas y el logotipo se leía
+       deshilachado. Techo duro de 2,6 px. */
+    "  len = mix(len, min(spacing * 1.35, 2.6), form);",
     "  vec2 dv = normalize(V + vec2(0.0001, 0.0001));",
     /* Formado, el trazo va en diagonal fija y mide la diagonal de la celda: así
        tapa el hueco horizontal Y el vertical de la rejilla y el dibujo se lee
@@ -146,7 +149,7 @@
     /* El brillo formado llegaba a 1,28 de alfa y con mezcla aditiva saturaba:
        el logotipo se veía como una mancha plana en vez de puntos. A 0,62 y
        conservando algo de variación por profundidad, el dibujo respira. */
-    "  v_a = (0.13 + boost * 0.55 + form * 0.62) * mix(mix(0.35, 1.25, z), 0.88, form) * mix(1.0 - u_form * 0.88, 1.0, isLogo) * u_gain * edge * tail * en * (1.0 - u_prog * 0.8);",
+    "  v_a = (0.13 + boost * 0.55 + form * 0.95) * mix(mix(0.35, 1.25, z), 0.94, form) * mix(1.0 - u_form * 0.88, 1.0, isLogo) * u_gain * edge * tail * en * (1.0 - u_prog * 0.8);",
     "}"
   ].join("\n");
 
@@ -282,7 +285,12 @@
     function resize() {
       var w = canvas.clientWidth, h = canvas.clientHeight;
       if (!(w > 0 && h > 0)) return;
-      var dpr = Math.min(opts.dpr || 1.5, window.devicePixelRatio || 1);
+      /* A 1,5 en una pantalla Retina el navegador estira el lienzo y las
+         partículas salen blandas. A 2 coincide con la pantalla: el sombreador
+         de fragmentos escribe un solo color, así que el costo extra es
+         rasterizar líneas finas, que es barato. u_gain compensa el brillo,
+         porque el trazo mide siempre un píxel de placa. */
+      var dpr = Math.min(opts.dpr || 2, window.devicePixelRatio || 1);
       if (st.w === w && st.h === h && st.dpr === dpr) return;
       st.w = w; st.h = h; st.dpr = dpr;
       canvas.width = Math.round(w * dpr);
