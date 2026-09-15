@@ -55,6 +55,8 @@
   /* El mundito gira: cada meridiano se achata hasta el canto y vuelve a abrirse */
   @keyframes arenga-globe { 0%, 100% { transform: scaleX(1); } 25% { transform: scaleX(0.05); } 50% { transform: scaleX(1); } 75% { transform: scaleX(0.05); } }
   @media (prefers-reduced-motion: reduce) { [data-globe] { animation: none !important; } }
+  /* el reparto de líneas ordena en pantalla ancha; en teléfono desperdicia ancho */
+  @media (max-width: 760px) { h2 { text-wrap: wrap !important; } }
   html, body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   @keyframes arenga-grain { 0% { transform: translate3d(0,0,0); } 12.5% { transform: translate3d(-3%,2%,0); } 25% { transform: translate3d(2%,-4%,0); } 37.5% { transform: translate3d(-4%,-1%,0); } 50% { transform: translate3d(3%,3%,0); } 62.5% { transform: translate3d(-1%,4%,0); } 75% { transform: translate3d(4%,-2%,0); } 87.5% { transform: translate3d(-2%,-3%,0); } 100% { transform: translate3d(0,0,0); } }
   html, body { margin: 0; padding: 0; background: #050708; }
