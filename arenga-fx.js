@@ -547,6 +547,7 @@
     "/": "index.dc.html",
     "/trabajos": "Arenga%20Trabajos.dc.html",
     "/quienes-somos": "Arenga%20Quienes%20Somos.dc.html",
+    "/servicios": "Arenga%20Servicios.dc.html",
     "/contacto": "Arenga%20Contacto.dc.html",
     "/panel": "Arenga%20Admin.dc.html",
     "/proyectos/megal": "Arenga%20Proyecto.dc.html",
