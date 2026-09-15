@@ -72,9 +72,9 @@
      crece desde la izquierda. Sin transform 3D ni mix-blend, que sobre un
      bloque sin fondo propio dejan cantos duros. */
   [data-svc] { transition: background-color 320ms ease; }
-  /* el filete superior llega hasta el carril de la línea */
-  [data-svc] { margin-left: -22px !important; padding-left: 22px !important; }
-  @media (max-width: 900px) { [data-svc] { margin-left: -12px !important; padding-left: 12px !important; } }
+  /* el contenido se separa de la línea con relleno interno, no moviendo la fila */
+  [data-svc] { padding-left: 34px !important; }
+  @media (max-width: 760px) { [data-svc] { padding-left: 22px !important; } }
   [data-svc]:hover { background-color: rgba(255,255,255,0.03); }
   [data-svc] > * { transition: transform 620ms cubic-bezier(.45,.05,.2,1); }
   [data-svc]:hover > * { transform: translateX(10px); }
