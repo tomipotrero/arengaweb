@@ -71,6 +71,7 @@
      las esquinas salen cuadradas: cada capa lleva su propio radio */
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
   [data-cf-foot], [data-cf-meta] { border-radius: 0 !important; }
+  [data-person-photo] > image-slot, [data-stack-link] > image-slot, [data-magnet] > image-slot, [data-brand-logo] > image-slot, [data-reveal="frame"] > image-slot, [data-reveal="frame"] image-slot { border-radius: inherit; }
   image-slot::part(frame), image-slot::part(image) { border-radius: inherit; }
   [data-stack-link], [data-cf-card], [data-person-photo], [data-ring-inner] { contain: paint; }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } [data-m-grid] { grid-template-columns: minmax(0, 1fr) !important; } [data-m-grid] > * { grid-column: 1 / -1 !important; } }
