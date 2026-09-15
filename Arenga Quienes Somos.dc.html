@@ -186,7 +186,7 @@
       <h2 data-blur="1" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(38px, 4.4vw, 72px); font-weight: 400; line-height: 0.95; letter-spacing: -0.04em; color: #f4f2ee;">Liderazgo</h2>
       <span style="font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 12px; color: #28ea9b;">{{ leadersCount }}</span>
     </div>
-    <div data-g4="1" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px;">
+    <div data-g4="1" data-m-hide="1" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px;">
       <sc-for list="{{ leaders }}" as="m" hint-placeholder-count="4">
         <article data-reveal="1" data-par="{{ m.par }}" data-tilt="0.7" style="position: relative; padding: 18px; border-radius: 26px; overflow: hidden; transition: box-shadow 420ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.06)), rgba(13,17,22,0.6); box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.62), inset 0 -1.5px 0.5px rgba(255,255,255,0.28), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.12), 0 0 0 1px rgba(255,255,255,0.11), 0 22px 44px -20px rgba(0,0,0,0.7); will-change: transform, opacity;">
           <div data-reveal="rise" data-rdelay="{{ m.delay }}" style="position: relative; display: flex; flex-direction: column; gap: 18px;">
@@ -201,6 +201,24 @@
         </article>
       </sc-for>
     </div>
+    <div data-m-only="1" data-marquee="1" data-speed="44" data-copies="3" style="position: relative; overflow: hidden; padding: 44px 0 60px; margin: -28px calc(-1 * clamp(30px, 5.2vw, 104px)) -32px; cursor: grab; touch-action: pan-y; user-select: none; -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 8%, #000 92%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 8%, #000 92%, rgba(0,0,0,0) 100%);">
+      <div data-marquee-track="1" style="display: flex; align-items: stretch; gap: 18px; width: max-content; padding-left: 18px; will-change: transform;">
+        <sc-for list="{{ leadersLoop }}" as="m" hint-placeholder-count="12">
+          <article data-tilt="0.7" style="flex: none; position: relative; width: clamp(220px, 20vw, 264px); padding: 16px; border-radius: 26px; overflow: hidden; transition: transform 420ms cubic-bezier(.2,.7,.2,1), box-shadow 420ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.06)), rgba(13,17,22,0.72); box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.6), inset 0 -1.5px 0.5px rgba(255,255,255,0.26), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.09), 0 0 0 1px rgba(255,255,255,0.11), 0 22px 44px -20px rgba(0,0,0,0.7);">
+            <div style="position: relative; display: flex; flex-direction: column; gap: 16px;">
+              <div style="position: relative; width: 100%; aspect-ratio: 4 / 5; border-radius: 18px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);">
+                <image-slot alt="{{ m.name }}" id="{{ m.slot }}" shape="rect" fit="cover" src="{{ m.photo }}" placeholder="{{ m.placeholder }}" style="position: absolute; inset: 0; width: 100%; height: 100%;"></image-slot>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; padding: 0 4px 4px;">
+                <span style="font-size: 19px; font-weight: 600; letter-spacing: -0.02em; color: #f4f2ee;">{{ m.name }}</span>
+                <span style="font-size: 13.5px; line-height: 1.45; color: rgba(244,242,238,0.64);">{{ m.role }}</span>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+
   </section>
 
   <section id="equipo" style="position: relative; z-index: 1; padding: 110px clamp(30px, 5.2vw, 104px) 0; display: flex; flex-direction: column; gap: 40px;">
@@ -208,7 +226,7 @@
       <h2 data-blur="1" style="margin: 0; font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(38px, 4.4vw, 72px); font-weight: 400; line-height: 0.95; letter-spacing: -0.04em; color: #f4f2ee;">Equipo</h2>
       <span style="font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; font-size: 12px; color: #28ea9b;">{{ teamCount }}</span>
     </div>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 216px), 1fr)); gap: 18px;">
+    <div data-m-hide="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 216px), 1fr)); gap: 18px;">
       <sc-for list="{{ team }}" as="m" hint-placeholder-count="6">
         <article data-reveal="1" data-par="{{ m.par }}" data-tilt="0.7" style="position: relative; padding: 18px; border-radius: 26px; overflow: hidden; transition: box-shadow 420ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.06)), rgba(13,17,22,0.6); box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.62), inset 0 -1.5px 0.5px rgba(255,255,255,0.28), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.12), 0 0 0 1px rgba(255,255,255,0.11), 0 22px 44px -20px rgba(0,0,0,0.7); will-change: transform, opacity;">
           <div data-reveal="rise" data-rdelay="{{ m.delay }}" style="position: relative; display: flex; flex-direction: column; gap: 18px;">
@@ -223,6 +241,24 @@
         </article>
       </sc-for>
     </div>
+    <div data-m-only="1" data-marquee="1" data-speed="52" data-copies="3" style="position: relative; overflow: hidden; padding: 44px 0 60px; margin: -28px calc(-1 * clamp(30px, 5.2vw, 104px)) -32px; cursor: grab; touch-action: pan-y; user-select: none; -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 8%, #000 92%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #000 8%, #000 92%, rgba(0,0,0,0) 100%);">
+      <div data-marquee-track="1" style="display: flex; align-items: stretch; gap: 18px; width: max-content; padding-left: 18px; will-change: transform;">
+        <sc-for list="{{ teamLoop }}" as="m" hint-placeholder-count="12">
+          <article data-tilt="0.7" style="flex: none; position: relative; width: clamp(220px, 20vw, 264px); padding: 16px; border-radius: 26px; overflow: hidden; transition: transform 420ms cubic-bezier(.2,.7,.2,1), box-shadow 420ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.06)), rgba(13,17,22,0.72); box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.6), inset 0 -1.5px 0.5px rgba(255,255,255,0.26), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.09), 0 0 0 1px rgba(255,255,255,0.11), 0 22px 44px -20px rgba(0,0,0,0.7);">
+            <div style="position: relative; display: flex; flex-direction: column; gap: 16px;">
+              <div style="position: relative; width: 100%; aspect-ratio: 4 / 5; border-radius: 18px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);">
+                <image-slot alt="{{ m.name }}" id="{{ m.slot }}" shape="rect" fit="cover" src="{{ m.photo }}" placeholder="{{ m.placeholder }}" style="position: absolute; inset: 0; width: 100%; height: 100%;"></image-slot>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; padding: 0 4px 4px;">
+                <span style="font-size: 19px; font-weight: 600; letter-spacing: -0.02em; color: #f4f2ee;">{{ m.name }}</span>
+                <span style="font-size: 13.5px; line-height: 1.45; color: rgba(244,242,238,0.64);">{{ m.role }}</span>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+
   </section>
 
   <section id="como-trabajamos" style="position: relative; z-index: 1; padding: 110px clamp(30px, 5.2vw, 104px) 0; display: flex; flex-direction: column; gap: 40px;">
@@ -355,13 +391,18 @@ class Component extends DCLogic {
       delay: String(Math.min(i, 9) * 0.055),
       name: m.name, role: m.role, photo: m.photo || ""
     }));
+    const lead = people(c.leaders, "arenga-lead-", []);
+    const crew = people(c.team, "arenga-team-", []);
     return {
       rootRef: this.rootRef,
       leadersCount: Array.isArray(c.leaders) && c.leaders.length ? String(c.leaders.length).padStart(2, "0") + " personas" : "",
       teamCount: Array.isArray(c.team) && c.team.length ? String(c.team.length).padStart(2, "0") + " personas" : "",
       stats: (Array.isArray(c.stats) ? c.stats : []).map((s, i) => ({ n: s.n, label: s.label, delay: String(i * 0.07) })),
-      leaders: people(c.leaders, "arenga-lead-", []),
-      team: people(c.team, "arenga-team-", []),
+      leaders: lead,
+      team: crew,
+      // la cinta necesita la lista repetida para que el bucle no muestre huecos
+      leadersLoop: lead.concat(lead, lead),
+      teamLoop: crew.concat(crew),
       steps: (Array.isArray(c.steps) ? c.steps : []),
       caps: (Array.isArray(c.caps) ? c.caps : []).map((cap, i) => Object.assign({}, cap, {
         expanded: this.state.capOpen === i ? "true" : "false",
