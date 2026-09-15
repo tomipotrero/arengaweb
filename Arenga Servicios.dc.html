@@ -83,14 +83,21 @@
   [data-svc]::after { content: ""; position: absolute; left: -22px; top: 0; bottom: 0; width: 2px; background: #ff5715; border-radius: 2px; transform: scaleY(0); transform-origin: 50% 0; transition: transform 620ms cubic-bezier(.45,.05,.2,1), opacity 320ms ease; opacity: 0; }
   @media (max-width: 900px) { [data-svc]::after { left: -12px; } }
   [data-svc]:hover::after { transform: scaleY(1); opacity: 1; }
-  @media (pointer: coarse) { [data-svc]:hover > * { transform: none; } }
+  @media (pointer: coarse) {
+    [data-svc]:hover { background-color: transparent; }
+    [data-svc]:hover > * { transform: none; }
+    [data-svc]:hover::after { transform: scaleY(0); opacity: 0; }
+    [data-svc][data-in]::after { transform: scaleY(1); opacity: 1; }
+    [data-svc][data-in] { background-color: rgba(255,255,255,0.03); }
+    [data-svc][data-in] h2 { color: #ffffff; }
+  }
   @media (max-width: 760px) { [data-m-hide] { display: none !important; } [data-m-full] { max-width: 100% !important; } [data-m-grid] { grid-template-columns: minmax(0, 1fr) !important; } }
   /* Sin desenfoque de fondo en pantallas táctiles: recalcularlo en cada cuadro
      con el contenido moviéndose detrás es lo que traba el scroll. El vidrio se
      compensa con un fondo algo más sólido, y el resto se ve igual. */
   @media (pointer: coarse) {
-    *:not([data-loader]):not([data-menu]) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-    [data-glass]:not([data-loader]):not([data-menu]) { background-color: rgba(11,15,20,0.78) !important; }
+    *:not([data-loader]):not([data-menu]):not([data-arenga-curtain]) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+    [data-glass]:not([data-loader]):not([data-menu]):not([data-arenga-curtain]) { background-color: rgba(11,15,20,0.78) !important; }
   }
   @media (min-width: 761px) { [data-m-only] { display: none !important; } }
   @media (max-width: 1100px) { [data-foot-legal] { width: 100%; justify-content: space-between; } }
@@ -252,6 +259,7 @@ class Component extends DCLogic {
     const boot = () => {
       if (this.dead || this.engine || !this.rootRef.current) return;
       this.engine = new window.ArengaEngine(this.rootRef.current, { typewriter: this.props.typewriter !== false });
+      this.watchRows();
     };
     if (window.ArengaEngine) boot(); else window.addEventListener("arenga-engine", boot, { once: true });
     this.onCapResize = () => { this.capH = {}; this.measureCaps(); };
@@ -262,7 +270,25 @@ class Component extends DCLogic {
     [200, 900].forEach(t => setTimeout(() => { if (!this.dead) this.measureCaps(); }, t));
   }
 
+  /* En pantallas táctiles la fila se marca cuando cruza la banda central de la
+     pantalla: el CSS le da entonces el mismo estado que el hover en escritorio.
+     Sólo en táctil, para no duplicar el gesto donde ya hay cursor. */
+  watchRows() {
+    if (!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches)) return;
+    if (!window.IntersectionObserver || this.rowIO) return;
+    const rows = Array.from(this.rootRef.current.querySelectorAll("[data-svc]"));
+    if (!rows.length) { setTimeout(() => { if (!this.dead) this.watchRows(); }, 400); return; }
+    this.rowIO = new IntersectionObserver((es) => {
+      es.forEach(e => {
+        if (e.isIntersecting) e.target.setAttribute("data-in", "1");
+        else e.target.removeAttribute("data-in");
+      });
+    }, { rootMargin: "-38% 0px -38% 0px" });
+    rows.forEach(r => this.rowIO.observe(r));
+  }
+
   componentWillUnmount() {
+    if (this.rowIO) { this.rowIO.disconnect(); this.rowIO = null; }
     this.dead = true;
     window.removeEventListener("resize", this.onCapResize);
     if (this.engine) this.engine.destroy();
