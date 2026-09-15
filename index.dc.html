@@ -87,7 +87,7 @@
      las esquinas salen cuadradas: cada capa lleva su propio radio */
   [data-cf-card] > *, [data-stack-link] > *, [data-ring-inner] > * { border-radius: inherit; }
   [data-cf-foot], [data-cf-meta] { border-radius: 0 !important; }
-  image-slot::part(frame) { border-radius: inherit; }
+  image-slot::part(frame), image-slot::part(image) { border-radius: inherit; }
   [data-stack-link], [data-cf-card], [data-person-photo], [data-ring-inner] { contain: paint; }
   /* en el teléfono la barra del navegador entra y sale y 100vh cambia a mitad
      del scroll: svh es el alto chico y estable, y la tarjeta nunca queda tapada */
@@ -121,7 +121,7 @@
   @media (max-width: 1100px) { [data-foot-legal] { width: 100%; justify-content: space-between; } }
 </style>
 </helmet>
-<div ref="{{ rootRef }}" style="position: relative; width: 100%; display: flex; flex-direction: column; font-family: 'Hubot Sans', 'Archivo', Helvetica, sans-serif; background: #050708; color: #f2efe9; overflow-x: clip; isolation: isolate;">
+<div ref="{{ rootRef }}" style="position: relative; width: 100%; display: flex; flex-direction: column; font-family: 'Hubot Sans', 'Archivo', Helvetica, sans-serif; background: #050708; color: #f2efe9; isolation: isolate;">
 
   <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;">
     <symbol id="arenga-mark" viewBox="0 0 52.5 31.1"><path fill="currentColor" d="M45.5435 7.84641L45.4397 8.03612C43.7536 11.1461 40.4758 13.0867 36.9054 13.0867H32.5423L34.263 17.8138H40.114L36.4336 24.6059C35.9523 25.4954 35.0149 26.049 33.9956 26.049H32.9513L31.7968 22.6L30.8436 19.7575L30.1925 17.8138H30.1296L23.9262 0H12.932L10.1103 4.95415L5.41691 13.1862L2.72104 17.9133L0.0629141 22.5783L0 23.1567H6.44241L6.50532 23.0447C8.2386 19.885 11.5825 17.9164 15.2189 17.9164H19.582L17.8613 13.1893H11.938L13.0075 11.2456L16.4678 4.95415H17.5121C18.503 4.95415 19.3838 5.57614 19.7047 6.50291L21.9916 13.0898L23.6714 17.8169L26.5938 26.049L28.3522 31.0031H39.3465L52.4106 8.42486L52.4735 7.84641H45.5435Z"></path></symbol>
@@ -239,9 +239,9 @@
         <div data-stack-frame="1" style="position: relative; flex: 1 1 auto; min-height: 0; width: 100%; perspective: 1600px;">
           <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
             <article data-stack-card="1" style="position: absolute; inset: 0; will-change: transform, opacity; transform-origin: 50% 100%;">
-              <a href="{{ p.href }}" aria-label="Ver proyecto: {{ p.title }}" data-ul="1" data-stack-link="1" data-video="1" data-video-manual="1" data-glass="1" data-magnet="0.6" style="display: block; color: #f4f2ee; position: absolute; inset: 0; overflow: hidden; overflow: clip; border-radius: 28px; transition: transform 900ms cubic-bezier(.16,1,.3,1), box-shadow 600ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)), #0b0e13; box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.6), inset 0 -1.5px 0.5px rgba(255,255,255,0.28), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.09), 0 0 0 1px rgba(255,255,255,0.11), 0 30px 60px -26px rgba(0,0,0,0.85);">
+              <a href="{{ p.href }}" aria-label="Ver proyecto: {{ p.title }}" data-ul="1" data-stack-link="1" data-video="1" data-video-manual="1" data-glass="1" data-magnet="0.6" style="display: block; color: #f4f2ee; position: absolute; inset: 0; overflow: hidden; border-radius: 28px; transition: transform 900ms cubic-bezier(.16,1,.3,1), box-shadow 600ms ease; background: linear-gradient(158deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.05)), #0b0e13; box-shadow: inset 0 1.5px 0.5px rgba(255,255,255,0.6), inset 0 -1.5px 0.5px rgba(255,255,255,0.28), inset 3px 3px 8px rgba(255,150,90,0.1), inset -3px -3px 8px rgba(40,234,155,0.09), 0 0 0 1px rgba(255,255,255,0.11), 0 30px 60px -26px rgba(0,0,0,0.85);">
                 <image-slot alt="{{ p.title }}" id="{{ p.slot }}" shape="rect" fit="cover" src="{{ p.photo }}" placeholder="{{ p.placeholder }}" style="position: absolute; inset: 0; width: 100%; height: 100%;"></image-slot>
-                <video data-video-el="1" data-src="{{ p.video }}" muted loop playsinline preload="none" aria-label="Reel de {{ p.title }}" style="position: absolute; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); object-fit: cover; opacity: 0; transition: opacity 700ms ease; pointer-events: none;"></video>
+                <video data-video-el="1" data-src="{{ p.video }}" muted loop playsinline preload="none" aria-label="Reel de {{ p.title }}" style="position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 28px; object-fit: cover; opacity: 0; transition: opacity 700ms ease; pointer-events: none;"></video>
                 <div style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(5,7,8,0.9) 0%, rgba(5,7,8,0.32) 36%, rgba(5,7,8,0) 64%);"></div>
                 <div data-stack-cap="1" style="position: absolute; left: clamp(22px, 3vw, 46px); right: clamp(22px, 3vw, 46px); bottom: clamp(22px, 3vw, 40px); pointer-events: none; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; color: #f2efe9;">
                   <div style="display: flex; flex-direction: column; gap: 10px;">
