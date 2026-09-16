@@ -239,7 +239,7 @@ const SECTIONS = [
   { key: "$cfg", label: "Ajustes de publicación", title: "Ajustes de publicación", help: "El repositorio ya viene cargado (tomipotrero/arengaweb). El token se crea en GitHub, en Settings → Developer settings → Personal access tokens → Fine-grained, con acceso a ese repositorio y permiso Contents: Read and write. Al guardar queda en el proyecto y en este navegador, así que no se pierde al limpiar el navegador. Ojo: si algún día publicás el proyecto entero en internet, admin.state.json no debe subir.", fields: [
       { k: "repo", label: "Repositorio", hint: "usuario/repositorio", span: "1 / -1" },
       { k: "branch", label: "Rama", hint: "main" }, { k: "path", label: "Archivo", hint: "content.json" },
-      { k: "token", label: "Token de GitHub", span: "1 / -1" }
+      { k: "token", label: "Token de GitHub", span: "1 / -1" , secret: true}
     ] }
 ];
 
