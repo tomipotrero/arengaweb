@@ -240,7 +240,7 @@ const SECTIONS = [
       { k: "email", label: "Email" }, { k: "city", label: "Ciudad" }, { k: "copyright", label: "Copyright" },
       { k: "instagram", label: "Instagram (URL)" }, { k: "linkedin", label: "LinkedIn (URL)" }, { k: "x", label: "X (URL)" }
     ] },
-  { key: "$cfg", label: "Ajustes de publicación", title: "Ajustes de publicación", help: "El repositorio ya viene cargado (tomipotrero/arengaweb). El token se crea en GitHub, en Settings → Developer settings → Personal access tokens → Fine-grained, con acceso a ese repositorio y permiso Contents: Read and write. Al guardar queda en el proyecto y en este navegador, así que no se pierde al limpiar el navegador. Ojo: si algún día publicás el proyecto entero en internet, admin.state.json no debe subir.", fields: [
+  { key: "$cfg", label: "Ajustes de publicación", title: "Ajustes de publicación", help: "En arenga.uy el panel publica a través del servidor, que guarda la clave de GitHub como secreto: no hace falta cargar nada acá. El token de este formulario sólo se usa en la vista previa del proyecto. Si alguna vez hay que renovarlo, se crea en GitHub (Settings → Developer settings → Personal access tokens → Fine-grained, permiso Contents: Read and write) y se actualiza el secreto GITHUB_TOKEN del Worker en Cloudflare.", fields: [
       { k: "repo", label: "Repositorio", hint: "usuario/repositorio", span: "1 / -1" },
       { k: "branch", label: "Rama", hint: "main" }, { k: "path", label: "Archivo", hint: "content.json" },
       { k: "token", label: "Token de GitHub", span: "1 / -1" , secret: true}
@@ -313,7 +313,8 @@ class Component extends DCLogic {
         return null;
       })
       .catch(() => {})
-      .then(() => { if (!this.dead) this.hydrate(); });
+      .then(() => this.probeProxy())
+      .then(proxy => { if (!this.dead) { this.setState({ proxy: !!proxy }); this.hydrate(); } });
   }
 
   componentWillUnmount() { this.dead = true; }
@@ -321,12 +322,26 @@ class Component extends DCLogic {
   // el servicio de contenido: la UI no conoce el transporte
   svc() {
     const c = this.state.cfg;
-    const key = [c.repo, c.branch, c.path, c.token].join("|");
+    /* En el sitio publicado no hay token en el navegador: el panel sale por el
+       intermediario del Worker (/api/gh), que tiene la clave como secreto. En la
+       vista previa no hay Worker, así que se usa el token del proyecto. */
+    const proxy = this.state.proxy ? "/api/gh" : "";
+    const key = [c.repo, c.branch, c.path, c.token, proxy].join("|");
     if (!this.__svc || this.__svcKey !== key) {
       this.__svcKey = key;
-      this.__svc = window.ArengaCms.create({ repo: c.repo, branch: c.branch || "main", contentPath: c.path || "content.json", token: c.token });
+      this.__svc = window.ArengaCms.create({ repo: c.repo, branch: c.branch || "main", contentPath: c.path || "content.json", token: c.token, proxy });
     }
     return this.__svc;
+  }
+
+  // ¿hay intermediario con clave? Una sola sonda; si responde, el panel no
+  // necesita token en este navegador.
+  async probeProxy() {
+    if (window.omelette) return false;
+    try {
+      const r = await fetch("/api/gh/contents/" + encodeURIComponent(this.state.cfg.path || "content.json") + "?ref=" + encodeURIComponent(this.state.cfg.branch || "main"), { cache: "no-store" });
+      return r.status !== 503 && r.status !== 404 || r.status === 200;
+    } catch (e) { return false; }
   }
 
   /* Arranque: 1) leer lo persistido, 2) normalizar, 3) hidratar, 4) renderizar.
