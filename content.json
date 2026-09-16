@@ -72,14 +72,14 @@
   ],
   "team": [
     {
-      "name": "Luana Bengoechea",
-      "role": "Social Media Manager",
-      "photo": "team/luana-bengoechea.webp"
-    },
-    {
       "name": "Ignacio Bustamante",
       "role": "Creative Designer / Filmmaker",
       "photo": "team/ignacio-bustamante.webp"
+    },
+    {
+      "name": "Luana Bengoechea",
+      "role": "Social Media Manager",
+      "photo": "team/luana-bengoechea.webp"
     },
     {
       "name": "Tomás Bruni",
