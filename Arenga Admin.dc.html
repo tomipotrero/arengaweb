@@ -61,7 +61,7 @@
       <button onClick="{{ onReload }}" style="appearance: none; border: none; cursor: pointer; padding: 11px 16px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 500; color: rgba(244,242,238,0.7); background: transparent; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14); transition: color 200ms ease, box-shadow 200ms ease;" style-hover="color: #28ea9b; box-shadow: inset 0 0 0 1px rgba(40,234,155,0.5);">Releer lo publicado</button>
       <button onClick="{{ onDiscard }}" style="appearance: none; border: none; cursor: pointer; padding: 11px 16px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 500; color: rgba(244,242,238,0.7); background: transparent; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14); transition: color 200ms ease, box-shadow 200ms ease;" style-hover="color: #ff5715; box-shadow: inset 0 0 0 1px rgba(255,87,21,0.5);">Descartar borrador</button>
       <button onClick="{{ onVerify }}" style="appearance: none; border: none; cursor: pointer; padding: 11px 18px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 500; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14); transition: background 200ms ease;" style-hover="background: rgba(255,255,255,0.14);">Verificar</button>
-      <button onClick="{{ onPublishSite }}" style="appearance: none; border: none; cursor: pointer; padding: 11px 18px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 500; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14); transition: background 200ms ease;" style-hover="background: rgba(255,255,255,0.14);">Publicar sitio</button>
+      <button onClick="{{ onPublishSite }}" style="display: {{ siteBtnDisplay }}; appearance: none; border: none; cursor: pointer; padding: 11px 18px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 500; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14); transition: background 200ms ease;" style-hover="background: rgba(255,255,255,0.14);">Publicar sitio</button>
       <button onClick="{{ onDownload }}" style="appearance: none; border: none; cursor: pointer; padding: 11px 18px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 500; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14); transition: background 200ms ease;" style-hover="background: rgba(255,255,255,0.14);">Descargar JSON</button>
       <button onClick="{{ onSave }}" style="appearance: none; border: none; cursor: pointer; padding: 11px 20px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 600; color: #07090c; background: #ff5715; transition: transform 200ms ease;" style-hover="transform: translateY(-1px);">Publicar en GitHub</button>
     </div>
@@ -609,6 +609,8 @@ class Component extends DCLogic {
       report: (s.report || []).map(r => ({ label: r.label, color: r.t === "warn" ? "#ff8d5a" : r.t === "ok" ? "#28ea9b" : "rgba(244,242,238,0.55)" })),
       onVerify: this.onVerify,
       onPublishSite: this.onPublishSite,
+      // sube los archivos del sitio leyéndolos del proyecto: sólo existe en la vista previa
+      siteBtnDisplay: window.omelette ? "inline-flex" : "none",
       onReload: this.onReload,
       sectionTitle: active.title,
       sectionHelp: active.help,
