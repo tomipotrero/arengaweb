@@ -11,7 +11,8 @@
   },
   "vars": {
     "CONTACT_TO": "creatividad@arenga.uy",
-    "CONTACT_FROM": "web@arenga.uy"
+    "CONTACT_FROM": "web@arenga.uy",
+    "GITHUB_REPO": "tomipotrero/arengaweb"
   },
   "send_email": [
     { "name": "EMAIL", "destination_address": "creatividad@arenga.uy" }
