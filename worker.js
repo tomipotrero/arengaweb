@@ -1,8 +1,13 @@
 /* El sitio se sirve como Worker con assets estáticos. Los assets se resuelven
-   antes que este script; sólo llega acá lo que no es un archivo: /api/contact.
+   antes que este script; sólo llega acá lo que no es un archivo: /api/contact
+   y /api/gh/*.
 
    El mail sale por Cloudflare Email (binding send_email en wrangler.jsonc).
-   Sin binding configurado el formulario avisa en pantalla en lugar de fallar mudo. */
+   Sin binding configurado el formulario avisa en pantalla en lugar de fallar mudo.
+
+   /api/gh/* es el intermediario del panel con GitHub: el token vive como
+   secreto del Worker (GITHUB_TOKEN) y nunca viaja al navegador. Reenvía sólo
+   a la API del repositorio configurado; cualquier otra ruta se rechaza. */
 
 const CORS = {
   "access-control-allow-origin": "*",
@@ -91,6 +96,40 @@ async function contact(request, env) {
   return json({ ok: false, error: "not_configured" }, 503);
 }
 
+/* Intermediario con GitHub para el panel. Sale con el token del secreto; el
+   navegador manda el pedido sin credenciales. Se limita al repositorio de
+   GITHUB_REPO (o al del propio sitio) y a los métodos que el panel usa. */
+async function gh(request, env, url) {
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: GH_CORS });
+  if (!env.GITHUB_TOKEN) return json({ ok: false, error: "not_configured", detail: "Falta el secreto GITHUB_TOKEN en el Worker" }, 503);
+  const repo = env.GITHUB_REPO || "tomipotrero/arengaweb";
+  // /api/gh/<lo que sigue> -> https://api.github.com/repos/<repo>/<lo que sigue>
+  const rest = url.pathname.replace(/^\/api\/gh\/?/, "");
+  if (!/^(contents\/|git\/(blobs|trees)\/)/.test(rest)) return json({ ok: false, error: "forbidden_path" }, 403);
+  if (!["GET", "PUT", "DELETE"].includes(request.method)) return json({ ok: false, error: "method_not_allowed" }, 405);
+  const target = "https://api.github.com/repos/" + repo + "/" + rest + url.search;
+  const headers = new Headers({
+    Authorization: "Bearer " + env.GITHUB_TOKEN,
+    Accept: request.headers.get("accept") || "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "arengaweb-panel"
+  });
+  const ct = request.headers.get("content-type");
+  if (ct) headers.set("Content-Type", ct);
+  const init = { method: request.method, headers: headers };
+  if (request.method !== "GET") init.body = await request.text();
+  const r = await fetch(target, init);
+  const out = new Headers(GH_CORS);
+  out.set("content-type", r.headers.get("content-type") || "application/json");
+  out.set("cache-control", "no-store");
+  return new Response(r.body, { status: r.status, headers: out });
+}
+const GH_CORS = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "GET, PUT, DELETE, OPTIONS",
+  "access-control-allow-headers": "content-type, accept"
+};
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -99,6 +138,7 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
     if (url.pathname === "/api/contact") return contact(request, env);
+    if (url.pathname.startsWith("/api/gh/")) return gh(request, env, url);
     return env.ASSETS.fetch(request);
   }
 };
