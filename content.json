@@ -92,14 +92,14 @@
       "photo": "team/agustin-figari.webp"
     },
     {
-      "name": "Juani Barreiro",
-      "role": "Film Production Lead",
-      "photo": "team/juani-barreiro.webp"
-    },
-    {
       "name": "Franco Patri",
       "role": "Filmmaker & Photographer",
       "photo": "team/francopatri.webp"
+    },
+    {
+      "name": "Juani Barreiro",
+      "role": "Film Production Lead",
+      "photo": "team/juani-barreiro.webp"
     }
   ],
   "caps": [
