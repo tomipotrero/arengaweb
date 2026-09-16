@@ -243,7 +243,7 @@ const SECTIONS = [
   { key: "$cfg", label: "Ajustes de publicación", title: "Ajustes de publicación", help: "En arenga.uy el panel publica a través del servidor, que guarda la clave de GitHub como secreto: no hace falta cargar nada acá. El token de este formulario sólo se usa en la vista previa del proyecto. Si alguna vez hay que renovarlo, se crea en GitHub (Settings → Developer settings → Personal access tokens → Fine-grained, permiso Contents: Read and write) y se actualiza el secreto GITHUB_TOKEN del Worker en Cloudflare.", fields: [
       { k: "repo", label: "Repositorio", hint: "usuario/repositorio", span: "1 / -1" },
       { k: "branch", label: "Rama", hint: "main" }, { k: "path", label: "Archivo", hint: "content.json" },
-      { k: "token", label: "Token de GitHub", span: "1 / -1" , secret: true}
+      { k: "token", label: "Token de GitHub (sólo vista previa)", hint: "En arenga.uy no hace falta: la clave vive en el servidor", span: "1 / -1", secret: true }
     ] }
 ];
 
@@ -338,9 +338,14 @@ class Component extends DCLogic {
   // necesita token en este navegador.
   async probeProxy() {
     if (window.omelette) return false;
+    /* En el sitio publicado el intermediario SIEMPRE existe: se asume y punto.
+       Antes se decidía con una sonda al arrancar, y si esa única petición
+       fallaba (red lenta, DNS, la primera carga del Worker) el panel caía al
+       modo con token, que en producción nunca está — y pedía el token. */
+    if (/(^|\.)arenga\.uy$/.test(location.hostname)) return true;
     try {
       const r = await fetch("/api/gh/contents/" + encodeURIComponent(this.state.cfg.path || "content.json") + "?ref=" + encodeURIComponent(this.state.cfg.branch || "main"), { cache: "no-store" });
-      return r.status !== 503 && r.status !== 404 || r.status === 200;
+      return r.status === 200 || r.status === 401 || r.status === 403 || r.status === 409 || r.status === 422;
     } catch (e) { return false; }
   }
 
