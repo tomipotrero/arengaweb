@@ -117,17 +117,20 @@
   /* ----------------------------------------------------------- adaptadores */
 
   // Adaptador canónico de desarrollo: el repositorio de GitHub.
+  // Con cfg.proxy, el mismo adaptador sale por el intermediario del Worker
+  // (/api/gh) sin token en el navegador: la clave vive como secreto de Cloudflare.
   function githubAdapter(cfg) {
     var repo = String(cfg.repo || "").trim();
     var branch = String(cfg.branch || "main").trim();
     var contentPath = String(cfg.contentPath || "content.json").trim();
     var token = String(cfg.token || "").trim();
-    var API = "https://api.github.com/repos/" + repo;
+    var proxy = cfg.proxy ? String(cfg.proxy).replace(/\/$/, "") : "";
+    var API = proxy || ("https://api.github.com/repos/" + repo);
     var queue = Promise.resolve();
 
     function headers(accept) {
       var h = { Accept: accept || "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
-      if (token) h.Authorization = "Bearer " + token;
+      if (token && !proxy) h.Authorization = "Bearer " + token;
       return h;
     }
     function url(path) { return API + "/contents/" + String(path).split("/").map(encodeURIComponent).join("/"); }
@@ -163,7 +166,7 @@
     }
 
     return {
-      describe: function () { return { label: "GitHub " + repo + "@" + branch, canWrite: !!(repo && token), repo: repo, branch: branch }; },
+      describe: function () { return { label: (proxy ? "Worker → GitHub " : "GitHub ") + repo + "@" + branch, canWrite: !!(repo && (token || proxy)), repo: repo, branch: branch, proxied: !!proxy }; },
 
       readContent: async function () {
         var meta = await readMeta(contentPath);
