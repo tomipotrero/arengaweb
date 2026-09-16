@@ -126,10 +126,8 @@
                 <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}">
                   <span style="display: flex; align-items: center; gap: 8px;">
                     <input type="{{ f.inputType }}" autocomplete="off" spellcheck="false" value="{{ f.value }}" onChange="{{ f.onInput }}" placeholder="{{ f.hint }}" style="flex: 1 1 auto; min-width: 0; padding: 12px 14px; border-radius: 12px; border: none; outline: none; font-size: 14px; color: #f4f2ee; background: rgba(255,255,255,0.05); box-shadow: 0 0 0 1px rgba(255,255,255,0.12); transition: box-shadow 200ms ease;" style-focus="box-shadow: 0 0 0 1px rgba(255,87,21,0.7);">
-                    <sc-if value="{{ f.isSecret }}" hint-placeholder-val="{{ false }}">
-                      <button type="button" onClick="{{ f.onToggle }}" style="appearance: none; border: none; cursor: pointer; flex: none; padding: 11px 14px; border-radius: 12px; font-family: inherit; font-size: 12.5px; font-weight: 500; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14);">{{ f.toggleLabel }}</button>
-                      <button type="button" onClick="{{ f.onCopy }}" style="appearance: none; border: none; cursor: pointer; flex: none; padding: 11px 14px; border-radius: 12px; font-family: inherit; font-size: 12.5px; font-weight: 500; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14);">Copiar</button>
-                    </sc-if>
+                    <button type="button" onClick="{{ f.onToggle }}" style="display: {{ f.secretDisplay }}; appearance: none; border: none; cursor: pointer; flex: none; padding: 11px 14px; border-radius: 12px; font-family: inherit; font-size: 12.5px; font-weight: 500; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14);">{{ f.toggleLabel }}</button>
+                    <button type="button" onClick="{{ f.onCopy }}" style="display: {{ f.secretDisplay }}; appearance: none; border: none; cursor: pointer; flex: none; padding: 11px 14px; border-radius: 12px; font-family: inherit; font-size: 12.5px; font-weight: 500; color: #f4f2ee; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 1px rgba(255,255,255,0.14);">Copiar</button>
                   </span>
                 </sc-if>
                 <sc-if value="{{ f.isImage }}" hint-placeholder-val="{{ true }}">
@@ -548,6 +546,7 @@ class Component extends DCLogic {
         span: f.span || "auto",
         inputType: f.secret && !this.state.showSecret ? "password" : "text",
         isSecret: !!f.secret,
+        secretDisplay: f.secret ? "inline-flex" : "none",
         toggleLabel: this.state.showSecret ? "Ocultar" : "Ver",
         onToggle: () => this.setState(st => ({ showSecret: !st.showSecret })),
         onCopy: () => {
