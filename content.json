@@ -323,6 +323,37 @@
       ],
       "page": "/proyectos/altoconcepto",
       "coverMobile": "work/aya0828.webp"
+    },
+    {
+      "title": "DIRECTV GO",
+      "client": "DIRECTV GO",
+      "kind": "Cobertura · Producción",
+      "stat": "Punta del Este",
+      "services": "Cobertura de evento, Producción de contenido",
+      "results": "Contenido de la celebración para la comunicación de la marca.",
+      "metaLabel": "Mercado",
+      "metaValue": "Uruguay",
+      "intro": "Fin de año en Punta del Este. Acompañamos a DIRECTV GO en su celebración de fin de año en Punta del Este. Una cobertura para capturar el encuentro, el ambiente y los momentos que hicieron especial la celebración.",
+      "whatText": "Registramos el fin de año de DIRECTV GO con una mirada puesta en las personas, los detalles y la presencia de la marca. Transformamos lo que pasó en contenido para seguir compartiendo la experiencia después del evento.",
+      "w1Title": "Cobertura del evento",
+      "w1Text": "Registro de los momentos y encuentros que marcaron la celebración.",
+      "w2Title": "Mirada de marca",
+      "w2Text": "Atención a los espacios, los detalles y la identidad de DIRECTV GO dentro del evento.",
+      "w3Title": "Contenido",
+      "w3Text": "Material para contar la experiencia y acompañar la comunicación de la marca.",
+      "how1": "Nos sumamos al ritmo del evento para registrar lo que iba pasando: los encuentros, las reacciones y los detalles que le dieron identidad a la celebración.",
+      "how2": "Buscamos capturar el ambiente de forma natural y construir un relato que conectara a DIRECTV GO con la experiencia de cerrar el año en Punta del Este.",
+      "video": "",
+      "page": "/proyectos/directv-go",
+      "cover": "media/directv-go-portada-1b5391b23c.webp",
+      "coverMobile": "media/directv-go-portada-vertical-d54fcf82f2.webp",
+      "hero": "media/directv-go-principal-39628242e8.webp",
+      "stills": [
+        "media/directv-go-foto1-6ad95e2d33.webp",
+        "media/directv-go-foto2-eb596a4564.webp",
+        "media/directv-go-foto3-fbf0e565ec.webp",
+        "media/directv-go-foto4-94ec4d6130.webp"
+      ]
     }
   ],
   "selected": [
